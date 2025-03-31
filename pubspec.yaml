@@ -67,8 +67,13 @@ flutter:
     - assets/images/twotone.png
     - assets/images/sms-tracking.png
     - assets/images/linear.png
+    - assets/images/sms-notification.png
+    - assets/images/Rectangle 28238.png
+    - assets/images/eye_unlock_twotone.png
+    - assets/images/Group 176119.png
     - assets/fonts/
     - lib/screens/
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
