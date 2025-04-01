@@ -61,6 +61,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - lib/screens/
+    - assets/fonts/
     - assets/images/Rectangle 28133.png
     - assets/images/Mask Group 2412 1.png
     - assets/images/image 2.png
@@ -71,8 +73,7 @@ flutter:
     - assets/images/Rectangle 28238.png
     - assets/images/eye_unlock_twotone.png
     - assets/images/Group 176119.png
-    - assets/fonts/
-    - lib/screens/
+    - assets/images/user.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
