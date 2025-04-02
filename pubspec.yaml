@@ -37,7 +37,18 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
 
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/app_icon.png"  # Path to your app icon
+  remove_alpha_ios: true  # This removes alpha for iOS icons
+
+
+
 dev_dependencies:
+  flutter_launcher_icons: ^0.10.0
+
   flutter_test:
     sdk: flutter
 
