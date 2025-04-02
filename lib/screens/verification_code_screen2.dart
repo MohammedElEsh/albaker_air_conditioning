@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/custom_rectangle.dart';
 import 'complete_data_screen.dart';
+import '../services/auth_service.dart';
 
 class VerificationCodeScreen2 extends StatefulWidget {
   final String email;
@@ -8,14 +9,43 @@ class VerificationCodeScreen2 extends StatefulWidget {
   const VerificationCodeScreen2({super.key, required this.email});
 
   @override
-  State<VerificationCodeScreen2> createState() => _VerificationCodeScreen2State();
+  State<VerificationCodeScreen2> createState() =>
+      _VerificationCodeScreen2State();
 }
 
 class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
   final List<TextEditingController> controllers = List.generate(
     5,
-        (index) => TextEditingController(),
+    (index) => TextEditingController(),
   );
+  final _authService = AuthService();
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    for (var controller in controllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  // إضافة وظيفة إعادة إرسال الرمز
+  Future<void> _resendCode() async {
+    try {
+      await _authService.sendOtp(widget.email);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('تم إعادة إرسال رمز التحقق')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,61 +80,53 @@ class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
               right: 0,
               child: Column(
                 children: [
-                  Positioned(
-                    child: const SizedBox(
-                      width: 128,
-                      height: 40,
-                      child: Text(
-                        "كود التحقق",
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xFF2D2525),
-                          height: 1.0, // line-height: 100%
-                          letterSpacing: 0, // letter-spacing: 0%
-                        ),
-                        textAlign: TextAlign.center,
+                  const SizedBox(
+                    width: 128,
+                    height: 40,
+                    child: Text(
+                      "كود التحقق",
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0xFF2D2525),
+                        height: 1.0,
+                        letterSpacing: 0,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
 
-                  Positioned(
-                    child: const SizedBox(
-                      width: 400,
-                      height: 65,
-                      child: Text(
-                        "قم بكتابة كود التحقق المكون من 5 أرقام الذي تم إرساله إليك عبر البريد الإلكتروني",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF2D2525),
-                          height: 1.4, // line-height: 25px
-                          letterSpacing: 0, // letter-spacing: 0%
-                        ),
-                        textAlign: TextAlign.center,
+                  const SizedBox(
+                    width: 400,
+                    height: 65,
+                    child: Text(
+                      "قم بكتابة كود التحقق المكون من 5 أرقام الذي تم إرساله إليك عبر البريد الإلكتروني",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF2D2525),
+                        height: 1.4,
+                        letterSpacing: 0,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
 
-                  Positioned(
-                    child: SizedBox(
-                      width: 246,
-                      height: 70,
-                      child: Text(
-                        widget.email, // يعرض البريد الإلكتروني المرسل
-                        style: const TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF2D2525),
-                          height: 1.0, // line-height: 100%
-                          letterSpacing: 0, // letter-spacing: 0%
-                        ),
-                        textAlign: TextAlign.center,
+                  SizedBox(
+                    width: 246,
+                    height: 70,
+                    child: Text(
+                      widget.email,
+                      style: const TextStyle(
+                        fontSize: 19,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF2D2525),
+                        height: 1.0,
+                        letterSpacing: 0,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
-
-                  // const SizedBox(height: 50),
 
                   // Verification code fields
                   Row(
@@ -118,9 +140,9 @@ class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
                             margin: const EdgeInsets.symmetric(horizontal: 5),
                             decoration: BoxDecoration(
                               color:
-                              controllers[index].text.isNotEmpty
-                                  ? const Color(0xFF000000)
-                                  : const Color(0xFFF7F7F7),
+                                  controllers[index].text.isNotEmpty
+                                      ? const Color(0xFF000000)
+                                      : const Color(0xFFF7F7F7),
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: TextField(
@@ -136,14 +158,12 @@ class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
                                 color:
-                                controllers[index].text.isNotEmpty
-                                    ? Colors.white
-                                    : Colors.black,
+                                    controllers[index].text.isNotEmpty
+                                        ? Colors.white
+                                        : Colors.black,
                               ),
                               onChanged: (value) {
-                                setState(
-                                      () {},
-                                ); // تحديث حالة الحاوية عند الكتابة
+                                setState(() {});
                                 if (value.isNotEmpty && index < 4) {
                                   FocusScope.of(context).nextFocus();
                                 }
@@ -166,36 +186,55 @@ class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
                 width: 363,
                 height: 76,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder:
-                            (context) =>
-                            CompleteDataScreen(email: widget.email),
-                      ),
-                    );
-                  },
+                  onPressed:
+                      _isLoading
+                          ? null
+                          : () {
+                            setState(() {
+                              _isLoading = true;
+                            });
+
+                            Future.delayed(
+                              const Duration(milliseconds: 500),
+                              () {
+                                if (mounted) {
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) => CompleteDataScreen(
+                                            email: widget.email,
+                                          ),
+                                    ),
+                                  );
+                                }
+                              },
+                            );
+                          },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1D75B1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(38),
                     ),
                   ),
-                  child: const Text(
-                    "تحقق",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 22,
-                      color: Colors.white,
-                    ),
-                  ),
+                  child:
+                      _isLoading
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Text(
+                            "تحقق",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 22,
+                              color: Colors.white,
+                            ),
+                          ),
                 ),
               ),
             ),
-
-
-
 
             // Resend code text
             Positioned(
@@ -213,11 +252,8 @@ class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
                     height: 35,
                   ), // تقليل المسافة بين النص وزر إعادة الإرسال
                   GestureDetector(
-                    onTap: () {
-                      // Handle resend code
-                    },
+                    onTap: _resendCode,
                     child: Column(
-                      // تغيير `Row` إلى `Column` لجعل الأيقونة فوق النص
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Icon(
@@ -244,13 +280,5 @@ class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    for (var controller in controllers) {
-      controller.dispose();
-    }
-    super.dispose();
   }
 }

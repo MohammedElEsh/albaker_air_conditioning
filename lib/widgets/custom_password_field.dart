@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class CustomPasswordField extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
+  final String? Function(String?)? validator;
 
   const CustomPasswordField({
     super.key,
     required this.controller,
     this.hintText = "أدخل كلمة المرور",
+    this.validator,
   });
 
   @override
@@ -47,10 +49,11 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
             children: [
               SizedBox(
                 width: 200,
-                child: TextField(
+                child: TextFormField(
                   controller: widget.controller,
                   textAlign: TextAlign.right,
                   obscureText: !_isPasswordVisible,
+                  validator: widget.validator,
                   decoration: InputDecoration(
                     hintText: widget.hintText,
                     border: InputBorder.none,

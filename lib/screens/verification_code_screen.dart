@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/custom_rectangle.dart';
+import '../services/auth_service.dart';
 import 'new_password_screen.dart';
 
 class VerificationCodeScreen extends StatefulWidget {
@@ -16,6 +17,77 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
     5,
     (index) => TextEditingController(),
   );
+  final _authService = AuthService();
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    for (var controller in controllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  Future<void> _verifyCode() async {
+    // جمع الرمز من جميع الحقول
+    String code = controllers.map((controller) => controller.text).join();
+
+    if (code.length != 5) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('الرجاء إدخال رمز التحقق المكون من 5 أرقام'),
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      await _authService.checkOtp(widget.email, code);
+
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder:
+                (context) => NewPasswordScreen(email: widget.email, otp: code),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _resendCode() async {
+    try {
+      await _authService.sendOtp(widget.email);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('تم إعادة إرسال رمز التحقق')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,61 +122,53 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
               right: 0,
               child: Column(
                 children: [
-                  Positioned(
-                    child: const SizedBox(
-                      width: 128,
-                      height: 40,
-                      child: Text(
-                        "كود التحقق",
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xFF2D2525),
-                          height: 1.0, // line-height: 100%
-                          letterSpacing: 0, // letter-spacing: 0%
-                        ),
-                        textAlign: TextAlign.center,
+                  const SizedBox(
+                    width: 128,
+                    height: 40,
+                    child: Text(
+                      "كود التحقق",
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0xFF2D2525),
+                        height: 1.0,
+                        letterSpacing: 0,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
 
-                  Positioned(
-                    child: const SizedBox(
-                      width: 400,
-                      height: 65,
-                      child: Text(
-                        "قم بكتابة كود التحقق المكون من 5 أرقام الذي تم إرساله إليك عبر البريد الإلكتروني",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF2D2525),
-                          height: 1.4, // line-height: 25px
-                          letterSpacing: 0, // letter-spacing: 0%
-                        ),
-                        textAlign: TextAlign.center,
+                  const SizedBox(
+                    width: 400,
+                    height: 65,
+                    child: Text(
+                      "قم بكتابة كود التحقق المكون من 5 أرقام الذي تم إرساله إليك عبر البريد الإلكتروني",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF2D2525),
+                        height: 1.4,
+                        letterSpacing: 0,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
 
-                  Positioned(
-                    child: SizedBox(
-                      width: 246,
-                      height: 70,
-                      child: Text(
-                        widget.email, // يعرض البريد الإلكتروني المرسل
-                        style: const TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF2D2525),
-                          height: 1.0, // line-height: 100%
-                          letterSpacing: 0, // letter-spacing: 0%
-                        ),
-                        textAlign: TextAlign.center,
+                  SizedBox(
+                    width: 246,
+                    height: 70,
+                    child: Text(
+                      widget.email,
+                      style: const TextStyle(
+                        fontSize: 19,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF2D2525),
+                        height: 1.0,
+                        letterSpacing: 0,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
-
-                  // const SizedBox(height: 50),
 
                   // Verification code fields
                   Row(
@@ -141,9 +205,7 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
                                         : Colors.black,
                               ),
                               onChanged: (value) {
-                                setState(
-                                  () {},
-                                ); // تحديث حالة الحاوية عند الكتابة
+                                setState(() {});
                                 if (value.isNotEmpty && index < 4) {
                                   FocusScope.of(context).nextFocus();
                                 }
@@ -161,38 +223,34 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
             // Verify Button
             Positioned(
               top: 600,
-              left: 35,
+              left: 33,
               child: SizedBox(
                 width: 363,
                 height: 76,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const NewPasswordScreen(),
-                      ),
-                    );
-                  },
+                  onPressed: _isLoading ? null : _verifyCode,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1D75B1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(38),
                     ),
                   ),
-                  child: const Text(
-                    "تحقق",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 22,
-                      color: Colors.white,
-                    ),
-                  ),
+                  child:
+                      _isLoading
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Text(
+                            "تحقق",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 22,
+                              color: Colors.white,
+                            ),
+                          ),
                 ),
               ),
             ),
 
-            // Resend code text
+            // Resend code text - إضافة الكود الجديد هنا
             Positioned(
               top: 745,
               left: 0,
@@ -208,11 +266,8 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
                     height: 35,
                   ), // تقليل المسافة بين النص وزر إعادة الإرسال
                   GestureDetector(
-                    onTap: () {
-                      // Handle resend code
-                    },
+                    onTap: _resendCode, // استخدام الوظيفة الموجودة
                     child: Column(
-                      // تغيير `Row` إلى `Column` لجعل الأيقونة فوق النص
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Icon(
@@ -239,13 +294,5 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    for (var controller in controllers) {
-      controller.dispose();
-    }
-    super.dispose();
   }
 }
