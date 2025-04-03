@@ -17,8 +17,8 @@ class _CompleteDataScreenState extends State<CompleteDataScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  bool _isPasswordVisible = false;
-  bool _isConfirmPasswordVisible = false;
+  // bool _isPasswordVisible = false;
+  // bool _isConfirmPasswordVisible = false;
 
   @override
   void dispose() {

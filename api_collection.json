@@ -1,0 +1,3687 @@
+{
+    "collection": {
+        "info": {
+            "_postman_id": "2ec698a6-196e-49aa-b49a-e826068c4117",
+            "name": "Elbakr",
+            "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+            "updatedAt": "2024-08-29T11:12:13.000Z",
+            "createdAt": "2024-03-02T11:20:38.000Z",
+            "lastUpdatedBy": "14039637",
+            "uid": "14039637-2ec698a6-196e-49aa-b49a-e826068c4117"
+        },
+        "item": [
+            {
+                "name": "user",
+                "item": [
+                    {
+                        "name": "register",
+                        "item": [
+                            {
+                                "name": "register",
+                                "id": "ded49492-70fe-49e7-b20f-e15d440eeed2",
+                                "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                },
+                                "request": {
+                                    "method": "POST",
+                                    "header": [
+                                        {
+                                            "key": "Accept",
+                                            "value": "application/json",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "Accept-Language",
+                                            "value": "ar",
+                                            "type": "text"
+                                        }
+                                    ],
+                                    "body": {
+                                        "mode": "formdata",
+                                        "formdata": [
+                                            {
+                                                "key": "email",
+                                                "value": "zizorezk@gmail.com",
+                                                "type": "text"
+                                            }
+                                        ]
+                                    },
+                                    "url": {
+                                        "raw": "{{Baseurl}}/api/register",
+                                        "host": [
+                                            "{{Baseurl}}"
+                                        ],
+                                        "path": [
+                                            "api",
+                                            "register"
+                                        ]
+                                    }
+                                },
+                                "response": [],
+                                "uid": "14039637-ded49492-70fe-49e7-b20f-e15d440eeed2"
+                            },
+                            {
+                                "name": "send otp",
+                                "id": "1dfb7c3e-a0ee-48d2-8c98-1196741bdbd3",
+                                "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                },
+                                "request": {
+                                    "method": "GET",
+                                    "header": [
+                                        {
+                                            "key": "Accept",
+                                            "value": "application/json",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "Accept-Language",
+                                            "value": "ar",
+                                            "type": "text"
+                                        }
+                                    ],
+                                    "url": {
+                                        "raw": "{{Baseurl}}/api/send/otp?email=zizorezk@gmail.com",
+                                        "host": [
+                                            "{{Baseurl}}"
+                                        ],
+                                        "path": [
+                                            "api",
+                                            "send",
+                                            "otp"
+                                        ],
+                                        "query": [
+                                            {
+                                                "key": "email",
+                                                "value": "zizorezk@gmail.com"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "response": [],
+                                "uid": "14039637-1dfb7c3e-a0ee-48d2-8c98-1196741bdbd3"
+                            },
+                            {
+                                "name": "check otp",
+                                "id": "ca9eeb1f-09a6-467a-9779-3e7daf24953a",
+                                "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                },
+                                "request": {
+                                    "method": "GET",
+                                    "header": [
+                                        {
+                                            "key": "Accept",
+                                            "value": "application/json",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "Accept-Language",
+                                            "value": "ar",
+                                            "type": "text"
+                                        }
+                                    ],
+                                    "url": {
+                                        "raw": "{{Baseurl}}/api/check/otp?email=mm@gmail.com&otp=51381",
+                                        "host": [
+                                            "{{Baseurl}}"
+                                        ],
+                                        "path": [
+                                            "api",
+                                            "check",
+                                            "otp"
+                                        ],
+                                        "query": [
+                                            {
+                                                "key": "email",
+                                                "value": "mm@gmail.com"
+                                            },
+                                            {
+                                                "key": "otp",
+                                                "value": "51381"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "response": [],
+                                "uid": "14039637-ca9eeb1f-09a6-467a-9779-3e7daf24953a"
+                            },
+                            {
+                                "name": "complete register",
+                                "id": "c5f92965-e5b9-4af9-bfcf-ba0a5cfb489f",
+                                "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                },
+                                "request": {
+                                    "method": "POST",
+                                    "header": [
+                                        {
+                                            "key": "Accept",
+                                            "value": "application/json",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "Accept-Language",
+                                            "value": "ar",
+                                            "type": "text"
+                                        }
+                                    ],
+                                    "body": {
+                                        "mode": "formdata",
+                                        "formdata": [
+                                            {
+                                                "key": "f_name",
+                                                "value": "first",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "l_name",
+                                                "value": "last",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "phone",
+                                                "value": "0109260976799",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "password",
+                                                "value": "123456789",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "password_confirmation",
+                                                "value": "123456789",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "email",
+                                                "value": "mm@gmail.com",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "otp",
+                                                "value": "51381",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "fcm_token",
+                                                "value": "123",
+                                                "type": "text"
+                                            }
+                                        ]
+                                    },
+                                    "url": {
+                                        "raw": "{{Baseurl}}/api/complete/register",
+                                        "host": [
+                                            "{{Baseurl}}"
+                                        ],
+                                        "path": [
+                                            "api",
+                                            "complete",
+                                            "register"
+                                        ]
+                                    }
+                                },
+                                "response": [],
+                                "uid": "14039637-c5f92965-e5b9-4af9-bfcf-ba0a5cfb489f"
+                            }
+                        ],
+                        "id": "6a07cb77-0e3b-4bcf-941f-ec49b1880c9c",
+                        "uid": "14039637-6a07cb77-0e3b-4bcf-941f-ec49b1880c9c"
+                    },
+                    {
+                        "name": "login",
+                        "item": [
+                            {
+                                "name": "login",
+                                "event": [
+                                    {
+                                        "listen": "test",
+                                        "script": {
+                                            "id": "774c25cc-fec6-4d1c-b1fb-a72a2d0afc5c",
+                                            "exec": [
+                                                "const response = pm.response.json();\r",
+                                                "const token = response.data.token;\r",
+                                                "const f_name = response.data.f_name;\r",
+                                                "const email = response.data.email;\r",
+                                                "if (token) {\r",
+                                                "    pm.environment.set(\"token\", token);\r",
+                                                "    pm.environment.set(\"f_name\", f_name);\r",
+                                                "    pm.environment.set(\"email\", email);\r",
+                                                "    console.log(\"Token saved successfully\");\r",
+                                                "} else {\r",
+                                                "    console.log(\"Token not found in response\");\r",
+                                                "}\r",
+                                                "\r",
+                                                "\r",
+                                                "\r",
+                                                "\r",
+                                                ""
+                                            ],
+                                            "type": "text/javascript",
+                                            "packages": {}
+                                        }
+                                    },
+                                    {
+                                        "listen": "prerequest",
+                                        "script": {
+                                            "id": "c10c0b33-b6d9-4439-ab83-dad66200505e",
+                                            "exec": [
+                                                ""
+                                            ],
+                                            "type": "text/javascript",
+                                            "packages": {}
+                                        }
+                                    }
+                                ],
+                                "id": "c90e7940-5ddb-4e1f-bf41-c8e63a81c814",
+                                "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                },
+                                "request": {
+                                    "method": "POST",
+                                    "header": [
+                                        {
+                                            "key": "Accept",
+                                            "value": "application/json",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "Accept-Language",
+                                            "value": "ar",
+                                            "type": "text"
+                                        }
+                                    ],
+                                    "body": {
+                                        "mode": "formdata",
+                                        "formdata": [
+                                            {
+                                                "key": "email",
+                                                "value": "zizorezk@gmail.com",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "password",
+                                                "value": "123456789",
+                                                "type": "text"
+                                            }
+                                        ]
+                                    },
+                                    "url": {
+                                        "raw": "{{Baseurl}}/api/login",
+                                        "host": [
+                                            "{{Baseurl}}"
+                                        ],
+                                        "path": [
+                                            "api",
+                                            "login"
+                                        ]
+                                    }
+                                },
+                                "response": [
+                                    {
+                                        "id": "9ee3224e-1558-45b7-af3d-3dc8d99e24bb",
+                                        "name": "login",
+                                        "originalRequest": {
+                                            "method": "POST",
+                                            "header": [
+                                                {
+                                                    "key": "Accept",
+                                                    "value": "application/json",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "key": "Accept-Language",
+                                                    "value": "ar",
+                                                    "type": "text"
+                                                }
+                                            ],
+                                            "body": {
+                                                "mode": "formdata",
+                                                "formdata": [
+                                                    {
+                                                        "key": "email",
+                                                        "value": "zizorezk@gmail.com",
+                                                        "type": "text"
+                                                    },
+                                                    {
+                                                        "key": "password",
+                                                        "value": "123456789",
+                                                        "type": "text"
+                                                    }
+                                                ]
+                                            },
+                                            "url": {
+                                                "raw": "{{Baseurl}}/api/login",
+                                                "host": [
+                                                    "{{Baseurl}}"
+                                                ],
+                                                "path": [
+                                                    "api",
+                                                    "login"
+                                                ]
+                                            }
+                                        },
+                                        "status": "OK",
+                                        "code": 200,
+                                        "_postman_previewlanguage": "json",
+                                        "header": [
+                                            {
+                                                "key": "Connection",
+                                                "value": "Keep-Alive"
+                                            },
+                                            {
+                                                "key": "Keep-Alive",
+                                                "value": "timeout=5, max=100"
+                                            },
+                                            {
+                                                "key": "x-powered-by",
+                                                "value": "PHP/8.1.27"
+                                            },
+                                            {
+                                                "key": "cache-control",
+                                                "value": "no-cache, private"
+                                            },
+                                            {
+                                                "key": "content-type",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "key": "x-ratelimit-limit",
+                                                "value": "60"
+                                            },
+                                            {
+                                                "key": "x-ratelimit-remaining",
+                                                "value": "59"
+                                            },
+                                            {
+                                                "key": "access-control-allow-origin",
+                                                "value": "*"
+                                            },
+                                            {
+                                                "key": "content-length",
+                                                "value": "191"
+                                            },
+                                            {
+                                                "key": "content-encoding",
+                                                "value": "br"
+                                            },
+                                            {
+                                                "key": "vary",
+                                                "value": "Accept-Encoding"
+                                            },
+                                            {
+                                                "key": "date",
+                                                "value": "Sun, 23 Jun 2024 13:56:11 GMT"
+                                            },
+                                            {
+                                                "key": "server",
+                                                "value": "LiteSpeed"
+                                            },
+                                            {
+                                                "key": "platform",
+                                                "value": "hostinger"
+                                            },
+                                            {
+                                                "key": "content-security-policy",
+                                                "value": "upgrade-insecure-requests"
+                                            },
+                                            {
+                                                "key": "alt-svc",
+                                                "value": "h3=\":443\"; ma=2592000, h3-29=\":443\"; ma=2592000, h3-Q050=\":443\"; ma=2592000, h3-Q046=\":443\"; ma=2592000, h3-Q043=\":443\"; ma=2592000, quic=\":443\"; ma=2592000; v=\"43,46\""
+                                            }
+                                        ],
+                                        "cookie": [],
+                                        "responseTime": null,
+                                        "body": "{\n    \"message\": \"success\",\n    \"status\": 200,\n    \"data\": {\n        \"token\": \"142|rGAGt65DaJBytdsfduIrt6E8tyqQ85Tqz57xMwcN5d5176d4\",\n        \"f_name\": \"mohamed\",\n        \"l_name\": \"ali\",\n        \"email\": \"zizorezk@gmail.com\",\n        \"phone\": \"5553261555662\"\n    }\n}",
+                                        "uid": "14039637-9ee3224e-1558-45b7-af3d-3dc8d99e24bb"
+                                    }
+                                ],
+                                "uid": "14039637-c90e7940-5ddb-4e1f-bf41-c8e63a81c814"
+                            },
+                            {
+                                "name": "resetPassword",
+                                "id": "c9306736-9629-4bcc-8174-725232b849ec",
+                                "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                },
+                                "request": {
+                                    "method": "POST",
+                                    "header": [
+                                        {
+                                            "key": "Accept",
+                                            "value": "application/json",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "Accept-Language",
+                                            "value": "ar",
+                                            "type": "text"
+                                        }
+                                    ],
+                                    "body": {
+                                        "mode": "formdata",
+                                        "formdata": [
+                                            {
+                                                "key": "email",
+                                                "value": "zizorezk@gmail.com",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "password",
+                                                "value": "12345678",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "password_confirmation",
+                                                "value": "123456789",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "otp",
+                                                "value": "12345",
+                                                "type": "text"
+                                            }
+                                        ]
+                                    },
+                                    "url": {
+                                        "raw": "{{Baseurl}}/api/resetPassword",
+                                        "host": [
+                                            "{{Baseurl}}"
+                                        ],
+                                        "path": [
+                                            "api",
+                                            "resetPassword"
+                                        ]
+                                    }
+                                },
+                                "response": [],
+                                "uid": "14039637-c9306736-9629-4bcc-8174-725232b849ec"
+                            },
+                            {
+                                "name": "send otp",
+                                "id": "cbb1e31a-63c3-494b-afdd-1f09b59bf143",
+                                "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                },
+                                "request": {
+                                    "method": "GET",
+                                    "header": [
+                                        {
+                                            "key": "Accept",
+                                            "value": "application/json",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "Accept-Language",
+                                            "value": "ar",
+                                            "type": "text"
+                                        }
+                                    ],
+                                    "url": {
+                                        "raw": "{{Baseurl}}/api/send/otp?email=zizorezk@gmail.com",
+                                        "host": [
+                                            "{{Baseurl}}"
+                                        ],
+                                        "path": [
+                                            "api",
+                                            "send",
+                                            "otp"
+                                        ],
+                                        "query": [
+                                            {
+                                                "key": "email",
+                                                "value": "zizorezk@gmail.com"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "response": [
+                                    {
+                                        "id": "5a58949c-3318-49d0-91fc-356eba28fd8a",
+                                        "name": "success",
+                                        "originalRequest": {
+                                            "method": "GET",
+                                            "header": [
+                                                {
+                                                    "key": "Accept",
+                                                    "value": "application/json",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "key": "Accept-Language",
+                                                    "value": "ar",
+                                                    "type": "text"
+                                                }
+                                            ],
+                                            "url": {
+                                                "raw": "{{Baseurl}}/api/send/otp?email=zizorezk@gmail.com",
+                                                "host": [
+                                                    "{{Baseurl}}"
+                                                ],
+                                                "path": [
+                                                    "api",
+                                                    "send",
+                                                    "otp"
+                                                ],
+                                                "query": [
+                                                    {
+                                                        "key": "email",
+                                                        "value": "zizorezk@gmail.com"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "status": "OK",
+                                        "code": 200,
+                                        "_postman_previewlanguage": "json",
+                                        "header": [
+                                            {
+                                                "key": "Connection",
+                                                "value": "Keep-Alive"
+                                            },
+                                            {
+                                                "key": "Keep-Alive",
+                                                "value": "timeout=5, max=100"
+                                            },
+                                            {
+                                                "key": "x-powered-by",
+                                                "value": "PHP/8.1.27"
+                                            },
+                                            {
+                                                "key": "cache-control",
+                                                "value": "no-cache, private"
+                                            },
+                                            {
+                                                "key": "content-type",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "key": "x-ratelimit-limit",
+                                                "value": "60"
+                                            },
+                                            {
+                                                "key": "x-ratelimit-remaining",
+                                                "value": "59"
+                                            },
+                                            {
+                                                "key": "access-control-allow-origin",
+                                                "value": "*"
+                                            },
+                                            {
+                                                "key": "content-length",
+                                                "value": "145"
+                                            },
+                                            {
+                                                "key": "content-encoding",
+                                                "value": "br"
+                                            },
+                                            {
+                                                "key": "vary",
+                                                "value": "Accept-Encoding"
+                                            },
+                                            {
+                                                "key": "date",
+                                                "value": "Wed, 31 Jul 2024 10:15:19 GMT"
+                                            },
+                                            {
+                                                "key": "server",
+                                                "value": "LiteSpeed"
+                                            },
+                                            {
+                                                "key": "platform",
+                                                "value": "hostinger"
+                                            },
+                                            {
+                                                "key": "content-security-policy",
+                                                "value": "upgrade-insecure-requests"
+                                            },
+                                            {
+                                                "key": "alt-svc",
+                                                "value": "h3=\":443\"; ma=2592000, h3-29=\":443\"; ma=2592000, h3-Q050=\":443\"; ma=2592000, h3-Q046=\":443\"; ma=2592000, h3-Q043=\":443\"; ma=2592000, quic=\":443\"; ma=2592000; v=\"43,46\""
+                                            }
+                                        ],
+                                        "cookie": [],
+                                        "responseTime": null,
+                                        "body": "{\n    \"message\": \"تم ارسال كود التحقق بنجاح\",\n    \"status\": 200,\n    \"data\": {\n        \"email\": \"zizorezk@gmail.com\"\n    }\n}",
+                                        "uid": "14039637-5a58949c-3318-49d0-91fc-356eba28fd8a"
+                                    }
+                                ],
+                                "uid": "14039637-cbb1e31a-63c3-494b-afdd-1f09b59bf143"
+                            },
+                            {
+                                "name": "check otp",
+                                "id": "e23286e7-e766-4a33-862e-2f9608a5a17a",
+                                "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                },
+                                "request": {
+                                    "method": "GET",
+                                    "header": [
+                                        {
+                                            "key": "Accept",
+                                            "value": "application/json",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "Accept-Language",
+                                            "value": "ar",
+                                            "type": "text"
+                                        }
+                                    ],
+                                    "url": {
+                                        "raw": "{{Baseurl}}/api/check/otp?email=zizorezk@gmail.com&otp=99305",
+                                        "host": [
+                                            "{{Baseurl}}"
+                                        ],
+                                        "path": [
+                                            "api",
+                                            "check",
+                                            "otp"
+                                        ],
+                                        "query": [
+                                            {
+                                                "key": "email",
+                                                "value": "zizorezk@gmail.com"
+                                            },
+                                            {
+                                                "key": "otp",
+                                                "value": "99305"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "response": [],
+                                "uid": "14039637-e23286e7-e766-4a33-862e-2f9608a5a17a"
+                            }
+                        ],
+                        "id": "a12393b5-f45a-4a77-b83d-03589ac26cfb",
+                        "uid": "14039637-a12393b5-f45a-4a77-b83d-03589ac26cfb"
+                    },
+                    {
+                        "name": "profile",
+                        "item": [
+                            {
+                                "name": "profile",
+                                "id": "88f2e4ce-4ab7-4be5-a009-690930504790",
+                                "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                },
+                                "request": {
+                                    "auth": {
+                                        "type": "bearer",
+                                        "bearer": [
+                                            {
+                                                "key": "token",
+                                                "value": "{{token}}",
+                                                "type": "string"
+                                            }
+                                        ]
+                                    },
+                                    "method": "GET",
+                                    "header": [
+                                        {
+                                            "key": "Accept",
+                                            "value": "application/json",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "Accept-Language",
+                                            "value": "ar",
+                                            "type": "text"
+                                        }
+                                    ],
+                                    "body": {
+                                        "mode": "formdata",
+                                        "formdata": []
+                                    },
+                                    "url": {
+                                        "raw": "{{Baseurl}}/api/profile",
+                                        "host": [
+                                            "{{Baseurl}}"
+                                        ],
+                                        "path": [
+                                            "api",
+                                            "profile"
+                                        ]
+                                    }
+                                },
+                                "response": [],
+                                "uid": "14039637-88f2e4ce-4ab7-4be5-a009-690930504790"
+                            },
+                            {
+                                "name": "update profile",
+                                "id": "9155ed0b-984e-47ea-b68a-2df7fd7ca528",
+                                "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                },
+                                "request": {
+                                    "auth": {
+                                        "type": "bearer",
+                                        "bearer": [
+                                            {
+                                                "key": "token",
+                                                "value": "{{token}}",
+                                                "type": "string"
+                                            }
+                                        ]
+                                    },
+                                    "method": "POST",
+                                    "header": [
+                                        {
+                                            "key": "Accept",
+                                            "value": "application/json",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "Accept-Language",
+                                            "value": "ar",
+                                            "type": "text"
+                                        }
+                                    ],
+                                    "body": {
+                                        "mode": "formdata",
+                                        "formdata": [
+                                            {
+                                                "key": "f_name",
+                                                "value": "firstname22",
+                                                "description": "nullable",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "l_name",
+                                                "value": "lastname22",
+                                                "description": "nullable",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "phone",
+                                                "value": "+9663261655162",
+                                                "description": "nullable",
+                                                "type": "text"
+                                            }
+                                        ]
+                                    },
+                                    "url": {
+                                        "raw": "{{Baseurl}}/api/update/profile",
+                                        "host": [
+                                            "{{Baseurl}}"
+                                        ],
+                                        "path": [
+                                            "api",
+                                            "update",
+                                            "profile"
+                                        ]
+                                    }
+                                },
+                                "response": [],
+                                "uid": "14039637-9155ed0b-984e-47ea-b68a-2df7fd7ca528"
+                            },
+                            {
+                                "name": "change password",
+                                "id": "3962ae85-fdb5-4d27-9690-b68382cd2181",
+                                "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                },
+                                "request": {
+                                    "auth": {
+                                        "type": "bearer",
+                                        "bearer": [
+                                            {
+                                                "key": "token",
+                                                "value": "{{token}}",
+                                                "type": "string"
+                                            }
+                                        ]
+                                    },
+                                    "method": "POST",
+                                    "header": [
+                                        {
+                                            "key": "Accept",
+                                            "value": "application/json",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "Accept-Language",
+                                            "value": "ar",
+                                            "type": "text"
+                                        }
+                                    ],
+                                    "body": {
+                                        "mode": "formdata",
+                                        "formdata": [
+                                            {
+                                                "key": "current_password",
+                                                "value": "12345678",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "password",
+                                                "value": "12345678",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "password_confirmation",
+                                                "value": "123456789",
+                                                "type": "text"
+                                            }
+                                        ]
+                                    },
+                                    "url": {
+                                        "raw": "{{Baseurl}}/api/change/password",
+                                        "host": [
+                                            "{{Baseurl}}"
+                                        ],
+                                        "path": [
+                                            "api",
+                                            "change",
+                                            "password"
+                                        ]
+                                    }
+                                },
+                                "response": [],
+                                "uid": "14039637-3962ae85-fdb5-4d27-9690-b68382cd2181"
+                            },
+                            {
+                                "name": "logout",
+                                "id": "827f6f5b-5241-444f-a6dc-226f1f70d651",
+                                "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                },
+                                "request": {
+                                    "auth": {
+                                        "type": "bearer",
+                                        "bearer": [
+                                            {
+                                                "key": "token",
+                                                "value": "{{token}}",
+                                                "type": "string"
+                                            }
+                                        ]
+                                    },
+                                    "method": "POST",
+                                    "header": [
+                                        {
+                                            "key": "Accept",
+                                            "value": "application/json",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "Accept-Language",
+                                            "value": "ar",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "Authorization",
+                                            "value": "Bearer {{token}}",
+                                            "type": "text"
+                                        }
+                                    ],
+                                    "body": {
+                                        "mode": "formdata",
+                                        "formdata": [
+                                            {
+                                                "key": "email",
+                                                "value": "zizorezk@gmail.com",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "password",
+                                                "value": "123456789",
+                                                "type": "text"
+                                            }
+                                        ]
+                                    },
+                                    "url": {
+                                        "raw": "{{Baseurl}}/api/logout",
+                                        "host": [
+                                            "{{Baseurl}}"
+                                        ],
+                                        "path": [
+                                            "api",
+                                            "logout"
+                                        ]
+                                    }
+                                },
+                                "response": [],
+                                "uid": "14039637-827f6f5b-5241-444f-a6dc-226f1f70d651"
+                            },
+                            {
+                                "name": "delete account",
+                                "id": "05e0a0a2-5737-4322-a24c-9b647124a15e",
+                                "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                },
+                                "request": {
+                                    "auth": {
+                                        "type": "bearer",
+                                        "bearer": [
+                                            {
+                                                "key": "token",
+                                                "value": "{{token}}",
+                                                "type": "string"
+                                            }
+                                        ]
+                                    },
+                                    "method": "POST",
+                                    "header": [
+                                        {
+                                            "key": "Accept",
+                                            "value": "application/json",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "Accept-Language",
+                                            "value": "ar",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "",
+                                            "value": "",
+                                            "type": "text"
+                                        }
+                                    ],
+                                    "body": {
+                                        "mode": "formdata",
+                                        "formdata": [
+                                            {
+                                                "key": "email",
+                                                "value": "zizorezk@gmail.com",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "password",
+                                                "value": "123456789",
+                                                "type": "text"
+                                            }
+                                        ]
+                                    },
+                                    "url": {
+                                        "raw": "{{Baseurl}}/api/deleteAccount",
+                                        "host": [
+                                            "{{Baseurl}}"
+                                        ],
+                                        "path": [
+                                            "api",
+                                            "deleteAccount"
+                                        ]
+                                    }
+                                },
+                                "response": [],
+                                "uid": "14039637-05e0a0a2-5737-4322-a24c-9b647124a15e"
+                            }
+                        ],
+                        "id": "abc6ab4c-7286-43e9-852f-1506afbff993",
+                        "uid": "14039637-abc6ab4c-7286-43e9-852f-1506afbff993"
+                    },
+                    {
+                        "name": "address",
+                        "item": [
+                            {
+                                "name": "areas",
+                                "id": "b98fdcb8-3732-4325-9ebb-0a35420e7b3f",
+                                "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                },
+                                "request": {
+                                    "auth": {
+                                        "type": "bearer",
+                                        "bearer": [
+                                            {
+                                                "key": "token",
+                                                "value": "{{token}}",
+                                                "type": "string"
+                                            }
+                                        ]
+                                    },
+                                    "method": "GET",
+                                    "header": [
+                                        {
+                                            "key": "Accept",
+                                            "value": "application/json",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "Accept-Language",
+                                            "value": "ar",
+                                            "type": "text"
+                                        }
+                                    ],
+                                    "body": {
+                                        "mode": "formdata",
+                                        "formdata": []
+                                    },
+                                    "url": {
+                                        "raw": "{{Baseurl}}/api/areas",
+                                        "host": [
+                                            "{{Baseurl}}"
+                                        ],
+                                        "path": [
+                                            "api",
+                                            "areas"
+                                        ]
+                                    }
+                                },
+                                "response": [],
+                                "uid": "14039637-b98fdcb8-3732-4325-9ebb-0a35420e7b3f"
+                            },
+                            {
+                                "name": "cities",
+                                "id": "4041e3b6-ac80-439f-b4c8-0778a6d6252f",
+                                "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                },
+                                "request": {
+                                    "auth": {
+                                        "type": "bearer",
+                                        "bearer": [
+                                            {
+                                                "key": "token",
+                                                "value": "{{token}}",
+                                                "type": "string"
+                                            }
+                                        ]
+                                    },
+                                    "method": "GET",
+                                    "header": [
+                                        {
+                                            "key": "Accept",
+                                            "value": "application/json",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "Accept-Language",
+                                            "value": "ar",
+                                            "type": "text"
+                                        }
+                                    ],
+                                    "body": {
+                                        "mode": "formdata",
+                                        "formdata": []
+                                    },
+                                    "url": {
+                                        "raw": "{{Baseurl}}/api/cities/1",
+                                        "host": [
+                                            "{{Baseurl}}"
+                                        ],
+                                        "path": [
+                                            "api",
+                                            "cities",
+                                            "1"
+                                        ]
+                                    }
+                                },
+                                "response": [],
+                                "uid": "14039637-4041e3b6-ac80-439f-b4c8-0778a6d6252f"
+                            },
+                            {
+                                "name": "towns",
+                                "id": "794c2504-20d3-4ad9-b8a4-4b114bd8f345",
+                                "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                },
+                                "request": {
+                                    "auth": {
+                                        "type": "bearer",
+                                        "bearer": [
+                                            {
+                                                "key": "token",
+                                                "value": "{{token}}",
+                                                "type": "string"
+                                            }
+                                        ]
+                                    },
+                                    "method": "GET",
+                                    "header": [
+                                        {
+                                            "key": "Accept",
+                                            "value": "application/json",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "Accept-Language",
+                                            "value": "ar",
+                                            "type": "text"
+                                        }
+                                    ],
+                                    "body": {
+                                        "mode": "formdata",
+                                        "formdata": []
+                                    },
+                                    "url": {
+                                        "raw": "{{Baseurl}}/api/towns/14",
+                                        "host": [
+                                            "{{Baseurl}}"
+                                        ],
+                                        "path": [
+                                            "api",
+                                            "towns",
+                                            "14"
+                                        ]
+                                    }
+                                },
+                                "response": [],
+                                "uid": "14039637-794c2504-20d3-4ad9-b8a4-4b114bd8f345"
+                            },
+                            {
+                                "name": "add address",
+                                "id": "3e8d5253-6028-44a9-a228-f4f2594afe7b",
+                                "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                },
+                                "request": {
+                                    "auth": {
+                                        "type": "bearer",
+                                        "bearer": [
+                                            {
+                                                "key": "token",
+                                                "value": "{{token}}",
+                                                "type": "string"
+                                            }
+                                        ]
+                                    },
+                                    "method": "POST",
+                                    "header": [
+                                        {
+                                            "key": "Accept",
+                                            "value": "application/json",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "Accept-Language",
+                                            "value": "ar",
+                                            "type": "text"
+                                        }
+                                    ],
+                                    "body": {
+                                        "mode": "formdata",
+                                        "formdata": [
+                                            {
+                                                "key": "town_id",
+                                                "value": "1",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "street",
+                                                "value": "any words",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "building_num",
+                                                "value": "anynumber",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "landmark",
+                                                "value": "next to Athr",
+                                                "type": "text"
+                                            }
+                                        ]
+                                    },
+                                    "url": {
+                                        "raw": "{{Baseurl}}/api/add/address",
+                                        "host": [
+                                            "{{Baseurl}}"
+                                        ],
+                                        "path": [
+                                            "api",
+                                            "add",
+                                            "address"
+                                        ]
+                                    }
+                                },
+                                "response": [],
+                                "uid": "14039637-3e8d5253-6028-44a9-a228-f4f2594afe7b"
+                            },
+                            {
+                                "name": "update address",
+                                "id": "ae3d8095-a305-45dd-bd3a-bd346212d87d",
+                                "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                },
+                                "request": {
+                                    "auth": {
+                                        "type": "bearer",
+                                        "bearer": [
+                                            {
+                                                "key": "token",
+                                                "value": "{{token}}",
+                                                "type": "string"
+                                            }
+                                        ]
+                                    },
+                                    "method": "POST",
+                                    "header": [
+                                        {
+                                            "key": "Accept",
+                                            "value": "application/json",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "Accept-Language",
+                                            "value": "ar",
+                                            "type": "text"
+                                        }
+                                    ],
+                                    "body": {
+                                        "mode": "formdata",
+                                        "formdata": [
+                                            {
+                                                "key": "address_id",
+                                                "value": "6",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "town_id",
+                                                "value": "2",
+                                                "type": "text",
+                                                "disabled": true
+                                            },
+                                            {
+                                                "key": "street",
+                                                "value": "any words22",
+                                                "type": "text",
+                                                "disabled": true
+                                            },
+                                            {
+                                                "key": "building_num",
+                                                "value": "anynumber22",
+                                                "type": "text"
+                                            },
+                                            {
+                                                "key": "landmark",
+                                                "value": "next to Athr",
+                                                "type": "text",
+                                                "disabled": true
+                                            }
+                                        ]
+                                    },
+                                    "url": {
+                                        "raw": "{{Baseurl}}/api/update/address",
+                                        "host": [
+                                            "{{Baseurl}}"
+                                        ],
+                                        "path": [
+                                            "api",
+                                            "update",
+                                            "address"
+                                        ]
+                                    }
+                                },
+                                "response": [],
+                                "uid": "14039637-ae3d8095-a305-45dd-bd3a-bd346212d87d"
+                            },
+                            {
+                                "name": "delete address",
+                                "id": "8eb3aab5-9fbd-4f86-af7c-217535395a0c",
+                                "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                },
+                                "request": {
+                                    "auth": {
+                                        "type": "bearer",
+                                        "bearer": [
+                                            {
+                                                "key": "token",
+                                                "value": "{{token}}",
+                                                "type": "string"
+                                            }
+                                        ]
+                                    },
+                                    "method": "POST",
+                                    "header": [
+                                        {
+                                            "key": "Accept",
+                                            "value": "application/json",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "Accept-Language",
+                                            "value": "ar",
+                                            "type": "text"
+                                        }
+                                    ],
+                                    "body": {
+                                        "mode": "formdata",
+                                        "formdata": [
+                                            {
+                                                "key": "address_id",
+                                                "value": "1",
+                                                "type": "text"
+                                            }
+                                        ]
+                                    },
+                                    "url": {
+                                        "raw": "{{Baseurl}}/api/delete/address",
+                                        "host": [
+                                            "{{Baseurl}}"
+                                        ],
+                                        "path": [
+                                            "api",
+                                            "delete",
+                                            "address"
+                                        ]
+                                    }
+                                },
+                                "response": [],
+                                "uid": "14039637-8eb3aab5-9fbd-4f86-af7c-217535395a0c"
+                            }
+                        ],
+                        "id": "2d1b0f3c-d5ed-481d-bc4a-b0f2c65bf71e",
+                        "uid": "14039637-2d1b0f3c-d5ed-481d-bc4a-b0f2c65bf71e"
+                    }
+                ],
+                "id": "d3620d0a-244f-45a1-9411-a7306c8f2b69",
+                "uid": "14039637-d3620d0a-244f-45a1-9411-a7306c8f2b69"
+            },
+            {
+                "name": "products",
+                "item": [
+                    {
+                        "name": "product details",
+                        "id": "da59dd75-491e-4c48-ac00-f46f87d53f96",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": []
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/product/details?product_id=1",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "product",
+                                    "details"
+                                ],
+                                "query": [
+                                    {
+                                        "key": "product_id",
+                                        "value": "1"
+                                    }
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-da59dd75-491e-4c48-ac00-f46f87d53f96"
+                    },
+                    {
+                        "name": "accessories details",
+                        "id": "130b61dd-737c-46dd-bccd-28b26994deec",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": []
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/accessories-details/1",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "accessories-details",
+                                    "1"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-130b61dd-737c-46dd-bccd-28b26994deec"
+                    },
+                    {
+                        "name": "products by category",
+                        "id": "42e6005d-613a-48a1-9ef0-02dfba97fe94",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": []
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/product/category?category_id=1",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "product",
+                                    "category"
+                                ],
+                                "query": [
+                                    {
+                                        "key": "category_id",
+                                        "value": "1"
+                                    }
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-42e6005d-613a-48a1-9ef0-02dfba97fe94"
+                    },
+                    {
+                        "name": "product brands",
+                        "id": "44746fd9-b099-493a-a8f4-b5f032a6e436",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": []
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/product/brands",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "product",
+                                    "brands"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-44746fd9-b099-493a-a8f4-b5f032a6e436"
+                    },
+                    {
+                        "name": "search",
+                        "id": "18d0cf7f-7035-4f9c-9616-211b3beb5dd6",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": [
+                                    {
+                                        "key": "brands",
+                                        "value": "1, 2, 3, 4",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/product/search?keyword=مكيف حصان",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "product",
+                                    "search"
+                                ],
+                                "query": [
+                                    {
+                                        "key": "keyword",
+                                        "value": "مكيف حصان"
+                                    }
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-18d0cf7f-7035-4f9c-9616-211b3beb5dd6"
+                    },
+                    {
+                        "name": "filter",
+                        "id": "1ce07a9b-a26a-480d-98f3-8a41ea7024ec",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "POST",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": [
+                                    {
+                                        "key": "category_id",
+                                        "value": "1",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "brands_id",
+                                        "value": "[1,2,3,4,8]",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "bestseller",
+                                        "value": "1",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "price",
+                                        "value": "1",
+                                        "description": "0 =>small to bigger\n1 =>biggest to smaller\nnullable",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "rate",
+                                        "value": "1",
+                                        "description": "0 =>small to bigger\n1 =>biggest to smaller\nnullable",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/product/filter",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "product",
+                                    "filter"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-1ce07a9b-a26a-480d-98f3-8a41ea7024ec"
+                    }
+                ],
+                "id": "5b9d3326-fb2a-40ca-ac52-f54cdb00f04d",
+                "uid": "14039637-5b9d3326-fb2a-40ca-ac52-f54cdb00f04d"
+            },
+            {
+                "name": "favourite",
+                "item": [
+                    {
+                        "name": "favourite products",
+                        "id": "3a7b4664-5603-4035-b738-deb7d1818bbd",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": []
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/favourites",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "favourites"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-3a7b4664-5603-4035-b738-deb7d1818bbd"
+                    },
+                    {
+                        "name": "favourite status",
+                        "id": "5e2915a8-54cb-40e6-b112-0de936e9dcad",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": []
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/favourite/product/status/1",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "favourite",
+                                    "product",
+                                    "status",
+                                    "1"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-5e2915a8-54cb-40e6-b112-0de936e9dcad"
+                    },
+                    {
+                        "name": "favourite status Copy",
+                        "id": "a62b63f5-8ff3-4a56-beaf-2d9a30755f86",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": []
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/favourite/accessory/status/1",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "favourite",
+                                    "accessory",
+                                    "status",
+                                    "1"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-a62b63f5-8ff3-4a56-beaf-2d9a30755f86"
+                    },
+                    {
+                        "name": "favourite product",
+                        "id": "d5ba42af-d8a9-44ac-a410-ecc963f61b5f",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "POST",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": [
+                                    {
+                                        "key": "product_id",
+                                        "value": "5",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/favourite/product",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "favourite",
+                                    "product"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-d5ba42af-d8a9-44ac-a410-ecc963f61b5f"
+                    },
+                    {
+                        "name": "unfavorite product",
+                        "id": "18b3e961-a093-4672-af6d-431dd3eb8b00",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "POST",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": [
+                                    {
+                                        "key": "product_id",
+                                        "value": "5",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/unFavourite/product",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "unFavourite",
+                                    "product"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-18b3e961-a093-4672-af6d-431dd3eb8b00"
+                    },
+                    {
+                        "name": "favourite accessory",
+                        "id": "813cd4ba-94f8-40a4-8124-e61ea7149979",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "POST",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": [
+                                    {
+                                        "key": "accessory_id",
+                                        "value": "3",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/favourite/accessory",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "favourite",
+                                    "accessory"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-813cd4ba-94f8-40a4-8124-e61ea7149979"
+                    },
+                    {
+                        "name": "unfavorite accessory",
+                        "id": "91260a3e-2c5e-4c52-8df2-c8e39d3f064c",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "POST",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": [
+                                    {
+                                        "key": "accessory_id",
+                                        "value": "2",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/unFavourite/accessory",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "unFavourite",
+                                    "accessory"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-91260a3e-2c5e-4c52-8df2-c8e39d3f064c"
+                    }
+                ],
+                "id": "03aec00a-0f65-4837-996c-49eede835e49",
+                "uid": "14039637-03aec00a-0f65-4837-996c-49eede835e49"
+            },
+            {
+                "name": "ask price",
+                "item": [
+                    {
+                        "name": "Ask price Categories",
+                        "id": "71fc5a97-a2f1-49b0-b03f-74b663a3535b",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "url": {
+                                "raw": "{{Baseurl}}/api/ask_price/categories",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "ask_price",
+                                    "categories"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-71fc5a97-a2f1-49b0-b03f-74b663a3535b"
+                    },
+                    {
+                        "name": "store Ask price",
+                        "id": "a894e2a9-8ffb-48fa-8379-2acf82ce4899",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "POST",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": [
+                                    {
+                                        "key": "category_id",
+                                        "value": "1",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "f_name",
+                                        "value": "zozo",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "l_name",
+                                        "value": "rezk",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "email",
+                                        "value": "zizorezk@gmail.com",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "phone",
+                                        "value": "0155455255",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "message",
+                                        "value": "this is message to ask for price",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/ask_price/store",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "ask_price",
+                                    "store"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-a894e2a9-8ffb-48fa-8379-2acf82ce4899"
+                    }
+                ],
+                "id": "6a6f86bc-60d4-4034-b2ef-043d43decedf",
+                "uid": "14039637-6a6f86bc-60d4-4034-b2ef-043d43decedf"
+            },
+            {
+                "name": "orders",
+                "item": [
+                    {
+                        "name": "current orders",
+                        "id": "0b80faac-f570-4edc-92f1-17aae7baaec3",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "url": {
+                                "raw": "{{Baseurl}}/api/order/current",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "order",
+                                    "current"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-0b80faac-f570-4edc-92f1-17aae7baaec3"
+                    },
+                    {
+                        "name": "completed orders",
+                        "id": "4d84e04e-2c4c-4a2c-8bb1-866de803af1e",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "url": {
+                                "raw": "{{Baseurl}}/api/order/completed",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "order",
+                                    "completed"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-4d84e04e-2c4c-4a2c-8bb1-866de803af1e"
+                    },
+                    {
+                        "name": "order details",
+                        "id": "90a2368c-3a27-4feb-ad5e-75a4b7c4915c",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": [
+                                    {
+                                        "key": "category_id",
+                                        "value": "1",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "f_name",
+                                        "value": "zozo",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "l_name",
+                                        "value": "rezk",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "email",
+                                        "value": "zizorezk@gmail.com",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "phone",
+                                        "value": "0155455255",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "message",
+                                        "value": "this is message to ask for price",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/order/details?order_id=16",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "order",
+                                    "details"
+                                ],
+                                "query": [
+                                    {
+                                        "key": "order_id",
+                                        "value": "16"
+                                    }
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-90a2368c-3a27-4feb-ad5e-75a4b7c4915c"
+                    },
+                    {
+                        "name": "add review",
+                        "id": "384648d1-4f44-4925-8933-cbe2687a0086",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "POST",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": [
+                                    {
+                                        "key": "comment",
+                                        "value": "المنتج ممتاز",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "rate",
+                                        "value": "5",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "product_id",
+                                        "value": "1",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "accessory_id",
+                                        "value": "",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/review/create",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "review",
+                                    "create"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-384648d1-4f44-4925-8933-cbe2687a0086"
+                    }
+                ],
+                "id": "0f81d4eb-271f-4482-a4be-6aa218f091d2",
+                "uid": "14039637-0f81d4eb-271f-4482-a4be-6aa218f091d2"
+            },
+            {
+                "name": "projects",
+                "item": [
+                    {
+                        "name": "projects Category",
+                        "id": "f784f7fc-6686-40f6-b5f0-b5ee647e07b2",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "url": {
+                                "raw": "{{Baseurl}}/api/project/categories",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "project",
+                                    "categories"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-f784f7fc-6686-40f6-b5f0-b5ee647e07b2"
+                    },
+                    {
+                        "name": "projects",
+                        "id": "d99778d7-b6f2-4dd6-9bb1-7352d5d1b5fa",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "url": {
+                                "raw": "{{Baseurl}}/api/project/show?category_id=1",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "project",
+                                    "show"
+                                ],
+                                "query": [
+                                    {
+                                        "key": "category_id",
+                                        "value": "1",
+                                        "type": "text"
+                                    }
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-d99778d7-b6f2-4dd6-9bb1-7352d5d1b5fa"
+                    }
+                ],
+                "id": "946504f3-2554-467a-88f7-ddd044394d65",
+                "uid": "14039637-946504f3-2554-467a-88f7-ddd044394d65"
+            },
+            {
+                "name": "works",
+                "item": [
+                    {
+                        "name": "works",
+                        "id": "f084c730-8fa7-4bb8-b28c-c02fd54fdca4",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "url": {
+                                "raw": "{{Baseurl}}/api/works",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "works"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-f084c730-8fa7-4bb8-b28c-c02fd54fdca4"
+                    },
+                    {
+                        "name": "works by type",
+                        "id": "58584952-30fa-4e8b-9677-79598dd54b60",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "url": {
+                                "raw": "{{Baseurl}}/api/works/show?type=repair",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "works",
+                                    "show"
+                                ],
+                                "query": [
+                                    {
+                                        "key": "type",
+                                        "value": "repair",
+                                        "description": "duct , repair"
+                                    }
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-58584952-30fa-4e8b-9677-79598dd54b60"
+                    }
+                ],
+                "id": "ab1ed366-de85-48a7-8dc7-1702938b81ff",
+                "uid": "14039637-ab1ed366-de85-48a7-8dc7-1702938b81ff"
+            },
+            {
+                "name": "cart",
+                "item": [
+                    {
+                        "name": "cart",
+                        "id": "21e003ea-bb9b-44fb-8ac7-1b6b2f47f020",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "url": {
+                                "raw": "{{Baseurl}}/api/cart",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "cart"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-21e003ea-bb9b-44fb-8ac7-1b6b2f47f020"
+                    },
+                    {
+                        "name": "cart add product",
+                        "id": "90b164a4-0a78-4568-ab82-7dcd47b6addf",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "POST",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": [
+                                    {
+                                        "key": "product_id",
+                                        "value": "1",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "quantity",
+                                        "value": "1",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "add_id",
+                                        "value": "1",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/cart/add/product",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "cart",
+                                    "add",
+                                    "product"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-90b164a4-0a78-4568-ab82-7dcd47b6addf"
+                    },
+                    {
+                        "name": "Add accessory",
+                        "id": "8408ed50-aa25-440a-88c2-49be2ec0552c",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "POST",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": [
+                                    {
+                                        "key": "accessory_id",
+                                        "value": "1",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "quantity",
+                                        "value": "1",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/cart/add/accessory",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "cart",
+                                    "add",
+                                    "accessory"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-8408ed50-aa25-440a-88c2-49be2ec0552c"
+                    },
+                    {
+                        "name": "cart product update",
+                        "id": "84b326b7-148c-44bf-a79d-e6c96a59db18",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "POST",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": [
+                                    {
+                                        "key": "item_id",
+                                        "value": "25",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "quantity",
+                                        "value": "4",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "add_id",
+                                        "value": "2",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/cart/update/product",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "cart",
+                                    "update",
+                                    "product"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-84b326b7-148c-44bf-a79d-e6c96a59db18"
+                    },
+                    {
+                        "name": "cart accessory update",
+                        "id": "c4eb8392-e027-4e43-92d1-f1f4756d0301",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "POST",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": [
+                                    {
+                                        "key": "item_id",
+                                        "value": "7",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "quantity",
+                                        "value": "1",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/cart/update/accessory",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "cart",
+                                    "update",
+                                    "accessory"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-c4eb8392-e027-4e43-92d1-f1f4756d0301"
+                    },
+                    {
+                        "name": "additions",
+                        "id": "0d6c1228-8252-4d95-b6dc-de49037f72cf",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "url": {
+                                "raw": "{{Baseurl}}/api/additions",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "additions"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-0d6c1228-8252-4d95-b6dc-de49037f72cf"
+                    },
+                    {
+                        "name": "addresses",
+                        "id": "7f9f6126-82c9-4378-83f8-adc092dc0ca6",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "url": {
+                                "raw": "{{Baseurl}}/api/addresses",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "addresses"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-7f9f6126-82c9-4378-83f8-adc092dc0ca6"
+                    },
+                    {
+                        "name": "cart choose address",
+                        "id": "0c292586-5267-49b1-9661-dae08ebafebb",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "url": {
+                                "raw": "{{Baseurl}}/api/cart/address?address_id=8",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "cart",
+                                    "address"
+                                ],
+                                "query": [
+                                    {
+                                        "key": "address_id",
+                                        "value": "8"
+                                    }
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-0c292586-5267-49b1-9661-dae08ebafebb"
+                    },
+                    {
+                        "name": "cart payment",
+                        "id": "e802940b-0383-4bc4-90ed-00b70fa811f5",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "url": {
+                                "raw": "{{Baseurl}}/api/cart/payment",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "cart",
+                                    "payment"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-e802940b-0383-4bc4-90ed-00b70fa811f5"
+                    },
+                    {
+                        "name": "cart Updatepayment",
+                        "id": "ba265a23-430d-4d3e-8c32-50d198f1a90d",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "POST",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "body": {
+                                "mode": "formdata",
+                                "formdata": [
+                                    {
+                                        "key": "code",
+                                        "value": "X2222",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "url": {
+                                "raw": "{{Baseurl}}/api/cart/Updatepayment",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "cart",
+                                    "Updatepayment"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-ba265a23-430d-4d3e-8c32-50d198f1a90d"
+                    }
+                ],
+                "id": "1639e803-d0d0-4578-b7e3-239f9b0dfbdf",
+                "uid": "14039637-1639e803-d0d0-4578-b7e3-239f9b0dfbdf"
+            },
+            {
+                "name": "home",
+                "item": [
+                    {
+                        "name": "home",
+                        "id": "6400c1e6-49a6-48e9-a76a-b17f9ab7f172",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "url": {
+                                "raw": "{{Baseurl}}/api/home",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "home"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-6400c1e6-49a6-48e9-a76a-b17f9ab7f172"
+                    },
+                    {
+                        "name": "home slider",
+                        "id": "94b67793-eecf-4ecb-b7fa-3e31131442a4",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "url": {
+                                "raw": "{{Baseurl}}/api/home/slider",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "home",
+                                    "slider"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-94b67793-eecf-4ecb-b7fa-3e31131442a4"
+                    },
+                    {
+                        "name": "privacy_policy",
+                        "id": "39856161-1a4e-441e-b946-4854ef39ce68",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "url": {
+                                "raw": "{{Baseurl}}/api/settings/privacy_policy",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "settings",
+                                    "privacy_policy"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-39856161-1a4e-441e-b946-4854ef39ce68"
+                    },
+                    {
+                        "name": "socail",
+                        "id": "c4cecd00-152e-4eee-83e6-5f39883325b5",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "url": {
+                                "raw": "{{Baseurl}}/api/settings/social-urls",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "settings",
+                                    "social-urls"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-c4cecd00-152e-4eee-83e6-5f39883325b5"
+                    },
+                    {
+                        "name": "who-are-we",
+                        "id": "ffdeff77-8395-429b-ac16-33e8ebf6ac69",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "url": {
+                                "raw": "{{Baseurl}}/api/settings/who-are-we",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "settings",
+                                    "who-are-we"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-ffdeff77-8395-429b-ac16-33e8ebf6ac69"
+                    },
+                    {
+                        "name": "exchange_policy",
+                        "id": "b7e7c236-8431-4b40-90ac-3ca044e17dc5",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "url": {
+                                "raw": "{{Baseurl}}/api/settings/exchange_policy",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "settings",
+                                    "exchange_policy"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-b7e7c236-8431-4b40-90ac-3ca044e17dc5"
+                    },
+                    {
+                        "name": "best seller products",
+                        "id": "bb5b60a2-c333-46cc-a0ff-d700f054c486",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "url": {
+                                "raw": "{{Baseurl}}/api/bestseller/products",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "bestseller",
+                                    "products"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-bb5b60a2-c333-46cc-a0ff-d700f054c486"
+                    },
+                    {
+                        "name": "best seller accessories",
+                        "id": "364013dd-3117-44c6-acea-915c55ca4dcc",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                    {
+                                        "key": "token",
+                                        "value": "{{token}}",
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "method": "GET",
+                            "header": [
+                                {
+                                    "key": "Accept",
+                                    "value": "application/json",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "Accept-Language",
+                                    "value": "ar",
+                                    "type": "text"
+                                }
+                            ],
+                            "url": {
+                                "raw": "{{Baseurl}}/api/bestseller/accessories",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "api",
+                                    "bestseller",
+                                    "accessories"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-364013dd-3117-44c6-acea-915c55ca4dcc"
+                    }
+                ],
+                "id": "2086bfba-d39a-4c77-ade1-7b0e67fad466",
+                "uid": "14039637-2086bfba-d39a-4c77-ade1-7b0e67fad466"
+            },
+            {
+                "name": "payment",
+                "item": [
+                    {
+                        "name": "pay with pymob",
+                        "id": "fa33472e-c0e9-4661-8077-800473a1d67e",
+                        "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                        },
+                        "request": {
+                            "method": "GET",
+                            "header": [],
+                            "url": {
+                                "raw": "{{Baseurl}}/payment/checkout",
+                                "host": [
+                                    "{{Baseurl}}"
+                                ],
+                                "path": [
+                                    "payment",
+                                    "checkout"
+                                ]
+                            }
+                        },
+                        "response": [],
+                        "uid": "14039637-fa33472e-c0e9-4661-8077-800473a1d67e"
+                    }
+                ],
+                "id": "d3104bdf-64f1-4428-b0bc-b5c61890bdff",
+                "uid": "14039637-d3104bdf-64f1-4428-b0bc-b5c61890bdff"
+            }
+        ],
+        "event": [
+            {
+                "listen": "prerequest",
+                "script": {
+                    "id": "eda15517-3c1f-4ab5-ad32-5e0e89bcdc43",
+                    "type": "text/javascript",
+                    "exec": [
+                        ""
+                    ]
+                }
+            },
+            {
+                "listen": "test",
+                "script": {
+                    "id": "c5ac6e8e-fcfe-456d-a327-300623e175f4",
+                    "type": "text/javascript",
+                    "exec": [
+                        ""
+                    ]
+                }
+            }
+        ],
+        "variable": [
+            {
+                "key": "Baseurl",
+                "value": "http://127.0.0.1:8000",
+                "type": "string",
+                "disabled": true
+            },
+            {
+                "key": "token",
+                "value": "46|UcQm6SMkOOzLnwfp2ivjlbxx5B9tGhreIIEYrQEhb672535a",
+                "type": "string"
+            },
+            {
+                "key": "Baseurl",
+                "value": "https://albakr-ac.com",
+                "type": "string"
+            },
+            {
+                "value": "",
+                "type": "string",
+                "disabled": true
+            }
+        ]
+    }
+}
