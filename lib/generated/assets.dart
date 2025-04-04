@@ -41,6 +41,9 @@ class Assets {
   static const String imagesTwotone = 'assets/images/twotone.png';
   static const String imagesUser = 'assets/images/user.png';
   static const String libMain = 'lib/main.dart';
+  static const String modelsApiResponseModel = 'lib/models/api_response_model.dart';
+  static const String modelsUserModel = 'lib/models/user_model.dart';
+  static const String providersAuthProvider = 'lib/providers/auth_provider.dart';
   static const String screensAuthScreen = 'lib/screens/auth_screen.dart';
   static const String screensCompleteDataScreen = 'lib/screens/complete_data_screen.dart';
   static const String screensForgotPasswordScreen = 'lib/screens/forgot_password_screen.dart';
@@ -50,8 +53,14 @@ class Assets {
   static const String screensSplashScreen = 'lib/screens/splash_screen.dart';
   static const String screensVerificationCodeScreen = 'lib/screens/verification_code_screen.dart';
   static const String screensVerificationCodeScreen2 = 'lib/screens/verification_code_screen2.dart';
+  static const String servicesApiService = 'lib/services/api_service.dart';
+  static const String servicesAuthService = 'lib/services/auth_service.dart';
+  static const String servicesStorageService = 'lib/services/storage_service.dart';
+  static const String utilsConstants = 'lib/utils/constants.dart';
+  static const String utilsValidators = 'lib/utils/validators.dart';
   static const String widgetsCustomEmailField = 'lib/widgets/custom_email_field.dart';
   static const String widgetsCustomPasswordField = 'lib/widgets/custom_password_field.dart';
   static const String widgetsCustomRectangle = 'lib/widgets/custom_rectangle.dart';
+  static const String widgetsLoadingWidget = 'lib/widgets/loading_widget.dart';
 
 }

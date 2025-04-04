@@ -2,11 +2,18 @@ import 'package:flutter/material.dart';
 
 class CustomEmailField extends StatefulWidget {
   final TextEditingController controller;
+  final String? Function(String?)? validator;
+  final String hintText;
 
-  const CustomEmailField({super.key, required this.controller});
+  const CustomEmailField({
+    super.key,
+    required this.controller,
+    this.validator,
+    this.hintText = "أدخل البريد الإلكتروني",
+  });
 
   @override
-  _CustomEmailFieldState createState() => _CustomEmailFieldState();
+  State<CustomEmailField> createState() => _CustomEmailFieldState();
 }
 
 class _CustomEmailFieldState extends State<CustomEmailField> {
@@ -24,17 +31,22 @@ class _CustomEmailFieldState extends State<CustomEmailField> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Expanded(
-            child: TextField(
+            child: TextFormField(
               controller: widget.controller,
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.emailAddress,
               textAlign: TextAlign.right,
-              decoration: const InputDecoration(
+              validator: widget.validator,
+              decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: "أدخل البريد الإلكتروني",
-                hintStyle: TextStyle(
+                hintText: widget.hintText,
+                hintStyle: const TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 16,
                   color: Color(0xFF878383),
+                ),
+                errorStyle: const TextStyle(
+                  fontSize: 0, // إخفاء نص الخطأ
+                  height: 0,
                 ),
               ),
             ),

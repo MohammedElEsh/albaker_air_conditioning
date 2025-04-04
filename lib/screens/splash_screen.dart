@@ -1,25 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'auth_screen.dart';
+import 'home_screen.dart';
+import '../providers/auth_provider.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // الانتقال التلقائي بعد 3 ثوانٍ
-    Future.delayed(const Duration(seconds: 3), () {
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // التحقق من حالة المصادقة
+    _checkAuth();
+  }
+
+  void _checkAuth() async {
+    Future.delayed(const Duration(seconds: 2), () async {
+      // الحصول على مزود المصادقة
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+      // التحقق من حالة تسجيل الدخول
+      final isLoggedIn = await authProvider.checkAuthStatus();
+
+      if (!mounted) return;
+
+      // التوجيه بناءً على حالة تسجيل الدخول
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) =>  AuthScreen()),
+        MaterialPageRoute(
+          builder: (context) => isLoggedIn ? const HomeScreen() : AuthScreen(),
+        ),
       );
     });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: GestureDetector(
         onTap: () {
+          // عند النقر، قم بالانتقال إلى شاشة المصادقة
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) =>  AuthScreen()),
+            MaterialPageRoute(builder: (context) => AuthScreen()),
           );
         },
         child: Stack(
@@ -33,9 +61,7 @@ class SplashScreen extends StatelessWidget {
               errorBuilder: (_, __, ___) => const Placeholder(),
             ),
             // اللوجو في المنتصف
-            const Center(
-              child: ImageWithTapEffect(),
-            ),
+            const Center(child: ImageWithTapEffect()),
           ],
         ),
       ),

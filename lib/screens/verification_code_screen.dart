@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../widgets/custom_rectangle.dart';
+import '../widgets/loading_widget.dart';
 import 'new_password_screen.dart';
+import '../providers/auth_provider.dart';
 
 class VerificationCodeScreen extends StatefulWidget {
   final String email;
@@ -18,215 +21,232 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
   );
 
   @override
+  void initState() {
+    super.initState();
+    // يفترض أن الرمز تم إرساله بالفعل من شاشة "نسيت كلمة المرور"
+    // إذا كان هناك حاجة لإعادة الإرسال، يمكن استخدام زر إعادة الإرسال
+  }
+
+  String _getFullOtp() {
+    return controllers.map((controller) => controller.text).join('');
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            // Rectangle at the top
-            const Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: CustomRectangle(),
-            ),
-
-            // Star image
-            Positioned(
-              top: 133,
-              left: 100,
-              child: Image.asset(
-                'assets/images/Group 176119.png',
-                width: 235,
-                height: 50,
-              ),
-            ),
-
-            // Main content
-            Positioned(
-              top: 303,
-              left: 0,
-              right: 0,
-              child: Column(
+    return Consumer<AuthProvider>(
+      builder: (context, authProvider, _) {
+        return LoadingOverlay(
+          isLoading: authProvider.isLoading,
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            body: SafeArea(
+              child: Stack(
                 children: [
+                  // Rectangle at the top
+                  const Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: CustomRectangle(),
+                  ),
+
+                  // Star image
                   Positioned(
-                    child: const SizedBox(
-                      width: 128,
-                      height: 40,
-                      child: Text(
-                        "كود التحقق",
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xFF2D2525),
-                          height: 1.0, // line-height: 100%
-                          letterSpacing: 0, // letter-spacing: 0%
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
+                    top: 133,
+                    left: 100,
+                    child: Image.asset(
+                      'assets/images/Group 176119.png',
+                      width: 235,
+                      height: 50,
                     ),
                   ),
 
+                  // Main content
                   Positioned(
-                    child: const SizedBox(
-                      width: 400,
-                      height: 65,
-                      child: Text(
-                        "قم بكتابة كود التحقق المكون من 5 أرقام الذي تم إرساله إليك عبر البريد الإلكتروني",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF2D2525),
-                          height: 1.4, // line-height: 25px
-                          letterSpacing: 0, // letter-spacing: 0%
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-
-                  Positioned(
-                    child: SizedBox(
-                      width: 246,
-                      height: 70,
-                      child: Text(
-                        widget.email, // يعرض البريد الإلكتروني المرسل
-                        style: const TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF2D2525),
-                          height: 1.0, // line-height: 100%
-                          letterSpacing: 0, // letter-spacing: 0%
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-
-                  // const SizedBox(height: 50),
-
-                  // Verification code fields
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(5, (index) {
-                      return StatefulBuilder(
-                        builder: (context, setState) {
-                          return Container(
-                            width: 60,
-                            height: 61,
-                            margin: const EdgeInsets.symmetric(horizontal: 5),
-                            decoration: BoxDecoration(
-                              color:
-                                  controllers[index].text.isNotEmpty
-                                      ? const Color(0xFF000000)
-                                      : const Color(0xFFF7F7F7),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: TextField(
-                              controller: controllers[index],
-                              textAlign: TextAlign.center,
-                              keyboardType: TextInputType.number,
-                              maxLength: 1,
-                              decoration: const InputDecoration(
-                                counterText: "",
-                                border: InputBorder.none,
-                              ),
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color:
-                                    controllers[index].text.isNotEmpty
-                                        ? Colors.white
-                                        : Colors.black,
-                              ),
-                              onChanged: (value) {
-                                setState(
-                                  () {},
-                                ); // تحديث حالة الحاوية عند الكتابة
-                                if (value.isNotEmpty && index < 4) {
-                                  FocusScope.of(context).nextFocus();
-                                }
-                              },
-                            ),
-                          );
-                        },
-                      );
-                    }),
-                  ),
-                ],
-              ),
-            ),
-
-            // Verify Button
-            Positioned(
-              top: 600,
-              left: 35,
-              child: SizedBox(
-                width: 363,
-                height: 76,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const NewPasswordScreen(),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1D75B1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(38),
-                    ),
-                  ),
-                  child: const Text(
-                    "تحقق",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 22,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            // Resend code text
-            Positioned(
-              top: 745,
-              left: 0,
-              right: 0,
-              child: Column(
-                children: [
-                  const Text(
-                    "لم يتم إرسال كود التحقق ؟",
-                    style: TextStyle(fontSize: 16, color: Color(0xFF666666)),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(
-                    height: 35,
-                  ), // تقليل المسافة بين النص وزر إعادة الإرسال
-                  GestureDetector(
-                    onTap: () {
-                      // Handle resend code
-                    },
+                    top: 303,
+                    left: 0,
+                    right: 0,
                     child: Column(
-                      // تغيير `Row` إلى `Column` لجعل الأيقونة فوق النص
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
-                          Icons.refresh,
-                          color: Color(0xFF1D75B1),
-                          size: 20,
+                        const SizedBox(
+                          width: 128,
+                          height: 40,
+                          child: Text(
+                            "كود التحقق",
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.w800,
+                              color: Color(0xFF2D2525),
+                              height: 1.0, // line-height: 100%
+                              letterSpacing: 0, // letter-spacing: 0%
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
-                        const SizedBox(height: 8), // المسافة بين الأيقونة والنص
+
+                        const SizedBox(
+                          width: 400,
+                          height: 65,
+                          child: Text(
+                            "قم بكتابة كود التحقق المكون من 5 أرقام الذي تم إرساله إليك عبر البريد الإلكتروني",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF2D2525),
+                              height: 1.4, // line-height: 25px
+                              letterSpacing: 0, // letter-spacing: 0%
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+
+                        SizedBox(
+                          width: 246,
+                          height: 70,
+                          child: Text(
+                            widget.email, // يعرض البريد الإلكتروني المرسل
+                            style: const TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF2D2525),
+                              height: 1.0, // line-height: 100%
+                              letterSpacing: 0, // letter-spacing: 0%
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+
+                        // عرض رسالة الخطأ
+                        if (authProvider.error.isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: ErrorText(
+                              error: authProvider.error,
+                              style: const TextStyle(
+                                color: Colors.red,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+
+                        // Verification code fields
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(5, (index) {
+                            return StatefulBuilder(
+                              builder: (context, setState) {
+                                return Container(
+                                  width: 60,
+                                  height: 61,
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 5,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        controllers[index].text.isNotEmpty
+                                            ? const Color(0xFF000000)
+                                            : const Color(0xFFF7F7F7),
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  child: TextField(
+                                    controller: controllers[index],
+                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.number,
+                                    maxLength: 1,
+                                    decoration: const InputDecoration(
+                                      counterText: "",
+                                      border: InputBorder.none,
+                                    ),
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                          controllers[index].text.isNotEmpty
+                                              ? Colors.white
+                                              : Colors.black,
+                                    ),
+                                    onChanged: (value) {
+                                      setState(
+                                        () {},
+                                      ); // تحديث حالة الحاوية عند الكتابة
+                                      if (value.isNotEmpty && index < 4) {
+                                        FocusScope.of(context).nextFocus();
+                                      }
+                                    },
+                                  ),
+                                );
+                              },
+                            );
+                          }),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Verify Button
+                  Positioned(
+                    top: 600,
+                    left: 35,
+                    child: SizedBox(
+                      width: 363,
+                      height: 76,
+                      child: ElevatedButton(
+                        onPressed: () => _verifyOtp(context, authProvider),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF1D75B1),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(38),
+                          ),
+                        ),
+                        child: const Text(
+                          "تحقق",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 22,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // Resend code text
+                  Positioned(
+                    top: 745,
+                    left: 0,
+                    right: 0,
+                    child: Column(
+                      children: [
                         const Text(
-                          "أرسل الكود مرة أخرى",
+                          "لم يتم إرسال كود التحقق ؟",
                           style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w800,
-                            color: Color(0xFF1D75B1),
+                            color: Color(0xFF666666),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 35),
+                        GestureDetector(
+                          onTap: () => _resendOtp(authProvider),
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.refresh,
+                                color: Color(0xFF1D75B1),
+                                size: 20,
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                "أرسل الكود مرة أخرى",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w800,
+                                  color: Color(0xFF1D75B1),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -235,10 +255,38 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
                 ],
               ),
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
+  }
+
+  void _resendOtp(AuthProvider authProvider) async {
+    await authProvider.sendOtp(widget.email);
+  }
+
+  void _verifyOtp(BuildContext context, AuthProvider authProvider) async {
+    final otp = _getFullOtp();
+
+    // التحقق من إدخال الرمز بشكل كامل
+    if (otp.length != 5) {
+      authProvider.setError("الرجاء إدخال رمز التحقق المكون من 5 أرقام");
+      return;
+    }
+
+    // إخفاء لوحة المفاتيح
+    FocusScope.of(context).unfocus();
+
+    // التحقق من صحة الرمز
+    final success = await authProvider.checkOtp(otp);
+
+    // إذا كان الرمز صحيحاً، انتقل إلى شاشة إعادة تعيين كلمة المرور
+    if (success && context.mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const NewPasswordScreen()),
+      );
+    }
   }
 
   @override

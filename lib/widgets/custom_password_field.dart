@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 class CustomPasswordField extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
+  final String? Function(String?)? validator;
 
   const CustomPasswordField({
     super.key,
     required this.controller,
     this.hintText = "أدخل كلمة المرور",
+    this.validator,
   });
 
   @override
-  _CustomPasswordFieldState createState() => _CustomPasswordFieldState();
+  State<CustomPasswordField> createState() => _CustomPasswordFieldState();
 }
 
 class _CustomPasswordFieldState extends State<CustomPasswordField> {
@@ -47,10 +49,11 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
             children: [
               SizedBox(
                 width: 200,
-                child: TextField(
+                child: TextFormField(
                   controller: widget.controller,
                   textAlign: TextAlign.right,
                   obscureText: !_isPasswordVisible,
+                  validator: widget.validator,
                   decoration: InputDecoration(
                     hintText: widget.hintText,
                     border: InputBorder.none,
@@ -58,6 +61,10 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                       fontWeight: FontWeight.w700,
                       fontSize: 16,
                       color: Color(0xFF878383),
+                    ),
+                    errorStyle: const TextStyle(
+                      fontSize: 0, // إخفاء نص الخطأ
+                      height: 0,
                     ),
                   ),
                 ),
