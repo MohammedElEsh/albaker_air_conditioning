@@ -21,6 +21,16 @@ class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
   final ApiService _apiService = ApiService();
 
   void _verifyCode() async {
+    // تحقق من أن جميع حقول OTP مملوءة
+    for (var controller in controllers) {
+      if (controller.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('يرجى إدخال جميع أرقام كود التحقق')),
+        );
+        return;
+      }
+    }
+
     String otp = controllers.map((c) => c.text).join();
     try {
       var response = await _apiService.checkOtp(widget.email, otp);

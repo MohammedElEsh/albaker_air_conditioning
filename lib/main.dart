@@ -18,8 +18,8 @@ class MyApp extends StatelessWidget {
       ),
 
       home: const SplashScreen(), // شاشة البداية الآن هي SplashScreen
-      // home: const HomeScreen(), // شاشة البداية الآن هي HomeScreen
 
+      // home: const HomeScreen(), // شاشة البداية الآن هي HomeScreen
     );
   }
 }

@@ -20,7 +20,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       var response = await _apiService.register(_emailController.text);
 
       if (response.statusCode == 200) {
-
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -29,15 +28,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     VerificationCodeScreen2(email: _emailController.text),
           ),
         );
-      } 
-
-      else {
+      } else {
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text('Registration failed')));
       }
-
-
     } catch (e) {
       ScaffoldMessenger.of(
         context,
