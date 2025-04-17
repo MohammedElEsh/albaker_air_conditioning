@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import '../widgets/custom_rectangle.dart';
 import '../widgets/custom_password_field.dart';
 import 'home_screen.dart';
+import '../services/api_service.dart';
 
 class NewPasswordScreen extends StatefulWidget {
-  const NewPasswordScreen({super.key});
+  final String email;
+  final String otp;
+
+  const NewPasswordScreen({super.key, required this.email, required this.otp});
 
   @override
   State<NewPasswordScreen> createState() => _NewPasswordScreenState();
@@ -14,6 +18,40 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final ApiService _apiService = ApiService();
+
+  void _resetPassword() async {
+    if (_passwordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('كلمتا المرور غير متطابقتين')),
+      );
+      return;
+    }
+
+    try {
+      var response = await _apiService.resetPassword({
+        'email': widget.email,
+        'password': _passwordController.text,
+        'password_confirmation': _confirmPasswordController.text,
+        'otp': widget.otp,
+      });
+
+      if (response.statusCode == 200) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      } else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('فشل تغيير كلمة المرور')));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('خطأ: $e')));
+    }
+  }
 
   @override
   void dispose() {
@@ -118,14 +156,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                 width: 363,
                 height: 76,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const HomeScreen(),
-                      ),
-                    );
-                  },
+                  onPressed: _resetPassword,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1D75B1),
                     shape: RoundedRectangleBorder(

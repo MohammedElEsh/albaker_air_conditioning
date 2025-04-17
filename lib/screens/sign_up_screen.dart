@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/custom_email_field.dart';
 import 'verification_code_screen2.dart';
 import 'auth_screen.dart';
+import '../services/api_service.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -12,6 +13,37 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
+  final ApiService _apiService = ApiService();
+
+  void _register() async {
+    try {
+      var response = await _apiService.register(_emailController.text);
+
+      if (response.statusCode == 200) {
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder:
+                (context) =>
+                    VerificationCodeScreen2(email: _emailController.text),
+          ),
+        );
+      } 
+
+      else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Registration failed')));
+      }
+
+
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: $e')));
+    }
+  }
 
   @override
   void dispose() {
@@ -84,17 +116,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 width: 363,
                 height: 76,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder:
-                            (context) => VerificationCodeScreen2(
-                              email: _emailController.text,
-                            ),
-                      ),
-                    );
-                  },
+                  onPressed: _register,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1D75B1),
                     shape: RoundedRectangleBorder(

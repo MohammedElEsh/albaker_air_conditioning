@@ -31,11 +31,13 @@ dependencies:
   flutter:
     sdk: flutter
 
-
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+
+
+  dio: ^5.8.0+1
+  shared_preferences: ^2.0.15
 
 
 flutter_icons:
@@ -70,7 +72,8 @@ dependency_overrides:
   material_color_utilities: ^0.12.0 # Resolves issues with material_color_utilities by upgrading to 0.12.0
   vm_service: ^15.0.0 # Upgrades vm_service to the latest version (15.0.0)
 
-
+  vector_math: ^2.1.5 # Override to latest version for minor improvements and bug fixes
+  lints: ^6.0.0       # Override to latest version for updated linting rules
 
 # The following section is specific to Flutter packages.
 flutter:

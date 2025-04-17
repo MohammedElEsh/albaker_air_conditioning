@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/custom_rectangle.dart';
 import 'new_password_screen.dart';
+import '../services/api_service.dart';
 
 class VerificationCodeScreen extends StatefulWidget {
   final String email;
@@ -16,6 +17,44 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
     5,
     (index) => TextEditingController(),
   );
+  final ApiService _apiService = ApiService();
+
+  void _verifyCode() async {
+    String otp = controllers.map((c) => c.text).join();
+    try {
+      var response = await _apiService.checkOtp(widget.email, otp);
+      if (response.statusCode == 200) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder:
+                (context) => NewPasswordScreen(email: widget.email, otp: otp),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('كود التحقق غير صحيح')));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('خطأ: $e')));
+    }
+  }
+
+  void _resendCode() async {
+    try {
+      await _apiService.sendOtp(widget.email);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('تم إرسال الكود مرة أخرى')));
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('خطأ: $e')));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -166,14 +205,7 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
                 width: 363,
                 height: 76,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const NewPasswordScreen(),
-                      ),
-                    );
-                  },
+                  onPressed: _verifyCode,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1D75B1),
                     shape: RoundedRectangleBorder(
@@ -204,15 +236,10 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
                     style: TextStyle(fontSize: 16, color: Color(0xFF666666)),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(
-                    height: 35,
-                  ), // تقليل المسافة بين النص وزر إعادة الإرسال
+                  const SizedBox(height: 35),
                   GestureDetector(
-                    onTap: () {
-                      // Handle resend code
-                    },
+                    onTap: _resendCode,
                     child: Column(
-                      // تغيير `Row` إلى `Column` لجعل الأيقونة فوق النص
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Icon(
@@ -220,7 +247,7 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
                           color: Color(0xFF1D75B1),
                           size: 20,
                         ),
-                        const SizedBox(height: 8), // المسافة بين الأيقونة والنص
+                        const SizedBox(height: 8),
                         const Text(
                           "أرسل الكود مرة أخرى",
                           style: TextStyle(

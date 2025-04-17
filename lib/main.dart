@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/splash_screen.dart'; // تأكد من وجود هذا المسار
+import 'screens/splash_screen.dart'; //
+// import 'screens/home_screen.dart'; //
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +16,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: "Almarai", // اجعل الخط الافتراضي Almarai
       ),
+
       home: const SplashScreen(), // شاشة البداية الآن هي SplashScreen
+      // home: const HomeScreen(), // شاشة البداية الآن هي HomeScreen
+
     );
   }
 }

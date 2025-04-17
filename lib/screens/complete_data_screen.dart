@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import '../widgets/custom_password_field.dart';
+import '../services/api_service.dart';
+import 'home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CompleteDataScreen extends StatefulWidget {
   final String email;
+  final String otp;
 
-  const CompleteDataScreen({super.key, required this.email});
+  const CompleteDataScreen({super.key, required this.email, required this.otp});
 
   @override
   State<CompleteDataScreen> createState() => _CompleteDataScreenState();
@@ -17,8 +21,7 @@ class _CompleteDataScreenState extends State<CompleteDataScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  // bool _isPasswordVisible = false;
-  // bool _isConfirmPasswordVisible = false;
+  final ApiService _apiService = ApiService();
 
   @override
   void dispose() {
@@ -28,6 +31,50 @@ class _CompleteDataScreenState extends State<CompleteDataScreen> {
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
+  }
+
+  void _completeRegistration() async {
+    if (_passwordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Passwords do not match')));
+      return;
+    }
+
+    var data = {
+      'f_name': _firstNameController.text,
+      'l_name': _lastNameController.text,
+      'phone': _phoneController.text,
+      'password': _passwordController.text,
+      'password_confirmation': _confirmPasswordController.text,
+      'email': widget.email,
+      'otp': widget.otp,
+      'fcm_token': '123', // Default token for now
+    };
+
+    try {
+      var response = await _apiService.completeRegister(data);
+      if (response.statusCode == 200) {
+        // Successfully completed registration
+        var token = response.data['data']['token'];
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', token);
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to complete registration')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: $e')));
+    }
   }
 
   @override
@@ -195,9 +242,7 @@ class _CompleteDataScreenState extends State<CompleteDataScreen> {
                 width: 363,
                 height: 76,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Handle data completion
-                  },
+                  onPressed: _completeRegistration,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1D75B1),
                     shape: RoundedRectangleBorder(

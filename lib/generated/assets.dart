@@ -2,17 +2,6 @@
 class Assets {
   Assets._();
 
-  static const String assetsImagesEyeUnlockTwotone = 'assets/images/eye_unlock_twotone.png';
-  static const String assetsImagesGroup 176119 = 'assets/images/Group 176119.png';
-  static const String assetsImagesImage 2 = 'assets/images/image 2.png';
-  static const String assetsImagesLinear = 'assets/images/linear.png';
-  static const String assetsImagesMask Group 2412 1 = 'assets/images/Mask Group 2412 1.png';
-  static const String assetsImagesRectangle 28133 = 'assets/images/Rectangle 28133.png';
-  static const String assetsImagesRectangle 28238 = 'assets/images/Rectangle 28238.png';
-  static const String assetsImagesSmsNotification = 'assets/images/sms-notification.png';
-  static const String assetsImagesSmsTracking = 'assets/images/sms-tracking.png';
-  static const String assetsImagesTwotone = 'assets/images/twotone.png';
-  static const String assetsImagesUser = 'assets/images/user.png';
   static const String fontsAlmaraiBold = 'assets/fonts/Almarai-Bold.ttf';
   static const String fontsAlmaraiExtraBold = 'assets/fonts/Almarai-ExtraBold.ttf';
   static const String fontsAlmaraiLight = 'assets/fonts/Almarai-Light.ttf';
@@ -50,6 +39,7 @@ class Assets {
   static const String screensSplashScreen = 'lib/screens/splash_screen.dart';
   static const String screensVerificationCodeScreen = 'lib/screens/verification_code_screen.dart';
   static const String screensVerificationCodeScreen2 = 'lib/screens/verification_code_screen2.dart';
+  static const String servicesApiService = 'lib/services/api_service.dart';
   static const String widgetsCustomEmailField = 'lib/widgets/custom_email_field.dart';
   static const String widgetsCustomPasswordField = 'lib/widgets/custom_password_field.dart';
   static const String widgetsCustomRectangle = 'lib/widgets/custom_rectangle.dart';

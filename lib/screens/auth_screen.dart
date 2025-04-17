@@ -4,12 +4,43 @@ import 'sign_up_screen.dart';
 import 'home_screen.dart';
 import '../widgets/custom_email_field.dart'; // استيراد الويدجت المخصصة
 import '../widgets/custom_password_field.dart'; // إضافة استيراد الـ widget الجديد
+import '../services/api_service.dart'; // Import ApiService
+import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
 
 class AuthScreen extends StatelessWidget {
   AuthScreen({super.key});
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final ApiService _apiService = ApiService(); // Initialize ApiService
+
+  void _login(BuildContext context) async {
+    try {
+      var response = await _apiService.login(
+        emailController.text,
+        passwordController.text,
+      );
+      if (response.statusCode == 200) {
+        // Successfully logged in
+        var token = response.data['data']['token'];
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', token); // Store token
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      } else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Login failed')));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: $e')));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,12 +132,8 @@ class AuthScreen extends StatelessWidget {
               width: 363,
               height: 76,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomeScreen()),
-                  );
-                },
+                onPressed: () => _login(context), // Call _login method
+
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF1D75B1),
                   shape: RoundedRectangleBorder(

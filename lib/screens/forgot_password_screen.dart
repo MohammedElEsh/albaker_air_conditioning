@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/custom_email_field.dart'; // تأكد من إضافة هذا السطر لاستيراد الـ Widget الجديد
 import '../widgets/custom_rectangle.dart'; // تأكد من استيراد الـ Widget المخصص للصورة
 import 'verification_code_screen.dart'; // إضافة استيراد الشاشة الجديدة
+import '../services/api_service.dart'; // Import ApiService
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -12,6 +13,33 @@ class ForgotPasswordScreen extends StatefulWidget {
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final TextEditingController _emailController = TextEditingController();
+  final ApiService _apiService = ApiService(); // Initialize ApiService
+
+  void _sendOtp() async {
+    try {
+      var response = await _apiService.sendOtp(_emailController.text);
+
+      if (response.statusCode == 200) {
+        // Successfully sent OTP
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder:
+                (context) =>
+                    VerificationCodeScreen(email: _emailController.text),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to send OTP')));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: $e')));
+    }
+  }
 
   @override
   void dispose() {
@@ -96,17 +124,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 width: 363,
                 height: 76,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder:
-                            (context) => VerificationCodeScreen(
-                              email: _emailController.text,
-                            ),
-                      ),
-                    );
-                  },
+                  onPressed: _sendOtp, // Call _sendOtp method
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1D75B1),
                     shape: RoundedRectangleBorder(

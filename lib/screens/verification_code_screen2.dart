@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/custom_rectangle.dart';
 import 'complete_data_screen.dart';
+import '../services/api_service.dart';
 
 class VerificationCodeScreen2 extends StatefulWidget {
   final String email;
@@ -8,14 +9,53 @@ class VerificationCodeScreen2 extends StatefulWidget {
   const VerificationCodeScreen2({super.key, required this.email});
 
   @override
-  State<VerificationCodeScreen2> createState() => _VerificationCodeScreen2State();
+  State<VerificationCodeScreen2> createState() =>
+      _VerificationCodeScreen2State();
 }
 
 class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
   final List<TextEditingController> controllers = List.generate(
     5,
-        (index) => TextEditingController(),
+    (index) => TextEditingController(),
   );
+  final ApiService _apiService = ApiService();
+
+  void _verifyCode() async {
+    String otp = controllers.map((c) => c.text).join();
+    try {
+      var response = await _apiService.checkOtp(widget.email, otp);
+      if (response.statusCode == 200) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder:
+                (context) => CompleteDataScreen(email: widget.email, otp: otp),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('كود التحقق غير صحيح')));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('خطأ: $e')));
+    }
+  }
+
+  void _resendCode() async {
+    try {
+      await _apiService.sendOtp(widget.email);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('تم إرسال الكود مرة أخرى')));
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('خطأ: $e')));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,9 +158,9 @@ class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
                             margin: const EdgeInsets.symmetric(horizontal: 5),
                             decoration: BoxDecoration(
                               color:
-                              controllers[index].text.isNotEmpty
-                                  ? const Color(0xFF000000)
-                                  : const Color(0xFFF7F7F7),
+                                  controllers[index].text.isNotEmpty
+                                      ? const Color(0xFF000000)
+                                      : const Color(0xFFF7F7F7),
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: TextField(
@@ -136,13 +176,13 @@ class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
                                 color:
-                                controllers[index].text.isNotEmpty
-                                    ? Colors.white
-                                    : Colors.black,
+                                    controllers[index].text.isNotEmpty
+                                        ? Colors.white
+                                        : Colors.black,
                               ),
                               onChanged: (value) {
                                 setState(
-                                      () {},
+                                  () {},
                                 ); // تحديث حالة الحاوية عند الكتابة
                                 if (value.isNotEmpty && index < 4) {
                                   FocusScope.of(context).nextFocus();
@@ -166,16 +206,7 @@ class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
                 width: 363,
                 height: 76,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder:
-                            (context) =>
-                            CompleteDataScreen(email: widget.email),
-                      ),
-                    );
-                  },
+                  onPressed: _verifyCode,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1D75B1),
                     shape: RoundedRectangleBorder(
@@ -194,9 +225,6 @@ class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
               ),
             ),
 
-
-
-
             // Resend code text
             Positioned(
               top: 745,
@@ -209,15 +237,10 @@ class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
                     style: TextStyle(fontSize: 16, color: Color(0xFF666666)),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(
-                    height: 35,
-                  ), // تقليل المسافة بين النص وزر إعادة الإرسال
+                  const SizedBox(height: 35),
                   GestureDetector(
-                    onTap: () {
-                      // Handle resend code
-                    },
+                    onTap: _resendCode,
                     child: Column(
-                      // تغيير `Row` إلى `Column` لجعل الأيقونة فوق النص
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Icon(
@@ -225,7 +248,7 @@ class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
                           color: Color(0xFF1D75B1),
                           size: 20,
                         ),
-                        const SizedBox(height: 8), // المسافة بين الأيقونة والنص
+                        const SizedBox(height: 8),
                         const Text(
                           "أرسل الكود مرة أخرى",
                           style: TextStyle(
