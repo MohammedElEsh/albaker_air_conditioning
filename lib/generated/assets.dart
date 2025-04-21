@@ -15,6 +15,7 @@ class Assets {
   static const String imagesFda50a008de64094B5aaB97b8dde37cf260x260RemovebgPreview 1 = 'assets/images/fda50a00-8de6-4094-b5aa-b97b8dde37cf-260x260-removebg-preview 1.png';
   static const String imagesGroup 176119 = 'assets/images/Group 176119.png';
   static const String imagesGroup 176138 = 'assets/images/Group 176138.png';
+  static const String imagesGroup 176217 = 'assets/images/Group 176217.png';
   static const String imagesImage 2 = 'assets/images/image 2.png';
   static const String imagesLinear = 'assets/images/linear.png';
   static const String imagesMask Group 2368 1 = 'assets/images/Mask Group 2368 1.png';
@@ -25,6 +26,7 @@ class Assets {
   static const String imagesRectangle 28133 = 'assets/images/Rectangle 28133.png';
   static const String imagesRectangle 28216 = 'assets/images/Rectangle 28216.png';
   static const String imagesRectangle 28238 = 'assets/images/Rectangle 28238.png';
+  static const String imagesSearchNormalBroken = 'assets/images/search-normal_broken.png';
   static const String imagesSmsNotification = 'assets/images/sms-notification.png';
   static const String imagesSmsTracking = 'assets/images/sms-tracking.png';
   static const String imagesTwotone = 'assets/images/twotone.png';
@@ -35,6 +37,7 @@ class Assets {
   static const String screensForgotPasswordScreen = 'lib/screens/forgot_password_screen.dart';
   static const String screensHomeScreen = 'lib/screens/home_screen.dart';
   static const String screensNewPasswordScreen = 'lib/screens/new_password_screen.dart';
+  static const String screensSearchScreen = 'lib/screens/search_screen.dart';
   static const String screensSignUpScreen = 'lib/screens/sign_up_screen.dart';
   static const String screensSplashScreen = 'lib/screens/splash_screen.dart';
   static const String screensVerificationCodeScreen = 'lib/screens/verification_code_screen.dart';
