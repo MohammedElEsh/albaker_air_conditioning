@@ -1,13 +1,27 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'api_base_service.dart';
 
-class UserService extends ApiBaseService {
+class UserService {
+  final Dio _dio = Dio();
+  final String baseUrl = 'https://albakr-ac.com/api';
+
+  Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
   // Register with email
   Future<Response> register(String email) async {
     try {
       final data = {'email': email};
-      return await post('register', data: data);
+      final response = await _dio.post(
+        '$baseUrl/register',
+        data: FormData.fromMap(data),
+        options: Options(
+          headers: {'Accept': 'application/json', 'Accept-Language': 'ar'},
+        ),
+      );
+      return response;
     } catch (e) {
       throw Exception('Failed to register: $e');
     }
@@ -16,7 +30,14 @@ class UserService extends ApiBaseService {
   // Send OTP
   Future<Response> sendOtp(String email) async {
     try {
-      return await get('send/otp', queryParameters: {'email': email});
+      final response = await _dio.get(
+        '$baseUrl/send/otp',
+        queryParameters: {'email': email},
+        options: Options(
+          headers: {'Accept': 'application/json', 'Accept-Language': 'ar'},
+        ),
+      );
+      return response;
     } catch (e) {
       throw Exception('Failed to send OTP: $e');
     }
@@ -25,10 +46,14 @@ class UserService extends ApiBaseService {
   // Check OTP
   Future<Response> checkOtp(String email, String otp) async {
     try {
-      return await get(
-        'check/otp',
+      final response = await _dio.get(
+        '$baseUrl/check/otp',
         queryParameters: {'email': email, 'otp': otp},
+        options: Options(
+          headers: {'Accept': 'application/json', 'Accept-Language': 'ar'},
+        ),
       );
+      return response;
     } catch (e) {
       throw Exception('Failed to check OTP: $e');
     }
@@ -60,7 +85,14 @@ class UserService extends ApiBaseService {
         data['fcm_token'] = fcmToken;
       }
 
-      return await post('complete/register', data: data);
+      final response = await _dio.post(
+        '$baseUrl/complete/register',
+        data: FormData.fromMap(data),
+        options: Options(
+          headers: {'Accept': 'application/json', 'Accept-Language': 'ar'},
+        ),
+      );
+      return response;
     } catch (e) {
       throw Exception('Failed to complete registration: $e');
     }
@@ -70,8 +102,14 @@ class UserService extends ApiBaseService {
   Future<Response> login(String email, String password) async {
     try {
       final data = {'email': email, 'password': password};
-
-      return await post('login', data: data);
+      final response = await _dio.post(
+        '$baseUrl/login',
+        data: FormData.fromMap(data),
+        options: Options(
+          headers: {'Accept': 'application/json', 'Accept-Language': 'ar'},
+        ),
+      );
+      return response;
     } catch (e) {
       throw Exception('Failed to login: $e');
     }
@@ -92,7 +130,14 @@ class UserService extends ApiBaseService {
         'otp': otp,
       };
 
-      return await post('resetPassword', data: data);
+      final response = await _dio.post(
+        '$baseUrl/resetPassword',
+        data: FormData.fromMap(data),
+        options: Options(
+          headers: {'Accept': 'application/json', 'Accept-Language': 'ar'},
+        ),
+      );
+      return response;
     } catch (e) {
       throw Exception('Failed to reset password: $e');
     }
@@ -101,7 +146,18 @@ class UserService extends ApiBaseService {
   // Get Profile
   Future<Response> getProfile() async {
     try {
-      return await authenticatedGet('profile');
+      final token = await getToken();
+      final response = await _dio.get(
+        '$baseUrl/profile',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+            'Accept-Language': 'ar',
+          },
+        ),
+      );
+      return response;
     } catch (e) {
       throw Exception('Failed to get profile: $e');
     }
@@ -128,7 +184,19 @@ class UserService extends ApiBaseService {
         formData.fields.add(MapEntry('phone', phone));
       }
 
-      return await authenticatedPost('update/profile', data: formData);
+      final token = await getToken();
+      final response = await _dio.post(
+        '$baseUrl/update/profile',
+        data: formData,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+            'Accept-Language': 'ar',
+          },
+        ),
+      );
+      return response;
     } catch (e) {
       throw Exception('Failed to update profile: $e');
     }
@@ -147,7 +215,19 @@ class UserService extends ApiBaseService {
         'password_confirmation': passwordConfirmation,
       };
 
-      return await authenticatedPost('change/password', data: data);
+      final token = await getToken();
+      final response = await _dio.post(
+        '$baseUrl/change/password',
+        data: FormData.fromMap(data),
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+            'Accept-Language': 'ar',
+          },
+        ),
+      );
+      return response;
     } catch (e) {
       throw Exception('Failed to change password: $e');
     }
@@ -156,7 +236,18 @@ class UserService extends ApiBaseService {
   // Logout
   Future<Response> logout() async {
     try {
-      return await authenticatedPost('logout');
+      final token = await getToken();
+      final response = await _dio.post(
+        '$baseUrl/logout',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+            'Accept-Language': 'ar',
+          },
+        ),
+      );
+      return response;
     } catch (e) {
       throw Exception('Failed to logout: $e');
     }
@@ -169,8 +260,19 @@ class UserService extends ApiBaseService {
   }) async {
     try {
       final data = {'email': email, 'password': password};
-
-      return await authenticatedPost('deleteAccount', data: data);
+      final token = await getToken();
+      final response = await _dio.post(
+        '$baseUrl/deleteAccount',
+        data: FormData.fromMap(data),
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+            'Accept-Language': 'ar',
+          },
+        ),
+      );
+      return response;
     } catch (e) {
       throw Exception('Failed to delete account: $e');
     }
@@ -187,7 +289,18 @@ class UserService extends ApiBaseService {
   // Get Areas
   Future<Response> getAreas() async {
     try {
-      return await authenticatedGet('areas');
+      final token = await getToken();
+      final response = await _dio.get(
+        '$baseUrl/areas',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+            'Accept-Language': 'ar',
+          },
+        ),
+      );
+      return response;
     } catch (e) {
       throw Exception('Failed to get areas: $e');
     }
@@ -196,7 +309,18 @@ class UserService extends ApiBaseService {
   // Get Cities by Area ID
   Future<Response> getCities(int areaId) async {
     try {
-      return await authenticatedGet('cities/$areaId');
+      final token = await getToken();
+      final response = await _dio.get(
+        '$baseUrl/cities/$areaId',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+            'Accept-Language': 'ar',
+          },
+        ),
+      );
+      return response;
     } catch (e) {
       throw Exception('Failed to get cities: $e');
     }
@@ -205,7 +329,18 @@ class UserService extends ApiBaseService {
   // Get Towns by City ID
   Future<Response> getTowns(int cityId) async {
     try {
-      return await authenticatedGet('towns/$cityId');
+      final token = await getToken();
+      final response = await _dio.get(
+        '$baseUrl/towns/$cityId',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+            'Accept-Language': 'ar',
+          },
+        ),
+      );
+      return response;
     } catch (e) {
       throw Exception('Failed to get towns: $e');
     }
@@ -226,7 +361,19 @@ class UserService extends ApiBaseService {
         'landmark': landmark,
       };
 
-      return await authenticatedPost('add/address', data: data);
+      final token = await getToken();
+      final response = await _dio.post(
+        '$baseUrl/add/address',
+        data: FormData.fromMap(data),
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+            'Accept-Language': 'ar',
+          },
+        ),
+      );
+      return response;
     } catch (e) {
       throw Exception('Failed to add address: $e');
     }
@@ -249,7 +396,19 @@ class UserService extends ApiBaseService {
         'landmark': landmark,
       };
 
-      return await authenticatedPost('update/address', data: data);
+      final token = await getToken();
+      final response = await _dio.post(
+        '$baseUrl/update/address',
+        data: FormData.fromMap(data),
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+            'Accept-Language': 'ar',
+          },
+        ),
+      );
+      return response;
     } catch (e) {
       throw Exception('Failed to update address: $e');
     }
@@ -259,8 +418,19 @@ class UserService extends ApiBaseService {
   Future<Response> deleteAddress(int addressId) async {
     try {
       final data = {'address_id': addressId};
-
-      return await authenticatedPost('delete/address', data: data);
+      final token = await getToken();
+      final response = await _dio.post(
+        '$baseUrl/delete/address',
+        data: FormData.fromMap(data),
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+            'Accept-Language': 'ar',
+          },
+        ),
+      );
+      return response;
     } catch (e) {
       throw Exception('Failed to delete address: $e');
     }
@@ -269,7 +439,18 @@ class UserService extends ApiBaseService {
   // Get User Addresses
   Future<Response> getAddresses() async {
     try {
-      return await authenticatedGet('addresses');
+      final token = await getToken();
+      final response = await _dio.get(
+        '$baseUrl/addresses',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+            'Accept-Language': 'ar',
+          },
+        ),
+      );
+      return response;
     } catch (e) {
       throw Exception('Failed to get addresses: $e');
     }

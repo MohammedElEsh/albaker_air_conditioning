@@ -1,11 +1,30 @@
 import 'package:dio/dio.dart';
-import 'api_base_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class AskPriceService extends ApiBaseService {
+class AskPriceService {
+  final Dio _dio = Dio();
+  final String baseUrl = 'https://albakr-ac.com/api';
+
+  Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
   // Get Ask Price Categories
   Future<Response> getCategories() async {
     try {
-      return await authenticatedGet('ask_price/categories');
+      final token = await getToken();
+      final response = await _dio.get(
+        '$baseUrl/ask_price/categories',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+            'Accept-Language': 'ar',
+          },
+        ),
+      );
+      return response;
     } catch (e) {
       throw Exception('Failed to get ask price categories: $e');
     }
@@ -30,7 +49,19 @@ class AskPriceService extends ApiBaseService {
         'message': message,
       };
 
-      return await authenticatedPost('ask_price/store', data: data);
+      final token = await getToken();
+      final response = await _dio.post(
+        '$baseUrl/ask_price/store',
+        data: FormData.fromMap(data),
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+            'Accept-Language': 'ar',
+          },
+        ),
+      );
+      return response;
     } catch (e) {
       throw Exception('Failed to store ask price request: $e');
     }

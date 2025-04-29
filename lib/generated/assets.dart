@@ -25,7 +25,6 @@ class Assets {
   static const String imagesO522376v389AirFlux1CV1 1 = 'assets/images/o522376v389_Air_Flux_1C_v1 1.png';
   static const String imagesRectangle 28133 = 'assets/images/Rectangle 28133.png';
   static const String imagesRectangle 28216 = 'assets/images/Rectangle 28216.png';
-  static const String imagesRectangle 28238 = 'assets/images/Rectangle 28238.png';
   static const String imagesSearchNormalBroken = 'assets/images/search-normal_broken.png';
   static const String imagesSmsNotification = 'assets/images/sms-notification.png';
   static const String imagesSmsTracking = 'assets/images/sms-tracking.png';
@@ -43,15 +42,14 @@ class Assets {
   static const String screensSplashScreen = 'lib/screens/splash_screen.dart';
   static const String screensVerificationCodeScreen = 'lib/screens/verification_code_screen.dart';
   static const String screensVerificationCodeScreen2 = 'lib/screens/verification_code_screen2.dart';
-  static const String servicesApiBaseService = 'lib/services/api_base_service.dart';
   static const String servicesAskPriceService = 'lib/services/ask_price_service.dart';
   static const String servicesCartService = 'lib/services/cart_service.dart';
   static const String servicesFavoriteService = 'lib/services/favorite_service.dart';
   static const String servicesHomeService = 'lib/services/home_service.dart';
-  static const String servicesOrderService = 'lib/services/order_service.dart';
+  static const String servicesOrdersService = 'lib/services/orders_service.dart';
   static const String servicesPaymentService = 'lib/services/payment_service.dart';
-  static const String servicesProductService = 'lib/services/product_service.dart';
-  static const String servicesProjectService = 'lib/services/project_service.dart';
+  static const String servicesProductsService = 'lib/services/products_service.dart';
+  static const String servicesProjectsService = 'lib/services/projects_service.dart';
   static const String servicesUserService = 'lib/services/user_service.dart';
   static const String servicesWorksService = 'lib/services/works_service.dart';
   static const String widgetsCustomEmailField = 'lib/widgets/custom_email_field.dart';

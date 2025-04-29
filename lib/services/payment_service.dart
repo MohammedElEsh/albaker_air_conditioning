@@ -1,19 +1,23 @@
 import 'package:dio/dio.dart';
-import 'api_base_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class PaymentService extends ApiBaseService {
+class PaymentService {
+  final Dio _dio = Dio();
+  final String baseUrl = 'https://albakr-ac.com/api';
+
+  Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
   // Pay with PyMob
   Future<Response> payWithPymob() async {
     try {
-      final dio = Dio();
       final options = Options(
-        headers: {
-          'Accept': 'application/json',
-          'Accept-Language': 'ar',
-        },
+        headers: {'Accept': 'application/json', 'Accept-Language': 'ar'},
       );
-      
-      return await dio.get(
+
+      return await _dio.get(
         'https://albakr-ac.com/payment/checkout',
         options: options,
       );
@@ -21,4 +25,4 @@ class PaymentService extends ApiBaseService {
       throw Exception('Failed to initiate payment: $e');
     }
   }
-} 
+}

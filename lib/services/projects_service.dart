@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class FavoriteService {
+class ProjectService {
   final Dio _dio = Dio();
   final String baseUrl = 'https://albakr-ac.com/api';
 
@@ -10,12 +10,12 @@ class FavoriteService {
     return prefs.getString('token');
   }
 
-  // Get Favorite Products
-  Future<Response> getFavorites() async {
+  // Get Project Categories
+  Future<Response> getProjectCategories() async {
     try {
       final token = await getToken();
       final response = await _dio.get(
-        '$baseUrl/favourites',
+        '$baseUrl/project/categories',
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',
@@ -26,16 +26,17 @@ class FavoriteService {
       );
       return response;
     } catch (e) {
-      throw Exception('Failed to get favorites: $e');
+      throw Exception('Failed to get project categories: $e');
     }
   }
 
-  // Check Product Favorite Status
-  Future<Response> getProductFavoriteStatus(int productId) async {
+  // Get Projects by Category
+  Future<Response> getProjectsByCategory(int categoryId) async {
     try {
       final token = await getToken();
       final response = await _dio.get(
-        '$baseUrl/favourite/product/status/$productId',
+        '$baseUrl/project/show',
+        queryParameters: {'category_id': categoryId},
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',
@@ -46,16 +47,16 @@ class FavoriteService {
       );
       return response;
     } catch (e) {
-      throw Exception('Failed to check product favorite status: $e');
+      throw Exception('Failed to get projects by category: $e');
     }
   }
 
-  // Check Accessory Favorite Status
-  Future<Response> getAccessoryFavoriteStatus(int accessoryId) async {
+  // Get All Works
+  Future<Response> getAllWorks() async {
     try {
       final token = await getToken();
       final response = await _dio.get(
-        '$baseUrl/favourite/accessory/status/$accessoryId',
+        '$baseUrl/works',
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',
@@ -66,17 +67,53 @@ class FavoriteService {
       );
       return response;
     } catch (e) {
-      throw Exception('Failed to check accessory favorite status: $e');
+      throw Exception('Failed to get works: $e');
     }
   }
 
-  // Add Product to Favorites
-  Future<Response> addProductToFavorites(int productId) async {
+  // Get Works By Type
+  Future<Response> getWorksByType(String type) async {
     try {
-      final data = {'product_id': productId};
+      final token = await getToken();
+      final response = await _dio.get(
+        '$baseUrl/works/show',
+        queryParameters: {'type': type},
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+            'Accept-Language': 'ar',
+          },
+        ),
+      );
+      return response;
+    } catch (e) {
+      throw Exception('Failed to get works by type: $e');
+    }
+  }
+
+  // Store Ask Price
+  Future<Response> storeAskPrice({
+    required int categoryId,
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String phone,
+    required String message,
+  }) async {
+    try {
+      final data = {
+        'category_id': categoryId,
+        'f_name': firstName,
+        'l_name': lastName,
+        'email': email,
+        'phone': phone,
+        'message': message,
+      };
+
       final token = await getToken();
       final response = await _dio.post(
-        '$baseUrl/favourite/product',
+        '$baseUrl/ask_price/store',
         data: FormData.fromMap(data),
         options: Options(
           headers: {
@@ -88,18 +125,16 @@ class FavoriteService {
       );
       return response;
     } catch (e) {
-      throw Exception('Failed to add product to favorites: $e');
+      throw Exception('Failed to store ask price: $e');
     }
   }
 
-  // Remove Product from Favorites
-  Future<Response> removeProductFromFavorites(int productId) async {
+  // Get Ask Price Categories
+  Future<Response> getAskPriceCategories() async {
     try {
-      final data = {'product_id': productId};
       final token = await getToken();
-      final response = await _dio.post(
-        '$baseUrl/unFavourite/product',
-        data: FormData.fromMap(data),
+      final response = await _dio.get(
+        '$baseUrl/ask_price/categories',
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',
@@ -110,51 +145,7 @@ class FavoriteService {
       );
       return response;
     } catch (e) {
-      throw Exception('Failed to remove product from favorites: $e');
-    }
-  }
-
-  // Add Accessory to Favorites
-  Future<Response> addAccessoryToFavorites(int accessoryId) async {
-    try {
-      final data = {'accessory_id': accessoryId};
-      final token = await getToken();
-      final response = await _dio.post(
-        '$baseUrl/favourite/accessory',
-        data: FormData.fromMap(data),
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-            'Accept': 'application/json',
-            'Accept-Language': 'ar',
-          },
-        ),
-      );
-      return response;
-    } catch (e) {
-      throw Exception('Failed to add accessory to favorites: $e');
-    }
-  }
-
-  // Remove Accessory from Favorites
-  Future<Response> removeAccessoryFromFavorites(int accessoryId) async {
-    try {
-      final data = {'accessory_id': accessoryId};
-      final token = await getToken();
-      final response = await _dio.post(
-        '$baseUrl/unFavourite/accessory',
-        data: FormData.fromMap(data),
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-            'Accept': 'application/json',
-            'Accept-Language': 'ar',
-          },
-        ),
-      );
-      return response;
-    } catch (e) {
-      throw Exception('Failed to remove accessory from favorites: $e');
+      throw Exception('Failed to get ask price categories: $e');
     }
   }
 }

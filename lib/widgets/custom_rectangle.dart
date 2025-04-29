@@ -7,9 +7,9 @@ class CustomRectangle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 430,
-      height: 251,
+      height: 250,
       decoration: BoxDecoration(
-        color: const Color(0x06CA7009), // اللون مع الشفافية
+        color: const Color(0x0ACA7009), // Transparent green background
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(31),
           bottomRight: Radius.circular(31),
@@ -17,14 +17,19 @@ class CustomRectangle extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          // وضع الصورة في الخلفية
+          // Background rectangle with solid color
           Positioned.fill(
-            child: Image.asset(
-              'assets/images/Rectangle 28238.png', // استخدام الصورة في المجلد
-              fit: BoxFit.cover, // لجعل الصورة تغطي الـ Container
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.orangeAccent.withOpacity(0.1), // Adjust opacity as needed
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(31),
+                  bottomRight: Radius.circular(31),
+                ),
+              ),
             ),
           ),
-          // يمكن إضافة عناصر أخرى فوق الصورة هنا (نصوص، أزرار)
+          // Add any other widgets on top here (texts, buttons, etc.)
         ],
       ),
     );
