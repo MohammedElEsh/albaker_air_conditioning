@@ -4,27 +4,28 @@ import 'sign_up_screen.dart';
 import 'home_screen.dart';
 import '../widgets/custom_email_field.dart'; // استيراد الويدجت المخصصة
 import '../widgets/custom_password_field.dart'; // إضافة استيراد الـ widget الجديد
-import '../services/api_service.dart'; // Import ApiService
-import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
+import '../services/user_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthScreen extends StatelessWidget {
   AuthScreen({super.key});
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final ApiService _apiService = ApiService(); // Initialize ApiService
+  final UserService _userService = UserService();
 
   void _login(BuildContext context) async {
     try {
-      var response = await _apiService.login(
+      var response = await _userService.login(
         emailController.text,
         passwordController.text,
       );
       if (response.statusCode == 200) {
         // Successfully logged in
         var token = response.data['data']['token'];
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('token', token); // Store token
+        // Store token using SharedPreferences directly since we don't have saveToken in UserService
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', token);
 
         Navigator.pushReplacement(
           context,

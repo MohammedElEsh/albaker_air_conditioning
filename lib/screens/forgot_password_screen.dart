@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/custom_email_field.dart'; // تأكد من إضافة هذا السطر لاستيراد الـ Widget الجديد
 import '../widgets/custom_rectangle.dart'; // تأكد من استيراد الـ Widget المخصص للصورة
 import 'verification_code_screen.dart'; // إضافة استيراد الشاشة الجديدة
-import '../services/api_service.dart'; // Import ApiService
+import '../services/user_service.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -13,11 +13,11 @@ class ForgotPasswordScreen extends StatefulWidget {
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final TextEditingController _emailController = TextEditingController();
-  final ApiService _apiService = ApiService(); // Initialize ApiService
+  final UserService _userService = UserService();
 
   void _sendOtp() async {
     try {
-      var response = await _apiService.sendOtp(_emailController.text);
+      var response = await _userService.sendOtp(_emailController.text);
 
       if (response.statusCode == 200) {
         // Successfully sent OTP

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/custom_rectangle.dart';
 import 'new_password_screen.dart';
-import '../services/api_service.dart';
+import '../services/user_service.dart';
 
 class VerificationCodeScreen extends StatefulWidget {
   final String email;
@@ -17,7 +17,7 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
     5,
     (index) => TextEditingController(),
   );
-  final ApiService _apiService = ApiService();
+  final UserService _userService = UserService();
 
   void _verifyCode() async {
     // تحقق من أن جميع حقول OTP مملوءة
@@ -32,7 +32,7 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
 
     String otp = controllers.map((c) => c.text).join();
     try {
-      var response = await _apiService.checkOtp(widget.email, otp);
+      var response = await _userService.checkOtp(widget.email, otp);
       if (response.statusCode == 200) {
         Navigator.pushReplacement(
           context,
@@ -55,7 +55,7 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
 
   void _resendCode() async {
     try {
-      await _apiService.sendOtp(widget.email);
+      await _userService.sendOtp(widget.email);
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('تم إرسال الكود مرة أخرى')));

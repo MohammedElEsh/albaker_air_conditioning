@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/custom_rectangle.dart';
 import '../widgets/custom_password_field.dart';
 import 'home_screen.dart';
-import '../services/api_service.dart';
+import '../services/user_service.dart';
 
 class NewPasswordScreen extends StatefulWidget {
   final String email;
@@ -18,7 +18,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  final ApiService _apiService = ApiService();
+  final UserService _userService = UserService();
 
   void _resetPassword() async {
     if (_passwordController.text != _confirmPasswordController.text) {
@@ -29,12 +29,12 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
     }
 
     try {
-      var response = await _apiService.resetPassword({
-        'email': widget.email,
-        'password': _passwordController.text,
-        'password_confirmation': _confirmPasswordController.text,
-        'otp': widget.otp,
-      });
+      var response = await _userService.resetPassword(
+        email: widget.email,
+        password: _passwordController.text,
+        passwordConfirmation: _confirmPasswordController.text,
+        otp: widget.otp,
+      );
 
       if (response.statusCode == 200) {
         Navigator.pushReplacement(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/api_service.dart';
+import '../services/user_service.dart';
 import '../widgets/custom_password_field.dart';
 import 'auth_screen.dart';
 
@@ -11,7 +11,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final ApiService _apiService = ApiService();
+  final UserService _userService = UserService();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -20,9 +20,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final TextEditingController _deleteEmailController = TextEditingController();
+  final TextEditingController _deletePasswordController =
+      TextEditingController();
   bool _isLoading = true;
   bool _isEditMode = false;
   bool _showChangePassword = false;
+  bool _showDeleteAccount = false;
 
   @override
   void initState() {
@@ -32,13 +36,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _loadProfile() async {
     try {
-      var response = await _apiService.getProfile();
+      var response = await _userService.getProfile();
       if (response.statusCode == 200) {
         var data = response.data['data'];
         setState(() {
           _firstNameController.text = data['f_name'] ?? '';
           _lastNameController.text = data['l_name'] ?? '';
           _phoneController.text = data['phone'] ?? '';
+          _deleteEmailController.text = data['email'] ?? '';
           _isLoading = false;
         });
       }
@@ -51,10 +56,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _updateProfile() async {
     try {
-      var response = await _apiService.updateProfile(
-        _firstNameController.text,
-        _lastNameController.text,
-        _phoneController.text,
+      var response = await _userService.updateProfile(
+        firstName: _firstNameController.text,
+        lastName: _lastNameController.text,
+        phone: _phoneController.text,
       );
       if (response.statusCode == 200) {
         setState(() => _isEditMode = false);
@@ -78,10 +83,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
 
     try {
-      var response = await _apiService.changePassword(
-        _currentPasswordController.text,
-        _newPasswordController.text,
-        _confirmPasswordController.text,
+      var response = await _userService.changePassword(
+        currentPassword: _currentPasswordController.text,
+        password: _newPasswordController.text,
+        passwordConfirmation: _confirmPasswordController.text,
       );
       if (response.statusCode == 200) {
         setState(() => _showChangePassword = false);
@@ -96,10 +101,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  Future<void> _deleteAccount() async {
+    try {
+      var response = await _userService.deleteAccount(
+        email: _deleteEmailController.text,
+        password: _deletePasswordController.text,
+      );
+      if (response.statusCode == 200) {
+        await _userService.clearToken();
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => AuthScreen()),
+          (route) => false,
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('خطأ في حذف الحساب: $e')));
+    }
+  }
+
   Future<void> _logout() async {
     try {
-      var response = await _apiService.logout();
+      var response = await _userService.logout();
       if (response.statusCode == 200) {
+        await _userService.clearToken();
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => AuthScreen()),
@@ -113,8 +140,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-
-
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _phoneController.dispose();
+    _currentPasswordController.dispose();
+    _newPasswordController.dispose();
+    _confirmPasswordController.dispose();
+    _deleteEmailController.dispose();
+    _deletePasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -161,16 +198,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Container(
                         width: 123,
                         height: 123,
-                        // decoration: BoxDecoration(
-                        //   color: const Color(0xFFE17A1D).withOpacity(0.1),
-                        //   shape: BoxShape.circle,
-                        // ),
                         child: Center(
                           child: Image.asset(
                             'assets/images/user.png',
                             width: 100,
                             height: 100,
-                            // color: const Color(0xFFE17A1D),
                             color: const Color(0xFF1D75B1),
                           ),
                         ),
@@ -262,8 +294,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
 
-
-                          const SizedBox(height: 70),
+                          const SizedBox(height: 30),
 
                           // Edit/Save Button
                           SizedBox(
@@ -336,7 +367,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: ElevatedButton(
                               onPressed: _logout,
                               style: ElevatedButton.styleFrom(
-                                // backgroundColor: const Color(0xFFE17A1D),
                                 backgroundColor: const Color(0xFF1111),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(38),
@@ -348,6 +378,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   fontWeight: FontWeight.w700,
                                   fontSize: 22,
                                   color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 15),
+
+                          // Delete Account Button
+                          SizedBox(
+                            width: 363,
+                            height: 76,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                setState(() => _showDeleteAccount = true);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(38),
+                                  side: const BorderSide(
+                                    color: Colors.red,
+                                    width: 2,
+                                  ),
+                                ),
+                              ),
+                              child: const Text(
+                                "حذف الحساب",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 22,
+                                  color: Colors.red,
                                 ),
                               ),
                             ),
@@ -416,8 +477,100 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           backgroundColor: const Color(
                                             0xFF1D75B1,
                                           ),
+                                          foregroundColor:
+                                              Colors
+                                                  .white, // <-- this makes the text white
                                         ),
                                         child: const Text("تأكيد"),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                    // Delete Account Dialog
+                    if (_showDeleteAccount)
+                      Positioned.fill(
+                        child: Container(
+                          color: Colors.black54,
+                          child: Center(
+                            child: Container(
+                              width: 363,
+                              padding: const EdgeInsets.all(20),
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(38),
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text(
+                                    "حذف الحساب",
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w800,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    "هذا الإجراء لا يمكن التراجع عنه. هل أنت متأكد؟",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  TextField(
+                                    controller: _deleteEmailController,
+                                    textAlign: TextAlign.right,
+                                    decoration: InputDecoration(
+                                      hintText: "البريد الإلكتروني",
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                            horizontal: 15,
+                                            vertical: 15,
+                                          ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 15),
+                                  CustomPasswordField(
+                                    controller: _deletePasswordController,
+                                    hintText: "كلمة المرور",
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          setState(
+                                            () => _showDeleteAccount = false,
+                                          );
+                                        },
+                                        child: const Text("إلغاء"),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: _deleteAccount,
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                        ),
+                                        child: const Text(
+                                          "حذف الحساب",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -431,16 +584,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _phoneController.dispose();
-    _currentPasswordController.dispose();
-    _newPasswordController.dispose();
-    _confirmPasswordController.dispose();
-    super.dispose();
   }
 }

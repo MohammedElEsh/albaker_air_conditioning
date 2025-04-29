@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../widgets/custom_password_field.dart';
-import '../services/api_service.dart';
-import 'home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../widgets/custom_password_field.dart';
+import '../services/user_service.dart';
+import 'home_screen.dart';
 
 class CompleteDataScreen extends StatefulWidget {
   final String email;
@@ -21,7 +21,7 @@ class _CompleteDataScreenState extends State<CompleteDataScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  final ApiService _apiService = ApiService();
+  final UserService _userService = UserService();
 
   @override
   void dispose() {
@@ -41,24 +41,23 @@ class _CompleteDataScreenState extends State<CompleteDataScreen> {
       return;
     }
 
-    var data = {
-      'f_name': _firstNameController.text,
-      'l_name': _lastNameController.text,
-      'phone': _phoneController.text,
-      'password': _passwordController.text,
-      'password_confirmation': _confirmPasswordController.text,
-      'email': widget.email,
-      'otp': widget.otp,
-      'fcm_token': '123', // Default token for now
-    };
-
     try {
-      var response = await _apiService.completeRegister(data);
+      var response = await _userService.completeRegister(
+        firstName: _firstNameController.text,
+        lastName: _lastNameController.text,
+        phone: _phoneController.text,
+        password: _passwordController.text,
+        passwordConfirmation: _confirmPasswordController.text,
+        email: widget.email,
+        otp: widget.otp,
+        fcmToken: '123', // Default token for now
+      );
+
       if (response.statusCode == 200) {
         // Successfully completed registration
         var token = response.data['data']['token'];
-
-        SharedPreferences prefs = await SharedPreferences.getInstance();
+        // Store token directly with SharedPreferences
+        final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', token);
 
         Navigator.pushReplacement(

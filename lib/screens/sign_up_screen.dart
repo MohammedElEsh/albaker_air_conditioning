@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/custom_email_field.dart';
 import 'verification_code_screen2.dart';
 import 'auth_screen.dart';
-import '../services/api_service.dart';
+import '../services/user_service.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -13,11 +13,11 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
-  final ApiService _apiService = ApiService();
+  final UserService _userService = UserService();
 
   void _register() async {
     try {
-      var response = await _apiService.register(_emailController.text);
+      var response = await _userService.register(_emailController.text);
 
       if (response.statusCode == 200) {
         Navigator.pushReplacement(
