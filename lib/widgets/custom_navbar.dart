@@ -9,9 +9,8 @@ class CustomNavbar extends StatefulWidget {
 }
 
 class _CustomNavbarState extends State<CustomNavbar> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 4; // Default to home (index 4)
 
-  // List of navbar items with icon (static) and activeIcon (Lottie)
   final List<Map<String, String>> _navbarItems = [
     {
       'title': 'المزيد',
@@ -40,6 +39,14 @@ class _CustomNavbarState extends State<CustomNavbar> {
     },
   ];
 
+  void _onItemTapped(int index, BuildContext context) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    NavbarTapNotification(index).dispatch(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -48,7 +55,7 @@ class _CustomNavbarState extends State<CustomNavbar> {
       right: 0,
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: 80,
+        height: 100,
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -60,24 +67,19 @@ class _CustomNavbarState extends State<CustomNavbar> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: List.generate(
             _navbarItems.length,
-                (index) => _buildNavItem(index),
+                (index) => _buildNavItem(index, context),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildNavItem(int index) {
+  Widget _buildNavItem(int index, BuildContext context) {
     final bool isActive = _selectedIndex == index;
     final item = _navbarItems[index];
 
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedIndex = index;
-        });
-        // Add navigation logic here
-      },
+      onTap: () => _onItemTapped(index, context),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -85,7 +87,22 @@ class _CustomNavbarState extends State<CustomNavbar> {
             width: 30,
             height: 30,
             child: isActive
-                ? Lottie.asset(item['activeIcon']!, repeat: false, fit: BoxFit.contain)
+                ? Lottie.asset(
+              item['activeIcon']!,
+              repeat: false,
+              fit: BoxFit.contain,
+              delegates: LottieDelegates(
+                values: [
+                  ValueDelegate.colorFilter(
+                    const ['**'],
+                    value: const ColorFilter.mode(
+                      Color(0xFF1D75B1),
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                ],
+              ),
+            )
                 : Image.asset(item['icon']!, fit: BoxFit.contain),
           ),
           const SizedBox(height: 4),
@@ -94,11 +111,18 @@ class _CustomNavbarState extends State<CustomNavbar> {
             style: TextStyle(
               fontSize: 14,
               fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-              color: isActive ? const Color(0xFF000000) : Colors.grey,
+              color: isActive ? const Color(0xFF1D75B1) : Colors.grey,
             ),
           ),
         ],
       ),
     );
   }
+}
+
+// Custom notification class for navbar taps
+class NavbarTapNotification extends Notification {
+  final int index;
+
+  NavbarTapNotification(this.index);
 }

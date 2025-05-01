@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../services/user_service.dart';
-import '../widgets/custom_password_field.dart';
-import 'auth_screen.dart';
+import '../../services/user_service.dart';
+import '../../widgets/custom_password_field.dart';
+import '../authorization_screens/auth_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

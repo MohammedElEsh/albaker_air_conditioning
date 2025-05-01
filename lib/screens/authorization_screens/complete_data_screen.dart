@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../widgets/custom_password_field.dart';
-import '../services/user_service.dart';
-import 'home_screen.dart';
+import '../../widgets/custom_password_field.dart';
+import '../../services/user_service.dart';
+import '../app_screens/main_screen.dart';
 
 class CompleteDataScreen extends StatefulWidget {
   final String email;
@@ -62,7 +62,7 @@ class _CompleteDataScreenState extends State<CompleteDataScreen> {
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => const MainScreen()),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

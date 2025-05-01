@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../widgets/custom_rectangle.dart';
+import '../../widgets/custom_rectangle.dart';
 import 'complete_data_screen.dart';
-import '../services/user_service.dart';
+import '../../services/user_service.dart';
 
 class VerificationCodeScreen2 extends StatefulWidget {
   final String email;

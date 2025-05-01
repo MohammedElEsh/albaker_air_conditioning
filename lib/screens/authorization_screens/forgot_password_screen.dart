@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../widgets/custom_email_field.dart'; // تأكد من إضافة هذا السطر لاستيراد الـ Widget الجديد
-import '../widgets/custom_rectangle.dart'; // تأكد من استيراد الـ Widget المخصص للصورة
+import '../../widgets/custom_email_field.dart'; // تأكد من إضافة هذا السطر لاستيراد الـ Widget الجديد
+import '../../widgets/custom_rectangle.dart'; // تأكد من استيراد الـ Widget المخصص للصورة
 import 'verification_code_screen.dart'; // إضافة استيراد الشاشة الجديدة
-import '../services/user_service.dart';
+import '../../services/user_service.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});

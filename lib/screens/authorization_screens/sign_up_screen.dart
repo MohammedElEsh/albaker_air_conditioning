@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../widgets/custom_email_field.dart';
+import '../../widgets/custom_email_field.dart';
 import 'verification_code_screen2.dart';
 import 'auth_screen.dart';
-import '../services/user_service.dart';
+import '../../services/user_service.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

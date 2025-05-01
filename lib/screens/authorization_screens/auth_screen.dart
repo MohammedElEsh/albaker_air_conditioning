@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'forgot_password_screen.dart';
 import 'sign_up_screen.dart';
-import 'home_screen.dart';
-import '../widgets/custom_email_field.dart'; // استيراد الويدجت المخصصة
-import '../widgets/custom_password_field.dart'; // إضافة استيراد الـ widget الجديد
-import '../services/user_service.dart';
+import '../app_screens/main_screen.dart';
+import '../../widgets/custom_email_field.dart'; // استيراد الويدجت المخصصة
+import '../../widgets/custom_password_field.dart'; // إضافة استيراد الـ widget الجديد
+import '../../services/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthScreen extends StatelessWidget {
@@ -29,7 +29,7 @@ class AuthScreen extends StatelessWidget {
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => const MainScreen()),
         );
       } else {
         ScaffoldMessenger.of(

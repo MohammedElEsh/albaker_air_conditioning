@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../widgets/custom_rectangle.dart';
-import '../widgets/custom_password_field.dart';
-import 'home_screen.dart';
-import '../services/user_service.dart';
+import '../../widgets/custom_rectangle.dart';
+import '../../widgets/custom_password_field.dart';
+import '../app_screens/main_screen.dart';
+import '../../services/user_service.dart';
 
 class NewPasswordScreen extends StatefulWidget {
   final String email;
@@ -39,7 +39,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
       if (response.statusCode == 200) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => const MainScreen()),
         );
       } else {
         ScaffoldMessenger.of(

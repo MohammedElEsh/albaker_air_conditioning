@@ -2,58 +2,104 @@
 class Assets {
   Assets._();
 
+  static const String animationsActiveCart =
+      'assets/animations/active_cart.json';
+  static const String animationsActiveDots =
+      'assets/animations/active_dots.json';
+  static const String animationsActiveHome =
+      'assets/animations/active_home.json';
+  static const String animationsActiveTrend =
+      'assets/animations/active_trend.json';
+  static const String animationsActiveWorks =
+      'assets/animations/active_works.json';
+  static const String appScreensCartScreen =
+      'lib/screens/app_screens/cart_screen.dart';
+  static const String appScreensHomeScreen =
+      'lib/screens/app_screens/home_screen.dart';
+  static const String appScreensMainScreen =
+      'lib/screens/app_screens/main_screen.dart';
+  static const String appScreensMoreScreen =
+      'lib/screens/app_screens/more_screen.dart';
+  static const String appScreensProfileScreen =
+      'lib/screens/app_screens/profile_screen.dart';
+  static const String appScreensProjectsScreen =
+      'lib/screens/app_screens/projects_screen.dart';
+  static const String appScreensSearchScreen =
+      'lib/screens/app_screens/search_screen.dart';
+  static const String appScreensWorksScreen =
+      'lib/screens/app_screens/works_screen.dart';
+  static const String authorizationScreensAuthScreen =
+      'lib/screens/authorization_screens/auth_screen.dart';
+  static const String authorizationScreensCompleteDataScreen =
+      'lib/screens/authorization_screens/complete_data_screen.dart';
+  static const String authorizationScreensForgotPasswordScreen =
+      'lib/screens/authorization_screens/forgot_password_screen.dart';
+  static const String authorizationScreensNewPasswordScreen =
+      'lib/screens/authorization_screens/new_password_screen.dart';
+  static const String authorizationScreensSignUpScreen =
+      'lib/screens/authorization_screens/sign_up_screen.dart';
+  static const String authorizationScreensVerificationCodeScreen =
+      'lib/screens/authorization_screens/verification_code_screen.dart';
+  static const String authorizationScreensVerificationCodeScreen2 =
+      'lib/screens/authorization_screens/verification_code_screen2.dart';
   static const String fontsAlmaraiBold = 'assets/fonts/Almarai-Bold.ttf';
-  static const String fontsAlmaraiExtraBold = 'assets/fonts/Almarai-ExtraBold.ttf';
+  static const String fontsAlmaraiExtraBold =
+      'assets/fonts/Almarai-ExtraBold.ttf';
   static const String fontsAlmaraiLight = 'assets/fonts/Almarai-Light.ttf';
   static const String fontsAlmaraiRegular = 'assets/fonts/Almarai-Regular.ttf';
   static const String generatedAssets = 'lib/generated/assets.dart';
   static const String iconsAppIcon = 'assets/icons/app_icon.png';
-  static const String images337707832207.q803.001.P.m012.c20 1 = 'assets/images/33770783_2207.q803.001.P.m012.c20 1.png';
-  static const String images337707832207.q803.001.P.m012.c20 2 = 'assets/images/33770783_2207.q803.001.P.m012.c20 2.png';
-  static const String images337707832207.q803.001.P.m012.c20 4 = 'assets/images/33770783_2207.q803.001.P.m012.c20 4.png';
-  static const String imagesEyeUnlockTwotone = 'assets/images/eye_unlock_twotone.png';
-  static const String imagesFda50a008de64094B5aaB97b8dde37cf260x260RemovebgPreview 1 = 'assets/images/fda50a00-8de6-4094-b5aa-b97b8dde37cf-260x260-removebg-preview 1.png';
-  static const String imagesGroup 176119 = 'assets/images/Group 176119.png';
-  static const String imagesGroup 176138 = 'assets/images/Group 176138.png';
-  static const String imagesGroup 176217 = 'assets/images/Group 176217.png';
-  static const String imagesImage 2 = 'assets/images/image 2.png';
+  static const String imagesActiveCart = 'assets/images/active_cart.png';
+  static const String imagesActiveDots = 'assets/images/active_dots.png';
+  static const String imagesActiveHome = 'assets/images/active_home.png';
+  static const String imagesActiveTrend = 'assets/images/active_trend.png';
+  static const String imagesActiveWorks = 'assets/images/active_works.png';
+  static const String imagesCart = 'assets/images/cart.png';
+  static const String imagesDots = 'assets/images/dots.png';
+  static const String imagesEyeUnlockTwotone =
+      'assets/images/eye_unlock_twotone.png';
+  static const String imagesGroup176119 = 'assets/images/Group 176119.png';
+  static const String imagesGroup176138 = 'assets/images/Group 176138.png';
+  static const String imagesGroup176217 = 'assets/images/Group 176217.png';
+  static const String imagesHome = 'assets/images/home.png';
+  static const String imagesImage2 = 'assets/images/image 2.png';
   static const String imagesLinear = 'assets/images/linear.png';
-  static const String imagesMask Group 2368 1 = 'assets/images/Mask Group 2368 1.png';
-  static const String imagesMask Group 2369 1 = 'assets/images/Mask Group 2369 1.png';
-  static const String imagesMask Group 2375 1 = 'assets/images/Mask Group 2375 1.png';
-  static const String imagesMask Group 2412 1 = 'assets/images/Mask Group 2412 1.png';
-  static const String imagesO522376v389AirFlux1CV1 1 = 'assets/images/o522376v389_Air_Flux_1C_v1 1.png';
-  static const String imagesRectangle 28133 = 'assets/images/Rectangle 28133.png';
-  static const String imagesRectangle 28216 = 'assets/images/Rectangle 28216.png';
-  static const String imagesSearchNormalBroken = 'assets/images/search-normal_broken.png';
-  static const String imagesSmsNotification = 'assets/images/sms-notification.png';
+  static const String imagesMaskGroup2412_1 =
+      'assets/images/Mask Group 2412 1.png';
+  static const String imagesRectangle28133 =
+      'assets/images/Rectangle 28133.png';
+  static const String imagesSearchNormalBroken =
+      'assets/images/search-normal_broken.png';
+  static const String imagesSmsNotification =
+      'assets/images/sms-notification.png';
   static const String imagesSmsTracking = 'assets/images/sms-tracking.png';
+  static const String imagesTrend = 'assets/images/trend.png';
   static const String imagesTwotone = 'assets/images/twotone.png';
   static const String imagesUser = 'assets/images/user.png';
+  static const String imagesWorks = 'assets/images/works.png';
   static const String libMain = 'lib/main.dart';
-  static const String screensAuthScreen = 'lib/screens/auth_screen.dart';
-  static const String screensCompleteDataScreen = 'lib/screens/complete_data_screen.dart';
-  static const String screensForgotPasswordScreen = 'lib/screens/forgot_password_screen.dart';
-  static const String screensHomeScreen = 'lib/screens/home_screen.dart';
-  static const String screensNewPasswordScreen = 'lib/screens/new_password_screen.dart';
-  static const String screensProfileScreen = 'lib/screens/profile_screen.dart';
-  static const String screensSearchScreen = 'lib/screens/search_screen.dart';
-  static const String screensSignUpScreen = 'lib/screens/sign_up_screen.dart';
   static const String screensSplashScreen = 'lib/screens/splash_screen.dart';
-  static const String screensVerificationCodeScreen = 'lib/screens/verification_code_screen.dart';
-  static const String screensVerificationCodeScreen2 = 'lib/screens/verification_code_screen2.dart';
-  static const String servicesAskPriceService = 'lib/services/ask_price_service.dart';
+  static const String servicesAskPriceService =
+      'lib/services/ask_price_service.dart';
   static const String servicesCartService = 'lib/services/cart_service.dart';
-  static const String servicesFavoriteService = 'lib/services/favorite_service.dart';
+  static const String servicesFavoriteService =
+      'lib/services/favorite_service.dart';
   static const String servicesHomeService = 'lib/services/home_service.dart';
-  static const String servicesOrdersService = 'lib/services/orders_service.dart';
-  static const String servicesPaymentService = 'lib/services/payment_service.dart';
-  static const String servicesProductsService = 'lib/services/products_service.dart';
-  static const String servicesProjectsService = 'lib/services/projects_service.dart';
+  static const String servicesOrdersService =
+      'lib/services/orders_service.dart';
+  static const String servicesPaymentService =
+      'lib/services/payment_service.dart';
+  static const String servicesProductsService =
+      'lib/services/products_service.dart';
+  static const String servicesProjectsService =
+      'lib/services/projects_service.dart';
   static const String servicesUserService = 'lib/services/user_service.dart';
   static const String servicesWorksService = 'lib/services/works_service.dart';
-  static const String widgetsCustomEmailField = 'lib/widgets/custom_email_field.dart';
-  static const String widgetsCustomPasswordField = 'lib/widgets/custom_password_field.dart';
-  static const String widgetsCustomRectangle = 'lib/widgets/custom_rectangle.dart';
-
+  static const String widgetsCustomEmailField =
+      'lib/widgets/custom_email_field.dart';
+  static const String widgetsCustomNavbar = 'lib/widgets/custom_navbar.dart';
+  static const String widgetsCustomPasswordField =
+      'lib/widgets/custom_password_field.dart';
+  static const String widgetsCustomRectangle =
+      'lib/widgets/custom_rectangle.dart';
 }

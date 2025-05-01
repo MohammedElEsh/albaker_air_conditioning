@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'auth_screen.dart';
+import 'authorization_screens/auth_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -10,7 +10,7 @@ class SplashScreen extends StatelessWidget {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) =>  AuthScreen()),
+        MaterialPageRoute(builder: (context) => AuthScreen()),
       );
     });
 
@@ -19,7 +19,7 @@ class SplashScreen extends StatelessWidget {
         onTap: () {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) =>  AuthScreen()),
+            MaterialPageRoute(builder: (context) => AuthScreen()),
           );
         },
         child: Stack(
@@ -33,9 +33,7 @@ class SplashScreen extends StatelessWidget {
               errorBuilder: (_, __, ___) => const Placeholder(),
             ),
             // اللوجو في المنتصف
-            const Center(
-              child: ImageWithTapEffect(),
-            ),
+            const Center(child: ImageWithTapEffect()),
           ],
         ),
       ),
