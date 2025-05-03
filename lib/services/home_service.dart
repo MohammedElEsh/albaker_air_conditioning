@@ -14,6 +14,11 @@ class HomeService {
   Future<Response> getHomeData() async {
     try {
       final token = await getToken();
+      
+      if (token == null || token.isEmpty) {
+        throw Exception('Token is missing, please login again');
+      }
+      
       final response = await _dio.get(
         '$baseUrl/home',
         options: Options(headers: {'Authorization': 'Bearer $token'}),
@@ -28,6 +33,11 @@ class HomeService {
   Future<Response> getHomeSlider() async {
     try {
       final token = await getToken();
+      
+      if (token == null || token.isEmpty) {
+        throw Exception('Token is missing, please login again');
+      }
+      
       final response = await _dio.get(
         '$baseUrl/home/slider',
         options: Options(headers: {'Authorization': 'Bearer $token'}),

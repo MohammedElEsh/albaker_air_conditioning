@@ -3,6 +3,8 @@ import '../../widgets/custom_rectangle.dart';
 import '../../widgets/custom_password_field.dart';
 import '../app_screens/main_screen.dart';
 import '../../services/user_service.dart';
+import 'package:al_baker_air_conditioning/utils/alert_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NewPasswordScreen extends StatefulWidget {
   final String email;
@@ -19,14 +21,37 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final UserService _userService = UserService();
+  bool _isLoading = false;
 
   void _resetPassword() async {
-    if (_passwordController.text != _confirmPasswordController.text) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('كلمتا المرور غير متطابقتين')),
+    if (_passwordController.text.isEmpty) {
+      AlertUtils.showWarningAlert(
+        context,
+        "تنبيه",
+        AlertUtils.requiredFields
       );
       return;
     }
+
+    if (_passwordController.text.length < 8) {
+      AlertUtils.showWarningAlert(
+        context,
+        "تنبيه",
+        AlertUtils.weakPassword
+      );
+      return;
+    }
+
+    if (_passwordController.text != _confirmPasswordController.text) {
+      AlertUtils.showWarningAlert(
+        context,
+        "تنبيه",
+        AlertUtils.passwordMismatch
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
 
     try {
       var response = await _userService.resetPassword(
@@ -36,20 +61,96 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
         otp: widget.otp,
       );
 
+      setState(() => _isLoading = false);
+
       if (response.statusCode == 200) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const MainScreen()),
-        );
+        // حفظ التوكن للمستخدم بعد تغيير كلمة المرور بنجاح
+        if (response.data != null && response.data['data'] != null && response.data['data']['token'] != null) {
+          var token = response.data['data']['token'];
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('token', token);
+          
+          AlertUtils.showSuccessAlert(
+            context,
+            "نجاح",
+            AlertUtils.passwordChangeSuccess
+          );
+          
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const MainScreen()),
+          );
+        } else {
+          // إذا لم يتم إرجاع التوكن، نحاول تسجيل الدخول أولاً
+          try {
+            var loginResponse = await _userService.login(
+              widget.email,
+              _passwordController.text,
+            );
+            
+            if (loginResponse.statusCode == 200 && 
+                loginResponse.data != null && 
+                loginResponse.data['data'] != null && 
+                loginResponse.data['data']['token'] != null) {
+              
+              var token = loginResponse.data['data']['token'];
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.setString('token', token);
+              
+              AlertUtils.showSuccessAlert(
+                context,
+                "نجاح",
+                AlertUtils.passwordChangeSuccess
+              );
+              
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const MainScreen()),
+              );
+            } else {
+              AlertUtils.showErrorAlert(
+                context,
+                "تنبيه",
+                AlertUtils.sessionExpired
+              );
+            }
+          } catch (loginError) {
+            AlertUtils.showErrorAlert(
+              context,
+              "تنبيه",
+              AlertUtils.sessionExpired
+            );
+          }
+        }
       } else {
-        ScaffoldMessenger.of(
+        AlertUtils.showErrorAlert(
           context,
-        ).showSnackBar(const SnackBar(content: Text('فشل تغيير كلمة المرور')));
+          "تنبيه",
+          AlertUtils.passwordResetFailed
+        );
       }
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('خطأ: $e')));
+      setState(() => _isLoading = false);
+      
+      if (e.toString().contains('network')) {
+        AlertUtils.showErrorAlert(
+          context,
+          "تنبيه",
+          AlertUtils.networkError
+        );
+      } else if (e.toString().contains('timeout')) {
+        AlertUtils.showErrorAlert(
+          context,
+          "تنبيه",
+          AlertUtils.noInternet
+        );
+      } else {
+        AlertUtils.showErrorAlert(
+          context,
+          "تنبيه",
+          AlertUtils.passwordResetFailed
+        );
+      }
     }
   }
 
@@ -156,21 +257,23 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                 width: 363,
                 height: 76,
                 child: ElevatedButton(
-                  onPressed: _resetPassword,
+                  onPressed: _isLoading ? null : _resetPassword,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1D75B1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(38),
                     ),
                   ),
-                  child: const Text(
-                    "تأكيد",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 22,
-                      color: Colors.white,
-                    ),
-                  ),
+                  child: _isLoading 
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Text(
+                        "تأكيد",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 22,
+                          color: Colors.white,
+                        ),
+                      ),
                 ),
               ),
             ),

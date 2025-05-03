@@ -3,6 +3,7 @@ import '../../widgets/custom_email_field.dart';
 import 'verification_code_screen2.dart';
 import 'auth_screen.dart';
 import '../../services/user_service.dart';
+import 'package:al_baker_air_conditioning/utils/alert_utils.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -14,29 +15,96 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final UserService _userService = UserService();
+  bool _isLoading = false;
+
+  bool _validateEmail(String email) {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+  }
 
   void _register() async {
+    final email = _emailController.text.trim();
+    
+    // التحقق من إدخال البريد الإلكتروني
+    if (email.isEmpty) {
+      AlertUtils.showWarningAlert(
+        context,
+        "تنبيه",
+        AlertUtils.requiredFields
+      );
+      return;
+    }
+
+    // التحقق من صحة تنسيق البريد الإلكتروني
+    if (!_validateEmail(email)) {
+      AlertUtils.showWarningAlert(
+        context,
+        "تنبيه",
+        AlertUtils.invalidEmail
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
     try {
-      var response = await _userService.register(_emailController.text);
+      var response = await _userService.register(email);
+
+      setState(() => _isLoading = false);
 
       if (response.statusCode == 200) {
+        AlertUtils.showSuccessAlert(
+          context,
+          "نجاح",
+          AlertUtils.emailSent
+        );
+        
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder:
-                (context) =>
-                    VerificationCodeScreen2(email: _emailController.text),
+            builder: (context) => VerificationCodeScreen2(email: email),
           ),
         );
-      } else {
-        ScaffoldMessenger.of(
+      } else if (response.statusCode == 422) {
+        AlertUtils.showErrorAlert(
           context,
-        ).showSnackBar(SnackBar(content: Text('Registration failed')));
+          "تنبيه",
+          AlertUtils.duplicateEmail
+        );
+      } else if (response.statusCode == 400) {
+        AlertUtils.showErrorAlert(
+          context,
+          "تنبيه",
+          AlertUtils.invalidEmail
+        );
+      } else {
+        AlertUtils.showErrorAlert(
+          context,
+          "تنبيه",
+          AlertUtils.registrationFailed
+        );
       }
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Error: $e')));
+      setState(() => _isLoading = false);
+      
+      if (e.toString().contains('network')) {
+        AlertUtils.showErrorAlert(
+          context,
+          "تنبيه",
+          AlertUtils.networkError
+        );
+      } else if (e.toString().contains('timeout')) {
+        AlertUtils.showErrorAlert(
+          context,
+          "تنبيه",
+          AlertUtils.noInternet
+        );
+      } else {
+        AlertUtils.showErrorAlert(
+          context,
+          "تنبيه",
+          AlertUtils.generalError
+        );
+      }
     }
   }
 
@@ -62,8 +130,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               left: screenWidth * 0.25,
               child: Image.asset(
                 'assets/images/image 2.png',
-                // width: screenWidth * 0.5,
-                // height: screenHeight * 0.15,
               ),
             ),
 
@@ -111,26 +177,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 width: 363,
                 height: 76,
                 child: ElevatedButton(
-                  onPressed: _register,
+                  onPressed: _isLoading ? null : _register,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1D75B1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(38),
                     ),
                   ),
-                  child: const Text(
-                    "تسجيل",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 22,
-                      color: Colors.white,
-                    ),
-                  ),
+                  child: _isLoading
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Text(
+                        "تسجيل",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 22,
+                          color: Colors.white,
+                        ),
+                      ),
                 ),
               ),
             ),
 
-            // "Don't have an account?" Text
+            // "Already have an account?" Text
             Positioned(
               top: 820,
               left: 150,
@@ -152,6 +220,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
 
+            // Login Link
             Positioned(
               top: 860,
               left: 145,
@@ -163,14 +232,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   );
                 },
                 child: Row(
-                  children: [
-                    const Icon(
+                  children: const [
+                    Icon(
                       Icons.arrow_back,
                       color: Color(0xFF1D75B1),
                       size: 20,
                     ),
-                    const SizedBox(width: 10),
-                    const Text(
+                    SizedBox(width: 10),
+                    Text(
                       "تسجيل الدخول",
                       style: TextStyle(
                         fontSize: 20,

@@ -39,6 +39,8 @@ dependencies:
 
   lottie: ^3.3.1
 
+  rflutter_alert: ^2.0.7
+
 
   dio: ^5.8.0+1
   shared_preferences: ^2.0.15

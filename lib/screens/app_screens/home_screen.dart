@@ -47,13 +47,24 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Load user's name from the profile API
   Future<void> _loadUserName() async {
     try {
+      final token = await _userService.getToken();
+      if (token == null || token.isEmpty) {
+        setState(() {
+          _userName = 'زائر';
+        });
+        return;
+      }
+      
       final response = await _userService.getProfile();
       if (response.statusCode == 200) {
         setState(() {
-          _userName = response.data['data']['f_name'] ?? 'Guest';
+          _userName = response.data['data']['f_name'] ?? 'زائر';
         });
       }
     } catch (e) {
+      setState(() {
+        _userName = 'زائر';
+      });
       // Handle error
     }
   }
@@ -61,6 +72,11 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Load slider images from the home API
   Future<void> _loadSliderImages() async {
     try {
+      final token = await _userService.getToken();
+      if (token == null || token.isEmpty) {
+        return; // لا يمكن تحميل البيانات بدون توكن
+      }
+      
       final response = await _homeService.getHomeSlider();
       if (response.statusCode == 200) {
         setState(() {
@@ -78,6 +94,16 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _isLoading = true;
       });
+      
+      final token = await _userService.getToken();
+      if (token == null || token.isEmpty) {
+        setState(() {
+          _isLoading = false;
+        });
+        // عرض رسالة خطأ للمستخدم إذا لزم الأمر
+        return;
+      }
+      
       final response = await _homeService.getHomeData();
       if (response.statusCode == 200) {
         setState(() {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../widgets/custom_rectangle.dart';
 import 'new_password_screen.dart';
 import '../../services/user_service.dart';
+import 'package:al_baker_air_conditioning/utils/alert_utils.dart';
 
 class VerificationCodeScreen extends StatefulWidget {
   final String email;
@@ -19,18 +20,44 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
   );
   final UserService _userService = UserService();
 
+  @override
+  void initState() {
+    super.initState();
+    // Show alert when screen is first loaded
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AlertUtils.showSuccessAlert(
+        context,
+        "نجاح",
+        AlertUtils.verificationCodeSent
+      );
+    });
+  }
+
   void _verifyCode() async {
     // تحقق من أن جميع حقول OTP مملوءة
     for (var controller in controllers) {
       if (controller.text.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('يرجى إدخال جميع أرقام كود التحقق')),
+        AlertUtils.showWarningAlert(
+          context,
+          "تنبيه",
+          AlertUtils.verificationCodeEmpty
         );
         return;
       }
     }
 
     String otp = controllers.map((c) => c.text).join();
+    
+    // تحقق من تنسيق رمز التحقق
+    if (otp.length != 5 || !RegExp(r'^[0-9]+$').hasMatch(otp)) {
+      AlertUtils.showWarningAlert(
+        context,
+        "تنبيه",
+        AlertUtils.invalidOtpFormat
+      );
+      return;
+    }
+
     try {
       var response = await _userService.checkOtp(widget.email, otp);
       if (response.statusCode == 200) {
@@ -41,28 +68,89 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
                 (context) => NewPasswordScreen(email: widget.email, otp: otp),
           ),
         );
-      } else {
-        ScaffoldMessenger.of(
+      } else if (response.statusCode == 422) {
+        AlertUtils.showErrorAlert(
           context,
-        ).showSnackBar(const SnackBar(content: Text('كود التحقق غير صحيح')));
+          "تنبيه",
+          AlertUtils.verificationCodeError
+        );
+      } else if (response.statusCode == 404) {
+        AlertUtils.showErrorAlert(
+          context,
+          "تنبيه",
+          AlertUtils.emailNotFound
+        );
+      } else {
+        AlertUtils.showErrorAlert(
+          context,
+          "تنبيه",
+          AlertUtils.generalError
+        );
       }
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('خطأ: $e')));
+      if (e.toString().contains('network')) {
+        AlertUtils.showErrorAlert(
+          context,
+          "تنبيه",
+          AlertUtils.networkError
+        );
+      } else if (e.toString().contains('timeout')) {
+        AlertUtils.showErrorAlert(
+          context,
+          "تنبيه",
+          AlertUtils.noInternet
+        );
+      } else {
+        AlertUtils.showErrorAlert(
+          context,
+          "تنبيه",
+          AlertUtils.generalError
+        );
+      }
     }
   }
 
   void _resendCode() async {
     try {
-      await _userService.sendOtp(widget.email);
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('تم إرسال الكود مرة أخرى')));
+      var response = await _userService.sendOtp(widget.email);
+      if (response.statusCode == 200) {
+        // مسح الحقول القديمة
+        for (var controller in controllers) {
+          controller.clear();
+        }
+        // إعلام المستخدم أنه تم إرسال رمز جديد
+        AlertUtils.showSuccessAlert(
+          context,
+          "نجاح",
+          AlertUtils.newOtpSent
+        );
+      } else if (response.statusCode == 404) {
+        AlertUtils.showErrorAlert(
+          context,
+          "تنبيه",
+          AlertUtils.emailNotFound
+        );
+      } else {
+        AlertUtils.showErrorAlert(
+          context,
+          "تنبيه",
+          AlertUtils.otpSendFailed
+        );
+      }
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('خطأ: $e')));
+      if (e.toString().contains('network')) {
+        AlertUtils.showErrorAlert(
+          context,
+          "تنبيه",
+          AlertUtils.networkError
+        );
+      } else {
+        AlertUtils.showErrorAlert(
+          context,
+          "تنبيه",
+          AlertUtils.otpSendFailed
+        );
+      }
     }
   }
 
@@ -166,10 +254,9 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
                             height: 61,
                             margin: const EdgeInsets.symmetric(horizontal: 5),
                             decoration: BoxDecoration(
-                              color:
-                                  controllers[index].text.isNotEmpty
-                                      ? const Color(0xFF000000)
-                                      : const Color(0xFFF7F7F7),
+                              color: controllers[index].text.isNotEmpty
+                                  ? const Color(0xFF000000)
+                                  : const Color(0xFFF7F7F7),
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: TextField(
@@ -184,15 +271,12 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
-                                color:
-                                    controllers[index].text.isNotEmpty
-                                        ? Colors.white
-                                        : Colors.black,
+                                color: controllers[index].text.isNotEmpty
+                                    ? Colors.white
+                                    : Colors.black,
                               ),
                               onChanged: (value) {
-                                setState(
-                                  () {},
-                                ); // تحديث حالة الحاوية عند الكتابة
+                                setState(() {}); // تحديث حالة الحاوية عند الكتابة
                                 if (value.isNotEmpty && index < 4) {
                                   FocusScope.of(context).nextFocus();
                                 }

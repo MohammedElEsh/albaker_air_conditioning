@@ -6,6 +6,7 @@ import '../../widgets/custom_email_field.dart'; // استيراد الويدجت
 import '../../widgets/custom_password_field.dart'; // إضافة استيراد الـ widget الجديد
 import '../../services/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:al_baker_air_conditioning/utils/alert_utils.dart';
 
 class AuthScreen extends StatelessWidget {
   AuthScreen({super.key});
@@ -15,15 +16,32 @@ class AuthScreen extends StatelessWidget {
   final UserService _userService = UserService();
 
   void _login(BuildContext context) async {
+    // التحقق من عدم ترك الحقول فارغة
+    if (emailController.text.trim().isEmpty) {
+      AlertUtils.showWarningAlert(
+        context,
+        "تنبيه",
+        AlertUtils.requiredFields
+      );
+      return;
+    }
+
+    if (passwordController.text.isEmpty) {
+      AlertUtils.showWarningAlert(
+        context,
+        "تنبيه",
+        AlertUtils.requiredFields
+      );
+      return;
+    }
+
     try {
       var response = await _userService.login(
         emailController.text,
         passwordController.text,
       );
       if (response.statusCode == 200) {
-        // Successfully logged in
         var token = response.data['data']['token'];
-        // Store token using SharedPreferences directly since we don't have saveToken in UserService
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', token);
 
@@ -31,15 +49,62 @@ class AuthScreen extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (context) => const MainScreen()),
         );
+      } else if (response.statusCode == 401) {
+        // خطأ في بيانات الاعتماد
+        if (response.data != null && response.data['message'] != null) {
+          if (response.data['message'].toString().contains('email')) {
+            AlertUtils.showErrorAlert(
+              context,
+              "تنبيه",
+              AlertUtils.invalidEmailLogin
+            );
+          } else if (response.data['message'].toString().contains('password')) {
+            AlertUtils.showErrorAlert(
+              context,
+              "تنبيه",
+              AlertUtils.invalidPasswordLogin
+            );
+          } else {
+            AlertUtils.showErrorAlert(
+              context,
+              "تنبيه",
+              AlertUtils.loginError
+            );
+          }
+        } else {
+          AlertUtils.showErrorAlert(
+            context,
+            "تنبيه",
+            AlertUtils.loginError
+          );
+        }
       } else {
-        ScaffoldMessenger.of(
+        AlertUtils.showErrorAlert(
           context,
-        ).showSnackBar(SnackBar(content: Text('Login failed')));
+          "تنبيه",
+          AlertUtils.loginError
+        );
       }
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Error: $e')));
+      if (e.toString().contains('network')) {
+        AlertUtils.showErrorAlert(
+          context,
+          "تنبيه",
+          AlertUtils.networkError
+        );
+      } else if (e.toString().contains('timeout')) {
+        AlertUtils.showErrorAlert(
+          context,
+          "تنبيه",
+          "انتهت مهلة الاتصال بالخادم"
+        );
+      } else {
+        AlertUtils.showErrorAlert(
+          context,
+          "تنبيه",
+          AlertUtils.loginError
+        );
+      }
     }
   }
 

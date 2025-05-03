@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../services/user_service.dart';
 import '../../widgets/custom_password_field.dart';
 import '../authorization_screens/auth_screen.dart';
+import 'package:al_baker_air_conditioning/utils/alert_utils.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -48,9 +49,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(
+      AlertUtils.showErrorAlert(
         context,
-      ).showSnackBar(SnackBar(content: Text('خطأ في تحميل البيانات: $e')));
+        "خطأ",
+        AlertUtils.profileUpdateFailed
+      );
     }
   }
 
@@ -63,21 +66,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
       if (response.statusCode == 200) {
         setState(() => _isEditMode = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('تم تحديث البيانات بنجاح')),
+        AlertUtils.showSuccessAlert(
+          context,
+          "نجاح",
+          AlertUtils.profileUpdateSuccess
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(
+      AlertUtils.showErrorAlert(
         context,
-      ).showSnackBar(SnackBar(content: Text('خطأ في تحديث البيانات: $e')));
+        "خطأ",
+        AlertUtils.profileUpdateFailed
+      );
     }
   }
 
   Future<void> _changePassword() async {
     if (_newPasswordController.text != _confirmPasswordController.text) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('كلمتا المرور غير متطابقتين')),
+      AlertUtils.showWarningAlert(
+        context,
+        "تنبيه",
+        AlertUtils.passwordMismatch
       );
       return;
     }
@@ -90,14 +99,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
       if (response.statusCode == 200) {
         setState(() => _showChangePassword = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('تم تغيير كلمة المرور بنجاح')),
+        AlertUtils.showSuccessAlert(
+          context,
+          "نجاح",
+          AlertUtils.passwordChangeSuccess
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(
+      AlertUtils.showErrorAlert(
         context,
-      ).showSnackBar(SnackBar(content: Text('خطأ في تغيير كلمة المرور: $e')));
+        "تنبيه",
+        AlertUtils.passwordChangeFailed
+      );
     }
   }
 
@@ -109,6 +122,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
       if (response.statusCode == 200) {
         await _userService.clearToken();
+        AlertUtils.showSuccessAlert(
+          context,
+          "نجاح",
+          AlertUtils.accountDeleteSuccess
+        );
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => AuthScreen()),
@@ -116,9 +134,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(
+      AlertUtils.showErrorAlert(
         context,
-      ).showSnackBar(SnackBar(content: Text('خطأ في حذف الحساب: $e')));
+        "تنبيه",
+        AlertUtils.accountDeleteFailed
+      );
     }
   }
 
@@ -127,6 +147,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       var response = await _userService.logout();
       if (response.statusCode == 200) {
         await _userService.clearToken();
+        AlertUtils.showSuccessAlert(
+          context,
+          "نجاح",
+          AlertUtils.logoutSuccess
+        );
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => AuthScreen()),
@@ -134,9 +159,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(
+      AlertUtils.showErrorAlert(
         context,
-      ).showSnackBar(SnackBar(content: Text('خطأ في تسجيل الخروج: $e')));
+        "تنبيه",
+        AlertUtils.logoutFailed
+      );
     }
   }
 
