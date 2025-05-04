@@ -5,7 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 // App-specific imports
 import '../../services/works_service.dart';
 
-/// WorksScreen - Displays our works with type filtering
+/// WorksScreen - Displays all works in a simple vertical layout
 class WorksScreen extends StatefulWidget {
   const WorksScreen({super.key});
 
@@ -19,17 +19,7 @@ class _WorksScreenState extends State<WorksScreen> {
 
   // State variables
   List<dynamic> _allWorks = [];
-  List<dynamic> _filteredWorks = [];
   bool _isLoading = true;
-  String _selectedType = 'all'; // Default filter is 'all'
-
-  // Work types
-  final List<Map<String, String>> _workTypes = [
-    {'id': 'all', 'name': 'الكل'},
-    {'id': 'installation', 'name': 'التركيب'},
-    {'id': 'maintenance', 'name': 'الصيانة'},
-    {'id': 'cleaning', 'name': 'التنظيف'},
-  ];
 
   @override
   void initState() {
@@ -39,354 +29,164 @@ class _WorksScreenState extends State<WorksScreen> {
 
   /// Load all works from API
   Future<void> _loadAllWorks() async {
-    try {
-      setState(() {
-        _isLoading = true;
-      });
-      final response = await _worksService.getAllWorks();
-      if (response.statusCode == 200) {
-        setState(() {
-          _allWorks = response.data['data'] ?? [];
-          _filteredWorks = _allWorks; // Initially show all works
-          _isLoading = false;
-        });
-      } else {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
-      // Handle error
-    }
-  }
-
-  /// Load works filtered by type
-  Future<void> _loadWorksByType(String type) async {
-    if (type == 'all') {
-      // If "all" is selected, simply use the cached allWorks
-      setState(() {
-        _filteredWorks = _allWorks;
-      });
-      return;
-    }
-
-    try {
-      setState(() {
-        _isLoading = true;
-      });
-      final response = await _worksService.getWorksByType(type);
-      if (response.statusCode == 200) {
-        setState(() {
-          _filteredWorks = response.data['data'] ?? [];
-          _isLoading = false;
-        });
-      } else {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
-      // Handle error
-    }
-  }
-
-  /// Handle type filter selection
-  void _selectType(String type) {
-    if (_selectedType != type) {
-      setState(() {
-        _selectedType = type;
-      });
-      _loadWorksByType(type);
-    }
+    setState(() {
+      _isLoading = true;
+    });
+    final response = await _worksService.getAllWorks();
+    final data = response.data['data'] ?? {};
+    final worksList = data.values.toList();
+    setState(() {
+      _allWorks = worksList;
+      _isLoading = false;
+      print('Works Loaded: ${_allWorks.length}');
+    });
   }
 
   /// Pull to refresh data
   Future<void> _refreshData() async {
-    if (_selectedType == 'all') {
-      await _loadAllWorks();
-    } else {
-      await _loadWorksByType(_selectedType);
-    }
+    await _loadAllWorks();
   }
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: _refreshData,
-      child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Column(
-          children: [
-            const SizedBox(height: 60),
-            // Header
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 33),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "أعمالنا",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 24,
-                      height: 1.0,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // Work types horizontal list
-            SizedBox(
-              height: 60,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: _workTypes.length,
+    return Scaffold(
+      body: RefreshIndicator(
+        onRefresh: _refreshData,
+        color: Colors.blue,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              // Header
+              Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                itemBuilder: (context, index) {
-                  final type = _workTypes[index];
-                  final isSelected = _selectedType == type['id'];
+                child: Text(
+                  "أعمالنا",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    color: Colors.blue[900],
+                  ),
+                ),
+              ),
 
-                  return GestureDetector(
-                    onTap: () => _selectType(type['id']!),
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 10),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 8,
+              const SizedBox(height: 15),
+
+              // Works list
+              _isLoading
+                  ? const SizedBox(
+                height: 300,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                  ),
+                ),
+              )
+                  : _allWorks.isEmpty
+                  ? SizedBox(
+                height: 300,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/empty_inbox.png',
+                        width: 100,
+                        height: 100,
+                        color: Colors.blue,
                       ),
-                      decoration: BoxDecoration(
-                        color:
-                            isSelected ? const Color(0xFF1D75B1) : Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: const Color(0xFF1D75B1),
-                          width: 1,
+                      const SizedBox(height: 15),
+                      Text(
+                        'لا توجد أعمال',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey[600],
                         ),
+                        textAlign: TextAlign.center,
                       ),
-                      child: Center(
-                        child: Text(
-                          type['name']!,
-                          style: TextStyle(
-                            color:
-                                isSelected
-                                    ? Colors.white
-                                    : const Color(0xFF1D75B1),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
+                    ],
+                  ),
+                ),
+              )
+                  : ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: _allWorks.length,
+                itemBuilder: (context, index) {
+                  final work = _allWorks[index];
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Work image
+                        Container(
+                          height: 120,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+                            child: CachedNetworkImage(
+                              imageUrl: 'https://albakr-ac.com${work['image']}',
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => Container(
+                                color: Colors.grey[200],
+                                child: const Center(
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                                  ),
+                                ),
+                              ),
+                              errorWidget: (context, url, error) => Container(
+                                color: Colors.grey[300],
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.image_not_supported,
+                                    size: 30,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // Works list
-            _isLoading
-                ? const SizedBox(
-                  height: 400,
-                  child: Center(child: CircularProgressIndicator()),
-                )
-                : _filteredWorks.isEmpty
-                ? const SizedBox(
-                  height: 400,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.work_outline,
-                          size: 100,
-                          color: Color(0xFF1D75B1),
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                          'لا توجد أعمال في هذا التصنيف',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.grey,
+                        // Work description
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          color: Colors.white,
+                          child: Text(
+                            work['description'] ?? '',
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
                     ),
-                  ),
-                )
-                : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: _filteredWorks.length,
-                    itemBuilder: (context, index) {
-                      final work = _filteredWorks[index];
+                  );
+                },
+              ),
 
-                      return Card(
-                        elevation: 3,
-                        margin: const EdgeInsets.only(bottom: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Work image
-                            ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(12),
-                                topRight: Radius.circular(12),
-                              ),
-                              child: CachedNetworkImage(
-                                imageUrl:
-                                    'https://albakr-ac.com/${work['image']}',
-                                width: double.infinity,
-                                height: 200,
-                                fit: BoxFit.cover,
-                                placeholder:
-                                    (context, url) => Container(
-                                      color: Colors.grey[200],
-                                      child: const Center(
-                                        child: CircularProgressIndicator(),
-                                      ),
-                                    ),
-                                errorWidget:
-                                    (context, url, error) => Container(
-                                      color: Colors.grey[300],
-                                      height: 200,
-                                      child: const Center(
-                                        child: Icon(
-                                          Icons.image_not_supported,
-                                          size: 40,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ),
-                              ),
-                            ),
-
-                            // Work details
-                            Padding(
-                              padding: const EdgeInsets.all(15),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // Title and type
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          work['name'] ?? 'غير معروف',
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 10,
-                                          vertical: 5,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: const Color(
-                                            0xFF1D75B1,
-                                          ).withOpacity(0.1),
-                                          borderRadius: BorderRadius.circular(
-                                            15,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          _getTypeDisplayName(
-                                            work['type'] ?? '',
-                                          ),
-                                          style: const TextStyle(
-                                            color: Color(0xFF1D75B1),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-
-                                  const SizedBox(height: 10),
-
-                                  // Description
-                                  Text(
-                                    work['description'] ?? '',
-                                    style: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontSize: 14,
-                                    ),
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-
-                                  const SizedBox(height: 10),
-
-                                  // Date
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.calendar_today,
-                                        size: 16,
-                                        color: Color(0xFF1D75B1),
-                                      ),
-                                      const SizedBox(width: 5),
-                                      Text(
-                                        work['created_at'] != null
-                                            ? work['created_at']
-                                                .toString()
-                                                .split('T')[0]
-                                            : '',
-                                        style: TextStyle(
-                                          color: Colors.grey[600],
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-
-            // Add space at the bottom for the navbar
-            const SizedBox(height: 80),
-          ],
+              const SizedBox(height: 80),
+            ],
+          ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Add functionality for adding a new work
+        },
+        backgroundColor: Colors.blue,
+        child: const Icon(Icons.add),
+      ),
     );
-  }
-
-  /// Convert API type value to display name
-  String _getTypeDisplayName(String type) {
-    switch (type) {
-      case 'installation':
-        return 'التركيب';
-      case 'maintenance':
-        return 'الصيانة';
-      case 'cleaning':
-        return 'التنظيف';
-      default:
-        return 'غير معروف';
-    }
   }
 }
