@@ -52,11 +52,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       setState(() => _isLoading = false);
 
       if (response.statusCode == 200) {
-        AlertUtils.showSuccessAlert(
-          context,
-          "نجاح",
-          AlertUtils.emailSent
-        );
+        // AlertUtils.showSuccessAlert(
+        //   context,
+        //   "نجاح",
+        //   AlertUtils.emailSent
+        // );
         
         Navigator.push(
           context,

@@ -123,16 +123,16 @@ class _ProjectsScreenState extends State<ProjectsScreen> with SingleTickerProvid
               child: Text(
                 "مشاريعنا",
                 style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 25,
-                  color: const Color(0xFF1D75B1),
-                  shadows: [
-                    Shadow(
-                      blurRadius: 4,
-                      color: Colors.black.withOpacity(0.1),
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
+                  fontWeight: FontWeight.w800,
+                  fontSize: 24,
+                  // color: const Color(0xFF1D75B1),
+                  // shadows: [
+                  //   Shadow(
+                  //     blurRadius: 4,
+                  //     color: Colors.black.withOpacity(0.1),
+                  //     offset: const Offset(0, 2),
+                  //   ),
+                  // ],
                 ),
               ),
             ),

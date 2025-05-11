@@ -57,21 +57,20 @@ class _WorksScreenState extends State<WorksScreen> {
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 60),
               // Header
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
                   "أعمالنا",
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w800,
                     fontSize: 24,
-                    color: Colors.blue[900],
                   ),
                 ),
               ),
 
-              const SizedBox(height: 15),
+              const SizedBox(height: 20),
 
               // Works list
               _isLoading

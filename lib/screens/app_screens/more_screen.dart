@@ -338,10 +338,9 @@ class _MoreScreenState extends State<MoreScreen> {
                   Text(
                     "المزيد",
                     style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 24,
-                      height: 1.0,
-                    ),
+                        fontWeight: FontWeight.w800,
+                        fontSize: 24,
+                      ),
                   ),
                 ],
               ),
