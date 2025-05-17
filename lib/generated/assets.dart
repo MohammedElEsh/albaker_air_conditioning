@@ -28,6 +28,7 @@ class Assets {
   static const String fontsAlmaraiRegular = 'assets/fonts/Almarai-Regular.ttf';
   static const String generatedAssets = 'lib/generated/assets.dart';
   static const String iconsAppIcon = 'assets/icons/app_icon.png';
+  static const String iconsAppIcon2 = 'assets/icons/app_icon2.png';
   static const String imagesActiveCart = 'assets/images/active_cart.png';
   static const String imagesActiveDots = 'assets/images/active_dots.png';
   static const String imagesActiveHome = 'assets/images/active_home.png';
