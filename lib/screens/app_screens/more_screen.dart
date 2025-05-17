@@ -1,4 +1,12 @@
-// Flutter imports
+/// The more screen that displays additional app features and information.
+///
+/// Features:
+/// - Social media links
+/// - App information
+/// - Quick links to important pages
+/// - Pull to refresh functionality
+/// - URL launching
+/// - Error handling
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -6,7 +14,15 @@ import 'package:url_launcher/url_launcher.dart';
 // App-specific imports
 import '../../services/home_service.dart';
 
-/// MoreScreen - Display social links and more options
+/// MoreScreen - Manages additional app features and information display.
+///
+/// This screen implements:
+/// - Social media integration
+/// - App information display
+/// - Quick navigation links
+/// - URL handling
+/// - Loading states
+/// - Error handling
 class MoreScreen extends StatefulWidget {
   const MoreScreen({super.key});
 
@@ -15,14 +31,16 @@ class MoreScreen extends StatefulWidget {
 }
 
 class _MoreScreenState extends State<MoreScreen> {
-  // Services
+  /// Service for handling home-related API calls
   final HomeService _homeService = HomeService();
 
-  // State variables
+  /// List of social media links
   List<dynamic> _socialLinks = [];
+
+  /// Loading state for social links
   bool _isLoading = true;
 
-  // App information
+  /// App information including name, version, developer, and contact
   final Map<String, String> _appInfo = {
     'appName': 'البكر للتكييف',
     'appVersion': '1.0.0',
@@ -36,7 +54,18 @@ class _MoreScreenState extends State<MoreScreen> {
     _loadSocialLinks();
   }
 
-  /// Load social links from API
+  /// Loads social media links from the API.
+  ///
+  /// Process:
+  /// 1. Sets loading state
+  /// 2. Makes API call to fetch social links
+  /// 3. Updates state with links
+  ///
+  /// Error handling includes:
+  /// - Network connectivity issues
+  /// - Server timeout
+  /// - Authentication errors
+  /// - General API errors
   Future<void> _loadSocialLinks() async {
     try {
       setState(() {
@@ -61,7 +90,21 @@ class _MoreScreenState extends State<MoreScreen> {
     }
   }
 
-  /// Launch URL function
+  /// Launches a URL in the device's default browser.
+  ///
+  /// Parameters:
+  /// - url: The URL to launch
+  ///
+  /// Process:
+  /// 1. Validates and formats URL
+  /// 2. Attempts to launch URL
+  /// 3. Shows error message if launch fails
+  ///
+  /// Error handling includes:
+  /// - Invalid URL format
+  /// - No browser available
+  /// - Launch permission denied
+  /// - General launch errors
   Future<void> _launchUrl(String url) async {
     if (!url.startsWith('http://') && !url.startsWith('https://')) {
       url = 'https://$url';
@@ -95,12 +138,17 @@ class _MoreScreenState extends State<MoreScreen> {
     }
   }
 
-  /// Pull to refresh data
+  /// Refreshes social links data.
   Future<void> _refreshData() async {
     await _loadSocialLinks();
   }
 
-  /// Build social links grid
+  /// Builds the social links grid with icons and names.
+  ///
+  /// Returns:
+  /// - Loading indicator if data is loading
+  /// - Empty state message if no links available
+  /// - Grid of social link cards with icons and names
   Widget _buildSocialLinksGrid() {
     if (_isLoading) {
       return const SizedBox(
@@ -171,7 +219,14 @@ class _MoreScreenState extends State<MoreScreen> {
     );
   }
 
-  /// Get icon for social platform
+  /// Returns the appropriate icon for a social media platform.
+  ///
+  /// Parameters:
+  /// - platform: The name of the social media platform
+  ///
+  /// Returns:
+  /// - IconData for the platform
+  /// - Default link icon if platform not recognized
   IconData _getSocialIcon(String platform) {
     switch (platform) {
       case 'facebook':
@@ -200,7 +255,10 @@ class _MoreScreenState extends State<MoreScreen> {
     }
   }
 
-  /// Build app info section
+  /// Builds the app information section with details.
+  ///
+  /// Returns:
+  /// - Container with app information in a card layout
   Widget _buildAppInfoSection() {
     return Container(
       padding: const EdgeInsets.all(20),
@@ -236,7 +294,14 @@ class _MoreScreenState extends State<MoreScreen> {
     );
   }
 
-  /// Build info row
+  /// Builds a row of information with label and value.
+  ///
+  /// Parameters:
+  /// - label: The label text
+  /// - value: The value text
+  ///
+  /// Returns:
+  /// - Row with label and value text
   Widget _buildInfoRow(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -260,7 +325,10 @@ class _MoreScreenState extends State<MoreScreen> {
     );
   }
 
-  /// Build action buttons
+  /// Builds the action buttons section with navigation options.
+  ///
+  /// Returns:
+  /// - Column of action buttons for navigation
   Widget _buildActionButtons() {
     return Column(
       children: [
@@ -280,7 +348,15 @@ class _MoreScreenState extends State<MoreScreen> {
     );
   }
 
-  /// Build action button
+  /// Builds an action button with icon and title.
+  ///
+  /// Parameters:
+  /// - title: The button title
+  /// - icon: The button icon
+  /// - onTap: The callback function
+  ///
+  /// Returns:
+  /// - Container with button layout and styling
   Widget _buildActionButton(String title, IconData icon, VoidCallback onTap) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -337,10 +413,7 @@ class _MoreScreenState extends State<MoreScreen> {
                 children: [
                   Text(
                     "المزيد",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 24,
-                      ),
+                    style: TextStyle(fontWeight: FontWeight.w800, fontSize: 24),
                   ),
                 ],
               ),

@@ -1,3 +1,5 @@
+/// The new password screen that handles password reset after OTP verification.
+/// Provides password and confirm password input fields with validation.
 import 'package:flutter/material.dart';
 import '../../widgets/custom_rectangle.dart';
 import '../../widgets/custom_password_field.dart';
@@ -6,8 +8,21 @@ import '../../services/user_service.dart';
 import 'package:al_baker_air_conditioning/utils/alert_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Manages the password reset process and UI.
+///
+/// Features:
+/// - Password and confirm password input fields
+/// - Password strength validation
+/// - Password matching validation
+/// - Secure password visibility toggle
+/// - API integration for password reset
+/// - Token-based session management
+/// - Error handling for various scenarios
 class NewPasswordScreen extends StatefulWidget {
+  /// Email address for which password is being reset
   final String email;
+
+  /// OTP code used for verification
   final String otp;
 
   const NewPasswordScreen({super.key, required this.email, required this.otp});
@@ -17,36 +32,56 @@ class NewPasswordScreen extends StatefulWidget {
 }
 
 class _NewPasswordScreenState extends State<NewPasswordScreen> {
+  /// Controller for managing new password input
   final TextEditingController _passwordController = TextEditingController();
+
+  /// Controller for managing confirm password input
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+
+  /// Service for handling user-related API calls
   final UserService _userService = UserService();
+
+  /// Flag to track loading state during password reset
   bool _isLoading = false;
 
+  /// Handles the password reset process by validating inputs and making API calls.
+  ///
+  /// Process:
+  /// 1. Validates password presence and strength
+  /// 2. Validates password matching
+  /// 3. Makes API call to reset password
+  /// 4. Handles response:
+  ///    - Success: Stores token and navigates to main screen
+  ///    - Failure: Shows appropriate error message
+  /// 5. If token not returned, attempts login
+  ///
+  /// Error handling includes:
+  /// - Network connectivity issues
+  /// - Server timeout
+  /// - Weak password
+  /// - Password mismatch
+  /// - Session expiration
+  /// - General password reset errors
   void _resetPassword() async {
+    // Validate password presence
     if (_passwordController.text.isEmpty) {
-      AlertUtils.showWarningAlert(
-        context,
-        "تنبيه",
-        AlertUtils.requiredFields
-      );
+      AlertUtils.showWarningAlert(context, "تنبيه", AlertUtils.requiredFields);
       return;
     }
 
+    // Validate password strength
     if (_passwordController.text.length < 8) {
-      AlertUtils.showWarningAlert(
-        context,
-        "تنبيه",
-        AlertUtils.weakPassword
-      );
+      AlertUtils.showWarningAlert(context, "تنبيه", AlertUtils.weakPassword);
       return;
     }
 
+    // Validate password matching
     if (_passwordController.text != _confirmPasswordController.text) {
       AlertUtils.showWarningAlert(
         context,
         "تنبيه",
-        AlertUtils.passwordMismatch
+        AlertUtils.passwordMismatch,
       );
       return;
     }
@@ -54,6 +89,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
     setState(() => _isLoading = true);
 
     try {
+      // Attempt password reset through API
       var response = await _userService.resetPassword(
         email: widget.email,
         password: _passwordController.text,
@@ -63,46 +99,48 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
 
       setState(() => _isLoading = false);
 
+      // Handle successful password reset
       if (response.statusCode == 200) {
-        // حفظ التوكن للمستخدم بعد تغيير كلمة المرور بنجاح
-        if (response.data != null && response.data['data'] != null && response.data['data']['token'] != null) {
+        // Store token if returned in response
+        if (response.data != null &&
+            response.data['data'] != null &&
+            response.data['data']['token'] != null) {
           var token = response.data['data']['token'];
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString('token', token);
-          
+
           AlertUtils.showSuccessAlert(
             context,
             "نجاح",
-            AlertUtils.passwordChangeSuccess
+            AlertUtils.passwordChangeSuccess,
           );
-          
+
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const MainScreen()),
           );
         } else {
-          // إذا لم يتم إرجاع التوكن، نحاول تسجيل الدخول أولاً
+          // If token not returned, attempt login
           try {
             var loginResponse = await _userService.login(
               widget.email,
               _passwordController.text,
             );
-            
-            if (loginResponse.statusCode == 200 && 
-                loginResponse.data != null && 
-                loginResponse.data['data'] != null && 
+
+            if (loginResponse.statusCode == 200 &&
+                loginResponse.data != null &&
+                loginResponse.data['data'] != null &&
                 loginResponse.data['data']['token'] != null) {
-              
               var token = loginResponse.data['data']['token'];
               final prefs = await SharedPreferences.getInstance();
               await prefs.setString('token', token);
-              
+
               AlertUtils.showSuccessAlert(
                 context,
                 "نجاح",
-                AlertUtils.passwordChangeSuccess
+                AlertUtils.passwordChangeSuccess,
               );
-              
+
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => const MainScreen()),
@@ -111,14 +149,14 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
               AlertUtils.showErrorAlert(
                 context,
                 "تنبيه",
-                AlertUtils.sessionExpired
+                AlertUtils.sessionExpired,
               );
             }
           } catch (loginError) {
             AlertUtils.showErrorAlert(
               context,
               "تنبيه",
-              AlertUtils.sessionExpired
+              AlertUtils.sessionExpired,
             );
           }
         }
@@ -126,29 +164,22 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
         AlertUtils.showErrorAlert(
           context,
           "تنبيه",
-          AlertUtils.passwordResetFailed
+          AlertUtils.passwordResetFailed,
         );
       }
     } catch (e) {
       setState(() => _isLoading = false);
-      
+
+      // Handle various error scenarios
       if (e.toString().contains('network')) {
-        AlertUtils.showErrorAlert(
-          context,
-          "تنبيه",
-          AlertUtils.networkError
-        );
+        AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.networkError);
       } else if (e.toString().contains('timeout')) {
-        AlertUtils.showErrorAlert(
-          context,
-          "تنبيه",
-          AlertUtils.noInternet
-        );
+        AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.noInternet);
       } else {
         AlertUtils.showErrorAlert(
           context,
           "تنبيه",
-          AlertUtils.passwordResetFailed
+          AlertUtils.passwordResetFailed,
         );
       }
     }
@@ -168,7 +199,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
       body: SafeArea(
         child: Stack(
           children: [
-            // Rectangle at the top
+            // Background rectangle decoration
             const Positioned(
               top: 0,
               left: 0,
@@ -176,7 +207,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
               child: CustomRectangle(),
             ),
 
-            // Eye unlock image
+            // Password reset icon
             Positioned(
               top: 96,
               left: 154,
@@ -188,7 +219,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
               ),
             ),
 
-            // Title text
+            // Title and instructions
             Positioned(
               top: 321,
               left: 0,
@@ -204,8 +235,8 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                         fontSize: 25,
                         fontWeight: FontWeight.w800,
                         color: Color(0xFF2D2525),
-                        height: 1.0, // line-height: 100%
-                        letterSpacing: 0, // letter-spacing: 0%
+                        height: 1.0,
+                        letterSpacing: 0,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -220,8 +251,8 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                         fontSize: 20,
                         fontWeight: FontWeight.w400,
                         color: Color(0xFF2D2525),
-                        height: 1.4, // line-height: 25px
-                        letterSpacing: 0, // letter-spacing: 0%
+                        height: 1.4,
+                        letterSpacing: 0,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -230,7 +261,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
               ),
             ),
 
-            // Password Fields
+            // New password input field
             Positioned(
               top: 460,
               left: 33,
@@ -240,6 +271,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
               ),
             ),
 
+            // Confirm password input field
             Positioned(
               top: 550,
               left: 33,
@@ -249,9 +281,9 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
               ),
             ),
 
-            // Confirm Button
+            // Reset password button with loading state
             Positioned(
-              top: 700,
+              top: 650,
               left: 35,
               child: SizedBox(
                 width: 363,
@@ -264,16 +296,17 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       borderRadius: BorderRadius.circular(38),
                     ),
                   ),
-                  child: _isLoading 
-                    ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text(
-                        "تأكيد",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 22,
-                          color: Colors.white,
-                        ),
-                      ),
+                  child:
+                      _isLoading
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Text(
+                            "تغيير كلمة المرور",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 22,
+                              color: Colors.white,
+                            ),
+                          ),
                 ),
               ),
             ),

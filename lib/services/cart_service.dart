@@ -1,16 +1,54 @@
+/// A service class for managing shopping cart operations.
+///
+/// Features:
+/// - Cart management (view, add, update items)
+/// - Product and accessory handling
+/// - Address management
+/// - Payment processing
+/// - API integration with albakr-ac.com
+///
+/// The service provides methods for:
+/// - Retrieving cart contents
+/// - Adding products and accessories
+/// - Updating item quantities
+/// - Managing delivery addresses
+/// - Processing payments
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Service class for handling all cart-related API operations.
+///
+/// This class manages the shopping cart functionality including:
+/// - Cart item management
+/// - Product and accessory handling
+/// - Address selection
+/// - Payment processing
+///
+/// All API calls are made to the base URL 'https://albakr-ac.com/api'
+/// with proper authentication and Arabic language support.
 class CartService {
+  /// Dio instance for making HTTP requests
   final Dio _dio = Dio();
+
+  /// Base URL for all API endpoints
   final String baseUrl = 'https://albakr-ac.com/api';
 
+  /// Retrieves the authentication token from SharedPreferences.
+  ///
+  /// Returns:
+  /// - String?: The stored token or null if not found
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
   }
 
-  // Get Cart
+  /// Retrieves the current cart contents.
+  ///
+  /// Returns:
+  /// - Response: API response containing cart data
+  ///
+  /// Throws:
+  /// - Exception: If the API call fails
   Future<Response> getCart() async {
     try {
       final token = await getToken();
@@ -30,7 +68,18 @@ class CartService {
     }
   }
 
-  // Add Product to Cart
+  /// Adds a product to the cart.
+  ///
+  /// Parameters:
+  /// - productId: ID of the product to add
+  /// - quantity: Number of items to add
+  /// - addId: ID of any additional options
+  ///
+  /// Returns:
+  /// - Response: API response confirming the addition
+  ///
+  /// Throws:
+  /// - Exception: If the API call fails
   Future<Response> addProductToCart({
     required int productId,
     required int quantity,
@@ -61,7 +110,17 @@ class CartService {
     }
   }
 
-  // Add Accessory to Cart
+  /// Adds an accessory to the cart.
+  ///
+  /// Parameters:
+  /// - accessoryId: ID of the accessory to add
+  /// - quantity: Number of items to add
+  ///
+  /// Returns:
+  /// - Response: API response confirming the addition
+  ///
+  /// Throws:
+  /// - Exception: If the API call fails
   Future<Response> addAccessoryToCart({
     required int accessoryId,
     required int quantity,
@@ -87,7 +146,18 @@ class CartService {
     }
   }
 
-  // Update Product in Cart
+  /// Updates the quantity of a product in the cart.
+  ///
+  /// Parameters:
+  /// - itemId: ID of the cart item to update
+  /// - quantity: New quantity value
+  /// - addId: ID of any additional options
+  ///
+  /// Returns:
+  /// - Response: API response confirming the update
+  ///
+  /// Throws:
+  /// - Exception: If the API call fails
   Future<Response> updateProductInCart({
     required int itemId,
     required int quantity,
@@ -114,7 +184,17 @@ class CartService {
     }
   }
 
-  // Update Accessory in Cart
+  /// Updates the quantity of an accessory in the cart.
+  ///
+  /// Parameters:
+  /// - itemId: ID of the cart item to update
+  /// - quantity: New quantity value
+  ///
+  /// Returns:
+  /// - Response: API response confirming the update
+  ///
+  /// Throws:
+  /// - Exception: If the API call fails
   Future<Response> updateAccessoryInCart({
     required int itemId,
     required int quantity,
@@ -140,7 +220,13 @@ class CartService {
     }
   }
 
-  // Get Additions
+  /// Retrieves available product additions/options.
+  ///
+  /// Returns:
+  /// - Response: API response containing additions data
+  ///
+  /// Throws:
+  /// - Exception: If the API call fails
   Future<Response> getAdditions() async {
     try {
       final token = await getToken();
@@ -160,7 +246,13 @@ class CartService {
     }
   }
 
-  // Get Addresses
+  /// Retrieves the user's saved addresses.
+  ///
+  /// Returns:
+  /// - Response: API response containing addresses data
+  ///
+  /// Throws:
+  /// - Exception: If the API call fails
   Future<Response> getAddresses() async {
     try {
       final token = await getToken();
@@ -180,7 +272,16 @@ class CartService {
     }
   }
 
-  // Choose Address for Cart
+  /// Selects a delivery address for the cart.
+  ///
+  /// Parameters:
+  /// - addressId: ID of the address to select
+  ///
+  /// Returns:
+  /// - Response: API response confirming the selection
+  ///
+  /// Throws:
+  /// - Exception: If the API call fails
   Future<Response> chooseAddress(int addressId) async {
     try {
       final token = await getToken();
@@ -201,7 +302,13 @@ class CartService {
     }
   }
 
-  // Get Cart Payment
+  /// Retrieves payment information for the cart.
+  ///
+  /// Returns:
+  /// - Response: API response containing payment data
+  ///
+  /// Throws:
+  /// - Exception: If the API call fails
   Future<Response> getCartPayment() async {
     try {
       final token = await getToken();
@@ -221,7 +328,16 @@ class CartService {
     }
   }
 
-  // Update Cart Payment
+  /// Updates the payment method for the cart.
+  ///
+  /// Parameters:
+  /// - code: Payment method code
+  ///
+  /// Returns:
+  /// - Response: API response confirming the update
+  ///
+  /// Throws:
+  /// - Exception: If the API call fails
   Future<Response> updateCartPayment(String code) async {
     try {
       final token = await getToken();

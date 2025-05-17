@@ -1,7 +1,34 @@
+/// A custom password input field widget with show/hide functionality.
+///
+/// Features:
+/// - Password visibility toggle
+/// - Right-aligned text input
+/// - Custom styling with rounded corners
+/// - Password icon and divider
+/// - Consistent width and height
+/// - Customizable hint text
+///
+/// The widget uses a light gray background (#F7F7F7) and includes
+/// a vertical divider between the password icon and input field.
 import 'package:flutter/material.dart';
 
+/// A reusable password input field with custom styling and layout.
+///
+/// This widget provides a consistent password input field across the app
+/// with the following features:
+/// - Toggle password visibility
+/// - Right-to-left text alignment
+/// - Custom styling with rounded corners
+/// - Password icon and divider
+/// - Customizable hint text
+///
+/// The widget maintains a fixed width of 363 and height of 76 pixels
+/// for consistency across the app.
 class CustomPasswordField extends StatefulWidget {
+  /// Controller for managing the password input field
   final TextEditingController controller;
+
+  /// Custom hint text to display in the input field
   final String hintText;
 
   const CustomPasswordField({
@@ -15,6 +42,7 @@ class CustomPasswordField extends StatefulWidget {
 }
 
 class _CustomPasswordFieldState extends State<CustomPasswordField> {
+  /// Tracks whether the password is currently visible
   bool _isPasswordVisible = false;
 
   @override
@@ -30,6 +58,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          // Password visibility toggle button
           GestureDetector(
             onTap: () {
               setState(() {
@@ -45,6 +74,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
+              // Password input field with right alignment
               SizedBox(
                 width: 200,
                 child: TextField(
@@ -62,9 +92,11 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
                   ),
                 ),
               ),
+              // Vertical divider between icon and input
               const SizedBox(width: 10),
               Container(width: 2, height: 17, color: const Color(0x36000000)),
               const SizedBox(width: 10),
+              // Password icon
               Image.asset('assets/images/twotone.png', width: 24, height: 24),
             ],
           ),

@@ -1,11 +1,22 @@
+/// The main entry point for the Albaker Air Conditioning application.
+/// This file sets up the core application configuration and theme.
 import 'package:flutter/material.dart';
 // import 'screens/app_screens/main_screen.dart'; // Main screen with navbar and all screens
 import 'screens/splash_screen.dart'; //
 
+/// Entry point of the application that initializes and runs the Flutter app
 void main() {
   runApp(const MyApp());
 }
 
+/// Root widget of the application that configures the MaterialApp with custom theme
+/// and initial routing.
+///
+/// This widget sets up:
+/// - Custom theme with Almarai font family
+/// - Primary color scheme using #1D75B1
+/// - AppBar styling with white background and custom text style
+/// - Initial route to SplashScreen
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

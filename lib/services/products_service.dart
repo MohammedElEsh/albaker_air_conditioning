@@ -1,17 +1,64 @@
+/// A service class for managing product-related operations.
+///
+/// Features:
+/// - Product details retrieval
+/// - Accessory details management
+/// - Category-based product listing
+/// - Brand management
+/// - Product search and filtering
+/// - Best seller products
+/// - Review submission
+/// - API integration with albakr-ac.com
+///
+/// The service provides methods for:
+/// - Fetching product and accessory details
+/// - Loading products by category
+/// - Managing product brands
+/// - Searching and filtering products
+/// - Accessing best seller items
+/// - Submitting reviews
+/// - Arabic language support
 import 'package:dio/dio.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Service class for handling all product-related API operations.
+///
+/// This class manages the product functionality including:
+/// - Product and accessory details
+/// - Category and brand management
+/// - Search and filtering
+/// - Best seller items
+/// - Review management
+///
+/// All API calls are made to the base URL 'https://albakr-ac.com/api'
+/// with proper authentication and Arabic language support.
 class ProductService {
+  /// Dio instance for making HTTP requests
   final Dio _dio = Dio();
+
+  /// Base URL for all API endpoints
   final String baseUrl = 'https://albakr-ac.com/api';
 
+  /// Retrieves the authentication token from SharedPreferences.
+  ///
+  /// Returns:
+  /// - String?: The stored token or null if not found
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
   }
 
-  // Get Product Details
+  /// Retrieves detailed information for a specific product.
+  ///
+  /// Parameters:
+  /// - productId: ID of the product to fetch details for
+  ///
+  /// Returns:
+  /// - Response: API response containing product details
+  ///
+  /// Throws:
+  /// - Exception: If the API call fails
   Future<Response> getProductDetails(int productId) async {
     try {
       final token = await getToken();
@@ -32,7 +79,16 @@ class ProductService {
     }
   }
 
-  // Get Accessories Details
+  /// Retrieves detailed information for a specific accessory.
+  ///
+  /// Parameters:
+  /// - accessoryId: ID of the accessory to fetch details for
+  ///
+  /// Returns:
+  /// - Response: API response containing accessory details
+  ///
+  /// Throws:
+  /// - Exception: If the API call fails
   Future<Response> getAccessoriesDetails(int accessoryId) async {
     try {
       final token = await getToken();
@@ -52,7 +108,16 @@ class ProductService {
     }
   }
 
-  // Get Products by Category
+  /// Retrieves products for a specific category.
+  ///
+  /// Parameters:
+  /// - categoryId: ID of the category to fetch products for
+  ///
+  /// Returns:
+  /// - Response: API response containing products data
+  ///
+  /// Throws:
+  /// - Exception: If the API call fails
   Future<Response> getProductsByCategory(int categoryId) async {
     try {
       final token = await getToken();
@@ -73,7 +138,13 @@ class ProductService {
     }
   }
 
-  // Get Product Brands
+  /// Retrieves all available product brands.
+  ///
+  /// Returns:
+  /// - Response: API response containing brands data
+  ///
+  /// Throws:
+  /// - Exception: If the API call fails
   Future<Response> getProductBrands() async {
     try {
       final token = await getToken();
@@ -93,7 +164,17 @@ class ProductService {
     }
   }
 
-  // Search Products
+  /// Searches for products based on keyword and optional brand filters.
+  ///
+  /// Parameters:
+  /// - keyword: Search term to look for in products
+  /// - brands: Optional list of brand IDs to filter by
+  ///
+  /// Returns:
+  /// - Response: API response containing search results
+  ///
+  /// Throws:
+  /// - Exception: If the API call fails
   Future<Response> searchProducts(String keyword, {List<int>? brands}) async {
     try {
       // Create query parameters for the search
@@ -136,7 +217,20 @@ class ProductService {
     }
   }
 
-  // Filter Products
+  /// Filters products based on various criteria.
+  ///
+  /// Parameters:
+  /// - categoryId: ID of the category to filter by
+  /// - brandsId: Optional list of brand IDs to filter by
+  /// - bestSeller: Optional flag to filter best sellers
+  /// - price: Optional price filter
+  /// - rate: Optional rating filter
+  ///
+  /// Returns:
+  /// - Response: API response containing filtered products
+  ///
+  /// Throws:
+  /// - Exception: If the API call fails
   Future<Response> filterProducts({
     required int categoryId,
     List<int>? brandsId,
@@ -179,7 +273,13 @@ class ProductService {
     }
   }
 
-  // Get Best Seller Products
+  /// Retrieves best-selling products.
+  ///
+  /// Returns:
+  /// - Response: API response containing best seller products data
+  ///
+  /// Throws:
+  /// - Exception: If the API call fails
   Future<Response> getBestSellerProducts() async {
     try {
       final token = await getToken();
@@ -199,7 +299,13 @@ class ProductService {
     }
   }
 
-  // Get Best Seller Accessories
+  /// Retrieves best-selling accessories.
+  ///
+  /// Returns:
+  /// - Response: API response containing best seller accessories data
+  ///
+  /// Throws:
+  /// - Exception: If the API call fails
   Future<Response> getBestSellerAccessories() async {
     try {
       final token = await getToken();
@@ -219,7 +325,21 @@ class ProductService {
     }
   }
 
-  // Add Product Review
+  /// Submits a review for a product or accessory.
+  ///
+  /// Parameters:
+  /// - comment: The review text
+  /// - rate: Rating value (typically 1-5)
+  /// - productId: Optional ID of the product being reviewed
+  /// - accessoryId: Optional ID of the accessory being reviewed
+  ///
+  /// Note: Either productId or accessoryId must be provided, but not both
+  ///
+  /// Returns:
+  /// - Response: API response confirming the review submission
+  ///
+  /// Throws:
+  /// - Exception: If the API call fails
   Future<Response> addReview({
     required String comment,
     required int rate,

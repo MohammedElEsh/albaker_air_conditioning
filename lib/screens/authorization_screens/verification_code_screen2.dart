@@ -1,10 +1,22 @@
+/// The verification code screen that handles OTP verification for new user registration.
+/// Provides input fields for 5-digit verification code and resend functionality.
 import 'package:flutter/material.dart';
 import '../../widgets/custom_rectangle.dart';
 import 'complete_data_screen.dart';
 import '../../services/user_service.dart';
 import 'package:al_baker_air_conditioning/utils/alert_utils.dart';
 
+/// Manages the OTP verification process and UI for new user registration.
+///
+/// Features:
+/// - 5-digit OTP input with auto-focus
+/// - Real-time validation
+/// - Resend OTP functionality
+/// - Error handling for various scenarios
+/// - Navigation to complete data screen
+/// - Custom UI with background rectangle and icon
 class VerificationCodeScreen2 extends StatefulWidget {
+  /// Email address for which OTP was sent
   final String email;
 
   const VerificationCodeScreen2({super.key, required this.email});
@@ -15,25 +27,46 @@ class VerificationCodeScreen2 extends StatefulWidget {
 }
 
 class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
+  /// List of controllers for each digit of the OTP
   final List<TextEditingController> controllers = List.generate(
     5,
     (index) => TextEditingController(),
   );
+
+  /// Service for handling user-related API calls
   final UserService _userService = UserService();
 
   @override
   void initState() {
     super.initState();
-    // Show alert when screen is first loaded
+    // Show success alert when screen is first loaded
     WidgetsBinding.instance.addPostFrameCallback((_) {
       AlertUtils.showSuccessAlert(
         context,
         "نجاح",
-        AlertUtils.verificationCodeSent
+        AlertUtils.verificationCodeSent,
       );
     });
   }
 
+  /// Verifies the entered OTP code by validating format and making API call.
+  ///
+  /// Process:
+  /// 1. Validates that all OTP fields are filled
+  /// 2. Validates OTP format (5 digits)
+  /// 3. Makes API call to verify OTP
+  /// 4. Handles response:
+  ///    - Success: Navigates to complete data screen
+  ///    - Invalid code: Shows error message
+  ///    - Email not found: Shows error message
+  ///    - Other errors: Shows appropriate error message
+  ///
+  /// Error handling includes:
+  /// - Network connectivity issues
+  /// - Server timeout
+  /// - Invalid OTP format
+  /// - Invalid verification code
+  /// - General verification errors
   void _verifyCode() async {
     // تحقق من أن جميع حقول OTP مملوءة
     for (var controller in controllers) {
@@ -41,20 +74,20 @@ class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
         AlertUtils.showWarningAlert(
           context,
           "تنبيه",
-          AlertUtils.verificationCodeEmpty
+          AlertUtils.verificationCodeEmpty,
         );
         return;
       }
     }
 
     String otp = controllers.map((c) => c.text).join();
-    
+
     // تحقق من تنسيق رمز التحقق
     if (otp.length != 5 || !RegExp(r'^[0-9]+$').hasMatch(otp)) {
       AlertUtils.showWarningAlert(
         context,
         "تنبيه",
-        AlertUtils.invalidOtpFormat
+        AlertUtils.invalidOtpFormat,
       );
       return;
     }
@@ -65,47 +98,28 @@ class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => CompleteDataScreen(email: widget.email, otp: otp),
+            builder:
+                (context) => CompleteDataScreen(email: widget.email, otp: otp),
           ),
         );
       } else if (response.statusCode == 422) {
         AlertUtils.showErrorAlert(
           context,
           "تنبيه",
-          AlertUtils.verificationCodeError
+          AlertUtils.verificationCodeError,
         );
       } else if (response.statusCode == 404) {
-        AlertUtils.showErrorAlert(
-          context,
-          "تنبيه",
-          AlertUtils.emailNotFound
-        );
+        AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.emailNotFound);
       } else {
-        AlertUtils.showErrorAlert(
-          context,
-          "تنبيه",
-          AlertUtils.generalError
-        );
+        AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.generalError);
       }
     } catch (e) {
       if (e.toString().contains('network')) {
-        AlertUtils.showErrorAlert(
-          context,
-          "تنبيه",
-          AlertUtils.networkError
-        );
+        AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.networkError);
       } else if (e.toString().contains('timeout')) {
-        AlertUtils.showErrorAlert(
-          context,
-          "تنبيه",
-          AlertUtils.noInternet
-        );
+        AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.noInternet);
       } else {
-        AlertUtils.showErrorAlert(
-          context,
-          "تنبيه",
-          AlertUtils.generalError
-        );
+        AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.generalError);
       }
     }
   }
@@ -119,43 +133,19 @@ class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
           controller.clear();
         }
         // إعلام المستخدم أنه تم إرسال رمز جديد
-        AlertUtils.showSuccessAlert(
-          context,
-          "نجاح",
-          AlertUtils.newOtpSent
-        );
+        AlertUtils.showSuccessAlert(context, "نجاح", AlertUtils.newOtpSent);
       } else if (response.statusCode == 404) {
-        AlertUtils.showErrorAlert(
-          context,
-          "تنبيه",
-          AlertUtils.emailNotFound
-        );
+        AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.emailNotFound);
       } else {
-        AlertUtils.showErrorAlert(
-          context,
-          "تنبيه",
-          AlertUtils.otpSendFailed
-        );
+        AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.otpSendFailed);
       }
     } catch (e) {
       if (e.toString().contains('network')) {
-        AlertUtils.showErrorAlert(
-          context,
-          "تنبيه",
-          AlertUtils.networkError
-        );
+        AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.networkError);
       } else if (e.toString().contains('timeout')) {
-        AlertUtils.showErrorAlert(
-          context,
-          "تنبيه",
-          AlertUtils.noInternet
-        );
+        AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.noInternet);
       } else {
-        AlertUtils.showErrorAlert(
-          context,
-          "تنبيه",
-          AlertUtils.generalError
-        );
+        AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.generalError);
       }
     }
   }
@@ -260,9 +250,10 @@ class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
                             height: 61,
                             margin: const EdgeInsets.symmetric(horizontal: 5),
                             decoration: BoxDecoration(
-                              color: controllers[index].text.isNotEmpty
-                                  ? const Color(0xFF000000)
-                                  : const Color(0xFFF7F7F7),
+                              color:
+                                  controllers[index].text.isNotEmpty
+                                      ? const Color(0xFF000000)
+                                      : const Color(0xFFF7F7F7),
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: TextField(
@@ -277,12 +268,15 @@ class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
-                                color: controllers[index].text.isNotEmpty
-                                    ? Colors.white
-                                    : Colors.black,
+                                color:
+                                    controllers[index].text.isNotEmpty
+                                        ? Colors.white
+                                        : Colors.black,
                               ),
                               onChanged: (value) {
-                                setState(() {}); // تحديث حالة الحاوية عند الكتابة
+                                setState(
+                                  () {},
+                                ); // تحديث حالة الحاوية عند الكتابة
                                 if (value.isNotEmpty && index < 4) {
                                   FocusScope.of(context).nextFocus();
                                 }

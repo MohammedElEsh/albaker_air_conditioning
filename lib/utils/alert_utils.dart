@@ -1,8 +1,55 @@
+/// A utility class for displaying various types of alerts in the app.
+///
+/// Features:
+/// - Four types of alerts: error, success, warning, and info
+/// - Consistent styling across all alerts
+/// - Arabic language support
+/// - Custom animations and transitions
+/// - Predefined common alert messages
+///
+/// Each alert type has:
+/// - Custom icon and color scheme
+/// - Title and description
+/// - Dismissible overlay
+/// - Close button
+/// - Action button
+/// - Rounded corners
+/// - Custom font family (Almarai)
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
+/// Utility class for managing and displaying alerts throughout the app.
+///
+/// This class provides methods for showing different types of alerts:
+/// - Error alerts (red)
+/// - Success alerts (green)
+/// - Warning alerts (orange)
+/// - Info alerts (blue)
+///
+/// Each alert type follows the same styling pattern with:
+/// - Custom colors for different states
+/// - Consistent typography
+/// - Standardized animations
+/// - Unified button design
 class AlertUtils {
-  static void showErrorAlert(BuildContext context, String title, String message) {
+  /// Shows an error alert with red color scheme.
+  ///
+  /// Parameters:
+  /// - context: The build context for showing the alert
+  /// - title: The alert title
+  /// - message: The alert message/description
+  ///
+  /// Features:
+  /// - Red color scheme
+  /// - Error icon
+  /// - Dismissible overlay
+  /// - Close button
+  /// - "حسناً" (OK) action button
+  static void showErrorAlert(
+    BuildContext context,
+    String title,
+    String message,
+  ) {
     Alert(
       context: context,
       type: AlertType.error,
@@ -14,10 +61,7 @@ class AlertUtils {
           fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
-        descStyle: TextStyle(
-          fontFamily: 'Almarai',
-          fontSize: 16,
-        ),
+        descStyle: TextStyle(fontFamily: 'Almarai', fontSize: 16),
         animationType: AnimationType.fromTop,
         isCloseButton: true,
         isOverlayTapDismiss: true,
@@ -45,7 +89,24 @@ class AlertUtils {
     ).show();
   }
 
-  static void showSuccessAlert(BuildContext context, String title, String message) {
+  /// Shows a success alert with green color scheme.
+  ///
+  /// Parameters:
+  /// - context: The build context for showing the alert
+  /// - title: The alert title
+  /// - message: The alert message/description
+  ///
+  /// Features:
+  /// - Green color scheme
+  /// - Success icon
+  /// - Dismissible overlay
+  /// - Close button
+  /// - "حسناً" (OK) action button
+  static void showSuccessAlert(
+    BuildContext context,
+    String title,
+    String message,
+  ) {
     Alert(
       context: context,
       type: AlertType.success,
@@ -57,10 +118,7 @@ class AlertUtils {
           fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
-        descStyle: TextStyle(
-          fontFamily: 'Almarai',
-          fontSize: 16,
-        ),
+        descStyle: TextStyle(fontFamily: 'Almarai', fontSize: 16),
         animationType: AnimationType.fromTop,
         isCloseButton: true,
         isOverlayTapDismiss: true,
@@ -88,7 +146,24 @@ class AlertUtils {
     ).show();
   }
 
-  static void showWarningAlert(BuildContext context, String title, String message) {
+  /// Shows a warning alert with orange color scheme.
+  ///
+  /// Parameters:
+  /// - context: The build context for showing the alert
+  /// - title: The alert title
+  /// - message: The alert message/description
+  ///
+  /// Features:
+  /// - Orange color scheme
+  /// - Warning icon
+  /// - Dismissible overlay
+  /// - Close button
+  /// - "حسناً" (OK) action button
+  static void showWarningAlert(
+    BuildContext context,
+    String title,
+    String message,
+  ) {
     Alert(
       context: context,
       type: AlertType.warning,
@@ -100,10 +175,7 @@ class AlertUtils {
           fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
-        descStyle: TextStyle(
-          fontFamily: 'Almarai',
-          fontSize: 16,
-        ),
+        descStyle: TextStyle(fontFamily: 'Almarai', fontSize: 16),
         animationType: AnimationType.fromTop,
         isCloseButton: true,
         isOverlayTapDismiss: true,
@@ -131,7 +203,24 @@ class AlertUtils {
     ).show();
   }
 
-  static void showInfoAlert(BuildContext context, String title, String message) {
+  /// Shows an info alert with blue color scheme.
+  ///
+  /// Parameters:
+  /// - context: The build context for showing the alert
+  /// - title: The alert title
+  /// - message: The alert message/description
+  ///
+  /// Features:
+  /// - Blue color scheme
+  /// - Info icon
+  /// - Dismissible overlay
+  /// - Close button
+  /// - "حسناً" (OK) action button
+  static void showInfoAlert(
+    BuildContext context,
+    String title,
+    String message,
+  ) {
     Alert(
       context: context,
       type: AlertType.info,
@@ -143,10 +232,7 @@ class AlertUtils {
           fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
-        descStyle: TextStyle(
-          fontFamily: 'Almarai',
-          fontSize: 16,
-        ),
+        descStyle: TextStyle(fontFamily: 'Almarai', fontSize: 16),
         animationType: AnimationType.fromTop,
         isCloseButton: true,
         isOverlayTapDismiss: true,
@@ -174,56 +260,100 @@ class AlertUtils {
     ).show();
   }
 
-  // Common alert messages
-  static const String networkError = "لا يمكن الاتصال بالإنترنت حالياً. تحقق من الشبكة وحاول مرة أخرى.";
-  static const String loginError = "فشل تسجيل الدخول. تحقق من البريد الإلكتروني وكلمة المرور.";
-  static const String invalidEmailLogin = "البريد الإلكتروني غير مسجل. يرجى إنشاء حساب جديد أو المحاولة بعنوان مختلف.";
-  static const String invalidPasswordLogin = "كلمة المرور غير صحيحة. تأكد من كتابتها بشكل صحيح.";
-  static const String invalidEmail = "صيغة البريد الإلكتروني غير صحيحة. يرجى المحاولة بعنوان صحيح.";
+  /// Predefined alert messages for common scenarios.
+  ///
+  /// These messages are used throughout the app to maintain consistency
+  /// in error handling and user feedback. All messages are in Arabic.
+  ///
+  /// Categories:
+  /// - Network errors
+  /// - Authentication errors
+  /// - Validation errors
+  /// - Server errors
+  /// - Success messages
+  /// - Confirmation messages
+  /// - Verification messages
+  /// - Profile management messages
+  /// - General error messages
+  /// - System status messages
+  static const String networkError =
+      "لا يمكن الاتصال بالإنترنت حالياً. تحقق من الشبكة وحاول مرة أخرى.";
+  static const String loginError =
+      "فشل تسجيل الدخول. تحقق من البريد الإلكتروني وكلمة المرور.";
+  static const String invalidEmailLogin =
+      "البريد الإلكتروني غير مسجل. يرجى إنشاء حساب جديد أو المحاولة بعنوان مختلف.";
+  static const String invalidPasswordLogin =
+      "كلمة المرور غير صحيحة. تأكد من كتابتها بشكل صحيح.";
+  static const String invalidEmail =
+      "صيغة البريد الإلكتروني غير صحيحة. يرجى المحاولة بعنوان صحيح.";
   static const String invalidPassword = "كلمة المرور المدخلة غير صحيحة.";
   static const String serverError = "حدث خطأ في الخادم. يرجى المحاولة لاحقاً.";
-  static const String sessionExpired = "انتهت الجلسة. يرجى تسجيل الدخول مجددًا للمتابعة.";
+  static const String sessionExpired =
+      "انتهت الجلسة. يرجى تسجيل الدخول مجددًا للمتابعة.";
   static const String requiredFields = "يرجى ملء جميع الحقول المطلوبة.";
   static const String successMessage = "تمت العملية بنجاح.";
-  static const String deleteConfirmation = "هل أنت متأكد من رغبتك في حذف هذا العنصر؟ لا يمكن التراجع عن هذه العملية.";
+  static const String deleteConfirmation =
+      "هل أنت متأكد من رغبتك في حذف هذا العنصر؟ لا يمكن التراجع عن هذه العملية.";
   static const String saveConfirmation = "هل ترغب بحفظ التغييرات قبل المتابعة؟";
-  static const String verificationCodeError = "رمز التحقق غير صحيح. تأكد من الرمز وأعد المحاولة.";
-  static const String verificationCodeEmpty = "يرجى إدخال رمز التحقق المكون من 5 أرقام.";
-  static const String verificationCodeSent = "تم إرسال رمز التحقق إلى بريدك الإلكتروني.";
+  static const String verificationCodeError =
+      "رمز التحقق غير صحيح. تأكد من الرمز وأعد المحاولة.";
+  static const String verificationCodeEmpty =
+      "يرجى إدخال رمز التحقق المكون من 5 أرقام.";
+  static const String verificationCodeSent =
+      "تم إرسال رمز التحقق إلى بريدك الإلكتروني.";
   static const String verificationCodeResent = "تم إرسال رمز تحقق جديد بنجاح.";
   static const String passwordMismatch = "كلمتا المرور غير متطابقتين.";
-  static const String registrationFailed = "فشل إنشاء الحساب. يرجى المحاولة لاحقاً.";
-  static const String passwordResetFailed = "تعذر إعادة تعيين كلمة المرور. تحقق من البيانات وأعد المحاولة.";
+  static const String registrationFailed =
+      "فشل إنشاء الحساب. يرجى المحاولة لاحقاً.";
+  static const String passwordResetFailed =
+      "تعذر إعادة تعيين كلمة المرور. تحقق من البيانات وأعد المحاولة.";
   static const String profileUpdateSuccess = "تم تحديث الملف الشخصي بنجاح.";
-  static const String profileUpdateFailed = "فشل تحديث البيانات الشخصية. تحقق من المعلومات وأعد المحاولة.";
+  static const String profileUpdateFailed =
+      "فشل تحديث البيانات الشخصية. تحقق من المعلومات وأعد المحاولة.";
   static const String passwordChangeSuccess = "تم تغيير كلمة المرور بنجاح.";
-  static const String passwordChangeFailed = "فشل تغيير كلمة المرور. تأكد من كلمة المرور الحالية.";
+  static const String passwordChangeFailed =
+      "فشل تغيير كلمة المرور. تأكد من كلمة المرور الحالية.";
   static const String accountDeleteSuccess = "تم حذف الحساب بنجاح.";
-  static const String accountDeleteFailed = "فشل حذف الحساب. تحقق من البيانات وحاول مرة أخرى.";
+  static const String accountDeleteFailed =
+      "فشل حذف الحساب. تحقق من البيانات وحاول مرة أخرى.";
   static const String logoutSuccess = "تم تسجيل الخروج بنجاح.";
-  static const String logoutFailed = "حدث خطأ أثناء تسجيل الخروج. حاول مرة أخرى.";
-  static const String otpSendFailed = "تعذر إرسال رمز التحقق. يرجى المحاولة مرة أخرى.";
+  static const String logoutFailed =
+      "حدث خطأ أثناء تسجيل الخروج. حاول مرة أخرى.";
+  static const String otpSendFailed =
+      "تعذر إرسال رمز التحقق. يرجى المحاولة مرة أخرى.";
   static const String invalidOtpFormat = "رمز التحقق يجب أن يتكون من 5 أرقام.";
-  static const String emailNotFound = "البريد الإلكتروني غير موجود في قاعدة البيانات.";
-  static const String invalidPhoneNumber = "رقم الجوال غير صالح. أدخل رقماً بصيغة صحيحة.";
+  static const String emailNotFound =
+      "البريد الإلكتروني غير موجود في قاعدة البيانات.";
+  static const String invalidPhoneNumber =
+      "رقم الجوال غير صالح. أدخل رقماً بصيغة صحيحة.";
   static const String duplicateEmail = "البريد الإلكتروني مستخدم بالفعل.";
-  static const String weakPassword = "كلمة المرور ضعيفة. استخدم 8 أحرف على الأقل تشمل أحرف كبيرة، صغيرة وأرقام.";
-  static const String invalidInput = "البيانات المدخلة غير صالحة. يرجى التأكد منها.";
+  static const String weakPassword =
+      "كلمة المرور ضعيفة. استخدم 8 أحرف على الأقل تشمل أحرف كبيرة، صغيرة وأرقام.";
+  static const String invalidInput =
+      "البيانات المدخلة غير صالحة. يرجى التأكد منها.";
   static const String generalError = "حدث خطأ غير متوقع. حاول لاحقًا.";
-  static const String newOtpSent = "تم إرسال رمز تحقق جديد إلى بريدك الإلكتروني.";
+  static const String newOtpSent =
+      "تم إرسال رمز تحقق جديد إلى بريدك الإلكتروني.";
   static const String loadingMessage = "جاري المعالجة... يرجى الانتظار.";
   static const String noInternet = "أنت غير متصل حالياً بالإنترنت.";
   static const String noDataFound = "لم يتم العثور على بيانات لعرضها.";
-  static const String unauthorizedAccess = "ليس لديك صلاحية للوصول إلى هذا المحتوى.";
-  static const String underMaintenance = "الخدمة حالياً تحت الصيانة. يرجى المحاولة لاحقاً.";
-  static const String featureComingSoon = "هذه الميزة قيد التطوير. ترقبها قريباً!";
-  static const String uploadFailed = "فشل في رفع الملف. يرجى المحاولة مرة أخرى.";
-  static const String downloadFailed = "فشل في تحميل الملف. تحقق من الاتصال أو حاول لاحقاً.";
-  static const String formValidationError = "يرجى التأكد من صحة البيانات المدخلة.";
+  static const String unauthorizedAccess =
+      "ليس لديك صلاحية للوصول إلى هذا المحتوى.";
+  static const String underMaintenance =
+      "الخدمة حالياً تحت الصيانة. يرجى المحاولة لاحقاً.";
+  static const String featureComingSoon =
+      "هذه الميزة قيد التطوير. ترقبها قريباً!";
+  static const String uploadFailed =
+      "فشل في رفع الملف. يرجى المحاولة مرة أخرى.";
+  static const String downloadFailed =
+      "فشل في تحميل الملف. تحقق من الاتصال أو حاول لاحقاً.";
+  static const String formValidationError =
+      "يرجى التأكد من صحة البيانات المدخلة.";
   static const String actionNotAllowed = "لا يمكن تنفيذ هذا الإجراء حالياً.";
   static const String emailSent = "تم إرسال رسالة إلى بريدك الإلكتروني.";
   static const String alreadyLoggedIn = "أنت بالفعل مسجل دخول.";
   static const String phoneAlreadyUsed = "رقم الهاتف مستخدم مسبقاً.";
   static const String invalidCredentials = "بيانات الدخول غير صحيحة.";
-  static const String termsNotAccepted = "يجب الموافقة على الشروط والأحكام للمتابعة.";
-  }
+  static const String termsNotAccepted =
+      "يجب الموافقة على الشروط والأحكام للمتابعة.";
+}

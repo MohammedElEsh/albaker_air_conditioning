@@ -1,3 +1,19 @@
+/// The home screen of the application that serves as the main dashboard.
+///
+/// Features:
+/// - User profile information display
+/// - Image slider with promotional content
+/// - Category grid for product navigation
+/// - Search functionality
+/// - Profile access
+/// - Arabic language support
+///
+/// The screen includes:
+/// - Welcome message with user's name
+/// - Image slider with overlay text
+/// - Category grid with icons and labels
+/// - Search and profile buttons
+/// - Loading states and error handling
 // Flutter imports
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -8,7 +24,14 @@ import 'profile_screen.dart';
 import '../../services/user_service.dart';
 import '../../services/home_service.dart';
 
-/// HomeScreen - Main Dashboard UI
+/// Home screen widget that serves as the main dashboard of the application.
+///
+/// This screen implements:
+/// - User profile integration
+/// - Dynamic content loading
+/// - Image slider with caching
+/// - Category navigation
+/// - Search and profile access
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -17,11 +40,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // Services
+  /// Service for user-related operations
   final UserService _userService = UserService();
+
+  /// Service for home screen data
   final HomeService _homeService = HomeService();
 
-  // State variables
+  /// State variables
   String _userName = ''; // Stores the user name
   List<dynamic> _categories = []; // Stores category data
   List<dynamic> _sliderImages = []; // Stores slider image data
@@ -44,7 +69,10 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  /// Load user's name from the profile API
+  /// Loads the user's name from their profile.
+  ///
+  /// If the user is not logged in or the API call fails,
+  /// sets the name to 'زائر' (Guest).
   Future<void> _loadUserName() async {
     try {
       final token = await _userService.getToken();
@@ -54,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
         return;
       }
-      
+
       final response = await _userService.getProfile();
       if (response.statusCode == 200) {
         setState(() {
@@ -69,14 +97,17 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  /// Load slider images from the home API
+  /// Loads slider images from the home API.
+  ///
+  /// Requires a valid authentication token.
+  /// Updates the slider images state with the API response data.
   Future<void> _loadSliderImages() async {
     try {
       final token = await _userService.getToken();
       if (token == null || token.isEmpty) {
-        return; // لا يمكن تحميل البيانات بدون توكن
+        return; // Cannot load data without token
       }
-      
+
       final response = await _homeService.getHomeSlider();
       if (response.statusCode == 200) {
         setState(() {
@@ -88,22 +119,26 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  /// Load category data from the home API
+  /// Loads category data from the home API.
+  ///
+  /// Requires a valid authentication token.
+  /// Updates the categories state and loading flag.
+  /// Handles loading states and error cases.
   Future<void> _loadCategories() async {
     try {
       setState(() {
         _isLoading = true;
       });
-      
+
       final token = await _userService.getToken();
       if (token == null || token.isEmpty) {
         setState(() {
           _isLoading = false;
         });
-        // عرض رسالة خطأ للمستخدم إذا لزم الأمر
+        // Show error message to user if needed
         return;
       }
-      
+
       final response = await _homeService.getHomeData();
       if (response.statusCode == 200) {
         setState(() {
@@ -123,7 +158,11 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  /// Build image slider widget with overlay text
+  /// Builds the image slider widget with overlay text.
+  ///
+  /// Returns:
+  /// - A placeholder container if no images are loaded
+  /// - A PageView with cached images, gradient overlay, and text if images are available
   Widget _buildImageSlider() {
     if (_sliderImages.isEmpty) {
       // Placeholder while loading
@@ -249,8 +288,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               'أصبح سهلا الآن وبين يديك فقط أطلب ما تحتاجه ونصله إليك',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontWeight: FontWeight.w300,
-                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14,
+                                height: 1.2,
                                 shadows: [
                                   Shadow(
                                     blurRadius: 3.0,
@@ -260,8 +300,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ],
                               ),
                               textAlign: TextAlign.center,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
@@ -273,26 +311,25 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
 
-          // Slider indicator (dots)
+          // Page indicator dots
           Positioned(
-            bottom: 15,
+            bottom: 20,
             left: 0,
             right: 0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
                 _sliderImages.length,
-                (index) => AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  width: _currentSliderPage == index ? 20 : 8,
+                (index) => Container(
+                  width: 8,
                   height: 8,
-                  margin: const EdgeInsets.symmetric(horizontal: 3),
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
+                    shape: BoxShape.circle,
                     color:
                         _currentSliderPage == index
                             ? const Color(0xFF1D75B1)
-                            : Colors.grey.withOpacity(0.5),
+                            : Colors.white.withOpacity(0.5),
                   ),
                 ),
               ),
@@ -514,7 +551,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
               // Add space at the bottom for the navbar
               const SizedBox(height: 80),
-
             ],
           ),
         ),

@@ -1,16 +1,44 @@
+/// Service class that handles all user-related API operations.
+///
+/// This service manages:
+/// - User authentication (login, register, logout)
+/// - Profile management (get, update)
+/// - Password operations (reset, change)
+/// - OTP verification
+/// - Token management
+///
+/// All API calls are made to the base URL 'https://albakr-ac.com/api'
+/// and include proper headers for JSON acceptance and Arabic language.
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
+  /// Dio instance for making HTTP requests
   final Dio _dio = Dio();
+
+  /// Base URL for all API endpoints
   final String baseUrl = 'https://albakr-ac.com/api';
 
+  /// Retrieves the stored authentication token from SharedPreferences.
+  ///
+  /// Returns:
+  /// - String? containing the token if it exists
+  /// - null if no token is stored
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
   }
 
-  // Register with email
+  /// Registers a new user with their email address.
+  ///
+  /// Parameters:
+  /// - email: The user's email address
+  ///
+  /// Returns:
+  /// - Response object containing the API response
+  ///
+  /// Throws:
+  /// - Exception if registration fails
   Future<Response> register(String email) async {
     try {
       final data = {'email': email};
@@ -27,7 +55,16 @@ class UserService {
     }
   }
 
-  // Send OTP
+  /// Sends an OTP (One-Time Password) to the user's email.
+  ///
+  /// Parameters:
+  /// - email: The user's email address
+  ///
+  /// Returns:
+  /// - Response object containing the API response
+  ///
+  /// Throws:
+  /// - Exception if OTP sending fails
   Future<Response> sendOtp(String email) async {
     try {
       final response = await _dio.get(
@@ -43,7 +80,17 @@ class UserService {
     }
   }
 
-  // Check OTP
+  /// Verifies the OTP code entered by the user.
+  ///
+  /// Parameters:
+  /// - email: The user's email address
+  /// - otp: The OTP code to verify
+  ///
+  /// Returns:
+  /// - Response object containing the API response
+  ///
+  /// Throws:
+  /// - Exception if OTP verification fails
   Future<Response> checkOtp(String email, String otp) async {
     try {
       final response = await _dio.get(
@@ -59,7 +106,23 @@ class UserService {
     }
   }
 
-  // Complete Registration
+  /// Completes the user registration process with additional information.
+  ///
+  /// Parameters:
+  /// - firstName: User's first name
+  /// - lastName: User's last name
+  /// - phone: User's phone number
+  /// - password: User's chosen password
+  /// - passwordConfirmation: Confirmation of the password
+  /// - email: User's email address
+  /// - otp: The verified OTP code
+  /// - fcmToken: Optional Firebase Cloud Messaging token
+  ///
+  /// Returns:
+  /// - Response object containing the API response and authentication token
+  ///
+  /// Throws:
+  /// - Exception if registration completion fails
   Future<Response> completeRegister({
     required String firstName,
     required String lastName,
@@ -98,7 +161,17 @@ class UserService {
     }
   }
 
-  // Login
+  /// Authenticates a user with their email and password.
+  ///
+  /// Parameters:
+  /// - email: User's email address
+  /// - password: User's password
+  ///
+  /// Returns:
+  /// - Response object containing the API response and authentication token
+  ///
+  /// Throws:
+  /// - Exception if login fails
   Future<Response> login(String email, String password) async {
     try {
       final data = {'email': email, 'password': password};
@@ -115,7 +188,19 @@ class UserService {
     }
   }
 
-  // Reset Password
+  /// Resets a user's password using OTP verification.
+  ///
+  /// Parameters:
+  /// - email: User's email address
+  /// - password: New password
+  /// - passwordConfirmation: Confirmation of the new password
+  /// - otp: The verified OTP code
+  ///
+  /// Returns:
+  /// - Response object containing the API response
+  ///
+  /// Throws:
+  /// - Exception if password reset fails
   Future<Response> resetPassword({
     required String email,
     required String password,
@@ -143,7 +228,13 @@ class UserService {
     }
   }
 
-  // Get Profile
+  /// Retrieves the user's profile information.
+  ///
+  /// Returns:
+  /// - Response object containing the user's profile data
+  ///
+  /// Throws:
+  /// - Exception if profile retrieval fails
   Future<Response> getProfile() async {
     try {
       final token = await getToken();
@@ -163,7 +254,18 @@ class UserService {
     }
   }
 
-  // Update Profile
+  /// Updates the user's profile information.
+  ///
+  /// Parameters:
+  /// - firstName: Optional new first name
+  /// - lastName: Optional new last name
+  /// - phone: Optional new phone number
+  ///
+  /// Returns:
+  /// - Response object containing the updated profile data
+  ///
+  /// Throws:
+  /// - Exception if profile update fails
   Future<Response> updateProfile({
     String? firstName,
     String? lastName,
@@ -202,7 +304,18 @@ class UserService {
     }
   }
 
-  // Change Password
+  /// Changes the user's password.
+  ///
+  /// Parameters:
+  /// - currentPassword: User's current password
+  /// - password: New password
+  /// - passwordConfirmation: Confirmation of the new password
+  ///
+  /// Returns:
+  /// - Response object containing the API response
+  ///
+  /// Throws:
+  /// - Exception if password change fails
   Future<Response> changePassword({
     required String currentPassword,
     required String password,
@@ -233,7 +346,13 @@ class UserService {
     }
   }
 
-  // Logout
+  /// Logs out the current user and invalidates their token.
+  ///
+  /// Returns:
+  /// - Response object containing the API response
+  ///
+  /// Throws:
+  /// - Exception if logout fails
   Future<Response> logout() async {
     try {
       final token = await getToken();

@@ -1,5 +1,26 @@
+/// The search screen of the application that allows users to search for products.
+///
+/// Features:
+/// - Search input field with custom styling
+/// - Back navigation button
+/// - Arabic language support
+/// - Custom search icon
+/// - Placeholder illustration
+///
+/// The screen includes:
+/// - Header with title "البحث" (Search)
+/// - Back button with forward arrow icon
+/// - Search field with custom styling
+/// - Centered logo illustration
 import 'package:flutter/material.dart';
 
+/// Search screen widget that provides product search functionality.
+///
+/// This screen implements a search interface with:
+/// - Custom styled search input
+/// - Arabic text alignment
+/// - Navigation controls
+/// - Visual feedback
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
 
@@ -13,7 +34,7 @@ class SearchScreen extends StatelessWidget {
           height: MediaQuery.of(context).size.height,
           child: Stack(
             children: [
-              // Header title "البحث"
+              // Header title "البحث" (Search)
               Positioned(
                 top: 50,
                 left: 200,
@@ -31,7 +52,7 @@ class SearchScreen extends StatelessWidget {
                 ),
               ),
 
-              // Back button
+              // Back button with forward arrow (RTL layout)
               Positioned(
                 top: 50,
                 right: 20,
@@ -45,7 +66,7 @@ class SearchScreen extends StatelessWidget {
                 ),
               ),
 
-              // Search field
+              // Custom styled search input field
               Positioned(
                 top: 134,
                 left: 40,
@@ -82,7 +103,7 @@ class SearchScreen extends StatelessWidget {
                 ),
               ),
 
-              // Logo in middle
+              // Centered logo illustration
               Positioned(
                 top: 440,
                 left: 150,

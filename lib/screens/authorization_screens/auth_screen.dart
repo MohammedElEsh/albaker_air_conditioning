@@ -1,3 +1,6 @@
+/// The main authentication screen that handles user login functionality.
+/// Provides email and password input fields, login button, and navigation to
+/// forgot password and sign up screens.
 import 'package:flutter/material.dart';
 import 'forgot_password_screen.dart';
 import 'sign_up_screen.dart';
@@ -8,38 +11,62 @@ import '../../services/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:al_baker_air_conditioning/utils/alert_utils.dart';
 
+/// Handles user authentication and login functionality.
+///
+/// Features:
+/// - Email and password input validation
+/// - Secure password field with visibility toggle
+/// - API integration for authentication
+/// - Token-based session management
+/// - Navigation to forgot password and sign up screens
+/// - Error handling for various scenarios (network, invalid credentials, etc.)
 class AuthScreen extends StatelessWidget {
   AuthScreen({super.key});
 
+  /// Controller for managing email input field
   final TextEditingController emailController = TextEditingController();
+
+  /// Controller for managing password input field
   final TextEditingController passwordController = TextEditingController();
+
+  /// Service for handling user-related API calls
   final UserService _userService = UserService();
 
+  /// Handles the login process by validating inputs and making API calls.
+  ///
+  /// Process:
+  /// 1. Validates input fields
+  /// 2. Makes API call to authenticate user
+  /// 3. Stores authentication token on success
+  /// 4. Navigates to main screen
+  /// 5. Shows appropriate error messages for failures
+  ///
+  /// Error handling includes:
+  /// - Network connectivity issues
+  /// - Invalid credentials
+  /// - Server timeout
+  /// - General authentication errors
   void _login(BuildContext context) async {
-    // التحقق من عدم ترك الحقول فارغة
+    // Validate email field
     if (emailController.text.trim().isEmpty) {
-      AlertUtils.showWarningAlert(
-        context,
-        "تنبيه",
-        AlertUtils.requiredFields
-      );
+      AlertUtils.showWarningAlert(context, "تنبيه", AlertUtils.requiredFields);
       return;
     }
 
+    // Validate password field
     if (passwordController.text.isEmpty) {
-      AlertUtils.showWarningAlert(
-        context,
-        "تنبيه",
-        AlertUtils.requiredFields
-      );
+      AlertUtils.showWarningAlert(context, "تنبيه", AlertUtils.requiredFields);
       return;
     }
 
     try {
+      // Attempt login through API
       var response = await _userService.login(
         emailController.text,
         passwordController.text,
       );
+
+      // Handle successful login
       if (response.statusCode == 200) {
         var token = response.data['data']['token'];
         final prefs = await SharedPreferences.getInstance();
@@ -49,67 +76,50 @@ class AuthScreen extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (context) => const MainScreen()),
         );
-      } else if (response.statusCode == 401) {
-        // خطأ في بيانات الاعتماد
+      }
+      // Handle authentication errors
+      else if (response.statusCode == 401) {
         if (response.data != null && response.data['message'] != null) {
           if (response.data['message'].toString().contains('email')) {
             AlertUtils.showErrorAlert(
               context,
               "تنبيه",
-              AlertUtils.invalidEmailLogin
+              AlertUtils.invalidEmailLogin,
             );
           } else if (response.data['message'].toString().contains('password')) {
             AlertUtils.showErrorAlert(
               context,
               "تنبيه",
-              AlertUtils.invalidPasswordLogin
+              AlertUtils.invalidPasswordLogin,
             );
           } else {
-            AlertUtils.showErrorAlert(
-              context,
-              "تنبيه",
-              AlertUtils.loginError
-            );
+            AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.loginError);
           }
         } else {
-          AlertUtils.showErrorAlert(
-            context,
-            "تنبيه",
-            AlertUtils.loginError
-          );
+          AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.loginError);
         }
       } else {
-        AlertUtils.showErrorAlert(
-          context,
-          "تنبيه",
-          AlertUtils.loginError
-        );
+        AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.loginError);
       }
     } catch (e) {
+      // Handle various error scenarios
       if (e.toString().contains('network')) {
-        AlertUtils.showErrorAlert(
-          context,
-          "تنبيه",
-          AlertUtils.networkError
-        );
+        AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.networkError);
       } else if (e.toString().contains('timeout')) {
         AlertUtils.showErrorAlert(
           context,
           "تنبيه",
-          "انتهت مهلة الاتصال بالخادم"
+          "انتهت مهلة الاتصال بالخادم",
         );
       } else {
-        AlertUtils.showErrorAlert(
-          context,
-          "تنبيه",
-          AlertUtils.loginError
-        );
+        AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.loginError);
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    // Get screen dimensions for responsive layout
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
@@ -117,6 +127,7 @@ class AuthScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
+          // App logo
           Positioned(
             top: screenHeight * 0.13,
             left: screenWidth * 0.25,
@@ -126,6 +137,7 @@ class AuthScreen extends StatelessWidget {
               height: screenHeight * 0.15,
             ),
           ),
+          // Login title
           Positioned(
             top: screenHeight * 0.33,
             left: screenWidth * 0.3,
@@ -138,6 +150,7 @@ class AuthScreen extends StatelessWidget {
               ),
             ),
           ),
+          // Login subtitle
           Positioned(
             top: 370,
             left: 84,
@@ -155,19 +168,21 @@ class AuthScreen extends StatelessWidget {
             ),
           ),
 
-          // استبدال حقل إدخال البريد بـ CustomEmailField
+          // Email input field
           Positioned(
             top: 480,
             left: 33,
             child: CustomEmailField(controller: emailController),
           ),
 
+          // Password input field
           Positioned(
             top: 580,
             left: 33,
             child: CustomPasswordField(controller: passwordController),
           ),
 
+          // Forgot password link
           Positioned(
             top: 700,
             left: 133,
@@ -191,6 +206,7 @@ class AuthScreen extends StatelessWidget {
             ),
           ),
 
+          // Login button
           Positioned(
             top: 750,
             left: 35,
@@ -198,8 +214,7 @@ class AuthScreen extends StatelessWidget {
               width: 363,
               height: 76,
               child: ElevatedButton(
-                onPressed: () => _login(context), // Call _login method
-
+                onPressed: () => _login(context),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF1D75B1),
                   shape: RoundedRectangleBorder(
@@ -218,6 +233,7 @@ class AuthScreen extends StatelessWidget {
             ),
           ),
 
+          // Sign up prompt text
           Positioned(
             top: 860,
             left: 150,
@@ -239,6 +255,7 @@ class AuthScreen extends StatelessWidget {
             ),
           ),
 
+          // Sign up button with icon
           Positioned(
             top: 900,
             left: 120,

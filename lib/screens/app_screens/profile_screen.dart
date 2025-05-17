@@ -1,9 +1,34 @@
+/// The profile screen of the application that manages user profile information.
+///
+/// Features:
+/// - Profile information display and editing
+/// - Password change functionality
+/// - Account deletion
+/// - Logout functionality
+/// - Arabic language support
+///
+/// The screen includes:
+/// - Profile image
+/// - Personal information fields
+/// - Password change form
+/// - Account deletion form
+/// - Logout button
+/// - Loading states and error handling
 import 'package:flutter/material.dart';
 import '../../services/user_service.dart';
 import '../../widgets/custom_password_field.dart';
 import '../authorization_screens/auth_screen.dart';
 import 'package:al_baker_air_conditioning/utils/alert_utils.dart';
 
+/// Profile screen widget that manages user profile information and settings.
+///
+/// This screen implements:
+/// - Profile information management
+/// - Password change functionality
+/// - Account deletion
+/// - Logout process
+/// - Form validation
+/// - Error handling
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -12,7 +37,10 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  /// Service for user-related operations
   final UserService _userService = UserService();
+
+  /// Text controllers for form fields
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -24,6 +52,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _deleteEmailController = TextEditingController();
   final TextEditingController _deletePasswordController =
       TextEditingController();
+
+  /// State flags
   bool _isLoading = true;
   bool _isEditMode = false;
   bool _showChangePassword = false;
@@ -35,6 +65,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _loadProfile();
   }
 
+  /// Loads the user's profile information from the API.
+  ///
+  /// Updates the form fields with the user's data.
+  /// Handles loading states and error cases.
   Future<void> _loadProfile() async {
     try {
       var response = await _userService.getProfile();
@@ -49,14 +83,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
       }
     } catch (e) {
-      AlertUtils.showErrorAlert(
-        context,
-        "خطأ",
-        AlertUtils.profileUpdateFailed
-      );
+      AlertUtils.showErrorAlert(context, "خطأ", AlertUtils.profileUpdateFailed);
     }
   }
 
+  /// Updates the user's profile information.
+  ///
+  /// Sends the updated information to the API.
+  /// Handles success and error cases with appropriate alerts.
   Future<void> _updateProfile() async {
     try {
       var response = await _userService.updateProfile(
@@ -69,24 +103,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
         AlertUtils.showSuccessAlert(
           context,
           "نجاح",
-          AlertUtils.profileUpdateSuccess
+          AlertUtils.profileUpdateSuccess,
         );
       }
     } catch (e) {
-      AlertUtils.showErrorAlert(
-        context,
-        "خطأ",
-        AlertUtils.profileUpdateFailed
-      );
+      AlertUtils.showErrorAlert(context, "خطأ", AlertUtils.profileUpdateFailed);
     }
   }
 
+  /// Changes the user's password.
+  ///
+  /// Validates password match before sending to API.
+  /// Handles success and error cases with appropriate alerts.
   Future<void> _changePassword() async {
     if (_newPasswordController.text != _confirmPasswordController.text) {
       AlertUtils.showWarningAlert(
         context,
         "تنبيه",
-        AlertUtils.passwordMismatch
+        AlertUtils.passwordMismatch,
       );
       return;
     }
@@ -102,18 +136,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
         AlertUtils.showSuccessAlert(
           context,
           "نجاح",
-          AlertUtils.passwordChangeSuccess
+          AlertUtils.passwordChangeSuccess,
         );
       }
     } catch (e) {
       AlertUtils.showErrorAlert(
         context,
         "تنبيه",
-        AlertUtils.passwordChangeFailed
+        AlertUtils.passwordChangeFailed,
       );
     }
   }
 
+  /// Deletes the user's account.
+  ///
+  /// Requires email and password confirmation.
+  /// Clears user token and navigates to auth screen on success.
+  /// Handles error cases with appropriate alerts.
   Future<void> _deleteAccount() async {
     try {
       var response = await _userService.deleteAccount(
@@ -125,7 +164,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         AlertUtils.showSuccessAlert(
           context,
           "نجاح",
-          AlertUtils.accountDeleteSuccess
+          AlertUtils.accountDeleteSuccess,
         );
         Navigator.pushAndRemoveUntil(
           context,
@@ -137,21 +176,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
       AlertUtils.showErrorAlert(
         context,
         "تنبيه",
-        AlertUtils.accountDeleteFailed
+        AlertUtils.accountDeleteFailed,
       );
     }
   }
 
+  /// Logs out the user.
+  ///
+  /// Clears user token and navigates to auth screen.
+  /// Handles error cases with appropriate alerts.
   Future<void> _logout() async {
     try {
       var response = await _userService.logout();
       if (response.statusCode == 200) {
         await _userService.clearToken();
-        AlertUtils.showSuccessAlert(
-          context,
-          "نجاح",
-          AlertUtils.logoutSuccess
-        );
+        AlertUtils.showSuccessAlert(context, "نجاح", AlertUtils.logoutSuccess);
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => AuthScreen()),
@@ -159,11 +198,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         );
       }
     } catch (e) {
-      AlertUtils.showErrorAlert(
-        context,
-        "تنبيه",
-        AlertUtils.logoutFailed
-      );
+      AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.logoutFailed);
     }
   }
 
@@ -190,7 +225,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ? const Center(child: CircularProgressIndicator())
                 : Stack(
                   children: [
-                    // Header
+                    // Header with title "الملف الشخصي" (Profile)
                     Positioned(
                       top: 50,
                       left: 160,
@@ -204,7 +239,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
 
-                    // Back button
+                    // Back button with forward arrow (RTL layout)
                     Positioned(
                       top: 50,
                       right: 20,
@@ -218,7 +253,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
 
-                    // Profile Image
+                    // Profile image with user icon
                     Positioned(
                       top: 100,
                       left: 165,
@@ -236,7 +271,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
 
-                    // Form Fields
+                    // Form fields for profile information
                     Positioned(
                       top: 250,
                       left: 33,
@@ -504,9 +539,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           backgroundColor: const Color(
                                             0xFF1D75B1,
                                           ),
-                                          foregroundColor:
-                                              Colors
-                                                  .white, // <-- this makes the text white
+                                          foregroundColor: Colors.white,
                                         ),
                                         child: const Text("تأكيد"),
                                       ),
