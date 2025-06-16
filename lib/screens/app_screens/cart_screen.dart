@@ -298,6 +298,9 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: _refreshCart,
@@ -305,10 +308,10 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-              const SizedBox(height: 60),
+              SizedBox(height: screenHeight * 0.07),
               // Cart header
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 33),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -316,14 +319,14 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                       "عربة التسوق",
                       style: TextStyle(
                         fontWeight: FontWeight.w800,
-                        fontSize: 24,
+                        fontSize: screenWidth * 0.06,
                       ),
                     ),
                   ],
                 ),
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: screenHeight * 0.025),
 
               // Cart content using FutureBuilder
               FutureBuilder<Map<String, dynamic>>(
@@ -331,9 +334,9 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                 builder: (context, snapshot) {
                   // Handle loading state
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const SizedBox(
-                      height: 400,
-                      child: Center(child: CircularProgressIndicator()),
+                    return SizedBox(
+                      height: screenHeight * 0.5,
+                      child: const Center(child: CircularProgressIndicator()),
                     );
                   }
 
@@ -346,26 +349,26 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                             : snapshot.data!['error'];
 
                     return SizedBox(
-                      height: 400,
+                      height: screenHeight * 0.5,
                       child: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.error_outline,
-                              size: 80,
+                              size: screenWidth * 0.2,
                               color: Colors.red,
                             ),
-                            const SizedBox(height: 20),
+                            SizedBox(height: screenHeight * 0.025),
                             Text(
                               errorMessage,
-                              style: const TextStyle(
-                                fontSize: 16,
+                              style: TextStyle(
+                                fontSize: screenWidth * 0.04,
                                 color: Colors.red,
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            const SizedBox(height: 20),
+                            SizedBox(height: screenHeight * 0.025),
                             ElevatedButton(
                               onPressed: _refreshCart,
                               child: const Text('إعادة المحاولة'),
@@ -382,37 +385,38 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                   // Empty cart state
                   if (cartItems.isEmpty) {
                     return SizedBox(
-                      height: 400,
+                      height: screenHeight * 0.5,
                       child: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset(
-                              'assets/images/empty_cart.png',
-                              width: 150,
-                              height: 150,
+                              'assets/images/empty_inbox.png',
+                              width: screenWidth * 0.3,
+                              height: screenWidth * 0.3,
+                              color: const Color(0xFF1D75B1),
                               errorBuilder: (context, error, stackTrace) {
-                                return const Icon(
+                                return Icon(
                                   Icons.shopping_cart_outlined,
-                                  size: 100,
-                                  color: Color(0xFF1D75B1),
+                                  size: screenWidth * 0.25,
+                                  color: const Color(0xFF1D75B1),
                                 );
                               },
                             ),
-                            const SizedBox(height: 20),
-                            const Text(
+                            SizedBox(height: screenHeight * 0.025),
+                            Text(
                               'عربة التسوق فارغة',
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: screenWidth * 0.05,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.grey,
                               ),
                             ),
-                            const SizedBox(height: 10),
-                            const Text(
+                            SizedBox(height: screenHeight * 0.01),
+                            Text(
                               'قم بإضافة منتجات إلى سلة التسوق',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: screenWidth * 0.04,
                                 color: Colors.grey,
                               ),
                             ),
@@ -424,7 +428,9 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
 
                   // Cart with items
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.05,
+                    ),
                     child: Column(
                       children: [
                         // Cart items list
@@ -435,13 +441,15 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                           itemBuilder: (context, index) {
                             final item = cartItems[index];
                             return Container(
-                              margin: const EdgeInsets.only(bottom: 15),
+                              margin: EdgeInsets.only(
+                                bottom: screenHeight * 0.02,
+                              ),
                               decoration: BoxDecoration(
                                 color: Colors.grey[100],
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.all(16),
+                                padding: EdgeInsets.all(screenWidth * 0.04),
                                 child: Row(
                                   children: [
                                     // Product image
@@ -450,8 +458,8 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                                       child: CachedNetworkImage(
                                         imageUrl:
                                             'https://albakr-ac.com${item['image']}',
-                                        width: 80,
-                                        height: 80,
+                                        width: screenWidth * 0.2,
+                                        height: screenWidth * 0.2,
                                         fit: BoxFit.cover,
                                         placeholder:
                                             (context, url) => Container(
@@ -464,15 +472,15 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                                         errorWidget:
                                             (context, url, error) => Container(
                                               color: Colors.grey[300],
-                                              child: const Icon(
+                                              child: Icon(
                                                 Icons.image_not_supported,
-                                                size: 30,
+                                                size: screenWidth * 0.075,
                                                 color: Colors.grey,
                                               ),
                                             ),
                                       ),
                                     ),
-                                    const SizedBox(width: 15),
+                                    SizedBox(width: screenWidth * 0.04),
                                     // Product details
                                     Expanded(
                                       child: Column(
@@ -481,19 +489,22 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                                         children: [
                                           Text(
                                             item['name'] ?? '',
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 16,
+                                              fontSize: screenWidth * 0.04,
                                             ),
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                           ),
-                                          const SizedBox(height: 5),
+                                          SizedBox(
+                                            height: screenHeight * 0.005,
+                                          ),
                                           Text(
                                             '${item['price']} ريال',
-                                            style: const TextStyle(
-                                              color: Color(0xFF1D75B1),
+                                            style: TextStyle(
+                                              color: const Color(0xFF1D75B1),
                                               fontWeight: FontWeight.w600,
+                                              fontSize: screenWidth * 0.035,
                                             ),
                                           ),
                                         ],
@@ -504,14 +515,14 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        const Text(
+                                        Text(
                                           'الكمية',
                                           style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: screenWidth * 0.03,
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
-                                        const SizedBox(height: 8),
+                                        SizedBox(height: screenHeight * 0.01),
                                         Container(
                                           decoration: BoxDecoration(
                                             color: Colors.white,
@@ -528,8 +539,8 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                                                     () =>
                                                         _decreaseQuantity(item),
                                                 child: Container(
-                                                  width: 30,
-                                                  height: 30,
+                                                  width: screenWidth * 0.075,
+                                                  height: screenWidth * 0.075,
                                                   decoration:
                                                       const BoxDecoration(
                                                         color: Colors.white,
@@ -546,10 +557,10 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                                                           ),
                                                         ],
                                                       ),
-                                                  child: const Center(
+                                                  child: Center(
                                                     child: Icon(
                                                       Icons.remove,
-                                                      size: 16,
+                                                      size: screenWidth * 0.04,
                                                       color: Colors.grey,
                                                     ),
                                                   ),
@@ -557,29 +568,33 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                                               ),
                                               // Quantity display
                                               Container(
-                                                width: 40,
+                                                width: screenWidth * 0.1,
                                                 alignment: Alignment.center,
                                                 child:
                                                     _updatingItems.containsKey(
                                                           item['id'],
                                                         )
-                                                        ? const SizedBox(
-                                                          width: 16,
-                                                          height: 16,
+                                                        ? SizedBox(
+                                                          width:
+                                                              screenWidth *
+                                                              0.04,
+                                                          height:
+                                                              screenWidth *
+                                                              0.04,
                                                           child:
-                                                              CircularProgressIndicator(
+                                                              const CircularProgressIndicator(
                                                                 strokeWidth: 2,
                                                               ),
                                                         )
                                                         : Text(
                                                           '${item['quantity'] ?? 1}',
-                                                          style:
-                                                              const TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontSize: 16,
-                                                              ),
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize:
+                                                                screenWidth *
+                                                                0.04,
+                                                          ),
                                                         ),
                                               ),
                                               // Increase button
@@ -588,8 +603,8 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                                                     () =>
                                                         _increaseQuantity(item),
                                                 child: Container(
-                                                  width: 30,
-                                                  height: 30,
+                                                  width: screenWidth * 0.075,
+                                                  height: screenWidth * 0.075,
                                                   decoration:
                                                       const BoxDecoration(
                                                         color: Colors.white,
@@ -606,10 +621,10 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                                                           ),
                                                         ],
                                                       ),
-                                                  child: const Center(
+                                                  child: Center(
                                                     child: Icon(
                                                       Icons.add,
-                                                      size: 16,
+                                                      size: screenWidth * 0.04,
                                                       color: Colors.grey,
                                                     ),
                                                   ),
@@ -629,14 +644,16 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
 
                         // Total price section
                         Container(
-                          margin: const EdgeInsets.symmetric(vertical: 20),
-                          padding: const EdgeInsets.all(20),
+                          margin: EdgeInsets.symmetric(
+                            vertical: screenHeight * 0.025,
+                          ),
+                          padding: EdgeInsets.all(screenWidth * 0.05),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(15),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.05),
+                                color: Colors.black.withValues(alpha: 0.05),
                                 blurRadius: 10,
                                 offset: const Offset(0, 5),
                               ),
@@ -645,19 +662,19 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 'المجموع',
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: screenWidth * 0.045,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               Text(
                                 '$_totalPrice ريال',
-                                style: const TextStyle(
-                                  fontSize: 18,
+                                style: TextStyle(
+                                  fontSize: screenWidth * 0.045,
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFF1D75B1),
+                                  color: const Color(0xFF1D75B1),
                                 ),
                               ),
                             ],
@@ -673,15 +690,17 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF1D75B1),
-                              padding: const EdgeInsets.symmetric(vertical: 15),
+                              padding: EdgeInsets.symmetric(
+                                vertical: screenHeight * 0.02,
+                              ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                            child: const Text(
+                            child: Text(
                               'إتمام الطلب',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: screenWidth * 0.045,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),
@@ -689,7 +708,7 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                           ),
                         ),
 
-                        const SizedBox(height: 20),
+                        SizedBox(height: screenHeight * 0.025),
                       ],
                     ),
                   );

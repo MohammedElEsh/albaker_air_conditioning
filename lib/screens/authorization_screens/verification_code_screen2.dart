@@ -1,7 +1,7 @@
 /// The verification code screen that handles OTP verification for new user registration.
 /// Provides input fields for 5-digit verification code and resend functionality.
 import 'package:flutter/material.dart';
-import '../../widgets/custom_rectangle.dart';
+// import '../../widgets/custom_rectangle.dart';
 import 'complete_data_screen.dart';
 import '../../services/user_service.dart';
 import 'package:al_baker_air_conditioning/utils/alert_utils.dart';
@@ -152,211 +152,187 @@ class _VerificationCodeScreen2State extends State<VerificationCodeScreen2> {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen dimensions for responsive layout
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Stack(
-          children: [
-            // Rectangle at the top
-            const Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: CustomRectangle(),
-            ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
+            child: Column(
+              children: [
+                SizedBox(height: screenHeight * 0.02),
 
-            // Star image
-            Positioned(
-              top: 133,
-              left: 100,
-              child: Image.asset(
-                'assets/images/Group 176119.png',
-                width: 235,
-                height: 50,
-              ),
-            ),
-
-            // Main content
-            Positioned(
-              top: 303,
-              left: 0,
-              right: 0,
-              child: Column(
-                children: [
-                  Positioned(
-                    child: const SizedBox(
-                      width: 128,
-                      height: 40,
-                      child: Text(
-                        "كود التحقق",
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xFF2D2525),
-                          height: 1.0, // line-height: 100%
-                          letterSpacing: 0, // letter-spacing: 0%
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
+                // Verification icon
+                Center(
+                  child: Image.asset(
+                    'assets/images/Group 176119.png',
+                    width: screenWidth * 0.5,
+                    height: screenHeight * 0.25,
+                    color: const Color(0xFF1D75B1),
                   ),
+                ),
 
-                  Positioned(
-                    child: const SizedBox(
-                      width: 400,
-                      height: 65,
-                      child: Text(
-                        "قم بكتابة كود التحقق المكون من 5 أرقام الذي تم إرساله إليك عبر البريد الإلكتروني",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF2D2525),
-                          height: 1.4, // line-height: 25px
-                          letterSpacing: 0, // letter-spacing: 0%
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
+                SizedBox(height: screenHeight * 0.02),
+
+                // Verification code title
+                const Text(
+                  "كود التحقق",
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xFF2D2525),
                   ),
+                  textAlign: TextAlign.center,
+                ),
 
-                  Positioned(
-                    child: SizedBox(
-                      width: 246,
-                      height: 70,
-                      child: Text(
-                        widget.email, // يعرض البريد الإلكتروني المرسل
-                        style: const TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF2D2525),
-                          height: 1.0, // line-height: 100%
-                          letterSpacing: 0, // letter-spacing: 0%
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
+                SizedBox(height: screenHeight * 0.02),
+
+                // Verification code instructions
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                  child: const Text(
+                    "قم بكتابة كود التحقق المكون من 5 أرقام الذي تم إرساله إليك عبر البريد الإلكتروني",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFF2D2525),
+                      height: 1.4,
                     ),
+                    textAlign: TextAlign.center,
                   ),
+                ),
 
-                  // const SizedBox(height: 50),
+                SizedBox(height: screenHeight * 0.02),
 
-                  // Verification code fields
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(5, (index) {
-                      return StatefulBuilder(
-                        builder: (context, setState) {
-                          return Container(
-                            width: 60,
-                            height: 61,
-                            margin: const EdgeInsets.symmetric(horizontal: 5),
-                            decoration: BoxDecoration(
+                // Email display
+                Text(
+                  widget.email,
+                  style: const TextStyle(
+                    fontSize: 19,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF2D2525),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+
+                SizedBox(height: screenHeight * 0.04),
+
+                // Verification code input fields with auto-focus
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(5, (index) {
+                    return StatefulBuilder(
+                      builder: (context, setState) {
+                        return Container(
+                          width: screenWidth * 0.14,
+                          height: screenWidth * 0.14,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.01,
+                          ),
+                          decoration: BoxDecoration(
+                            color:
+                                controllers[index].text.isNotEmpty
+                                    ? const Color(0xFF000000)
+                                    : const Color(0xFFF7F7F7),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: TextField(
+                            controller: controllers[index],
+                            textAlign: TextAlign.center,
+                            keyboardType: TextInputType.number,
+                            maxLength: 1,
+                            decoration: const InputDecoration(
+                              counterText: "",
+                              border: InputBorder.none,
+                            ),
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
                               color:
                                   controllers[index].text.isNotEmpty
-                                      ? const Color(0xFF000000)
-                                      : const Color(0xFFF7F7F7),
-                              borderRadius: BorderRadius.circular(30),
+                                      ? Colors.white
+                                      : Colors.black,
                             ),
-                            child: TextField(
-                              controller: controllers[index],
-                              textAlign: TextAlign.center,
-                              keyboardType: TextInputType.number,
-                              maxLength: 1,
-                              decoration: const InputDecoration(
-                                counterText: "",
-                                border: InputBorder.none,
-                              ),
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color:
-                                    controllers[index].text.isNotEmpty
-                                        ? Colors.white
-                                        : Colors.black,
-                              ),
-                              onChanged: (value) {
-                                setState(
-                                  () {},
-                                ); // تحديث حالة الحاوية عند الكتابة
-                                if (value.isNotEmpty && index < 4) {
-                                  FocusScope.of(context).nextFocus();
-                                }
-                              },
-                            ),
-                          );
-                        },
-                      );
-                    }),
-                  ),
-                ],
-              ),
-            ),
+                            onChanged: (value) {
+                              setState(() {}); // تحديث حالة الحاوية عند الكتابة
+                              if (value.isNotEmpty && index < 4) {
+                                FocusScope.of(context).nextFocus();
+                              }
+                            },
+                          ),
+                        );
+                      },
+                    );
+                  }),
+                ),
 
-            // Verify Button
-            Positioned(
-              top: 600,
-              left: 33,
-              child: SizedBox(
-                width: 363,
-                height: 76,
-                child: ElevatedButton(
-                  onPressed: _verifyCode,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1D75B1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(38),
+                SizedBox(height: screenHeight * 0.05),
+
+                // Verify Button
+                SizedBox(
+                  width: double.infinity,
+                  height: screenHeight * 0.08,
+                  child: ElevatedButton(
+                    onPressed: _verifyCode,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1D75B1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(38),
+                      ),
                     ),
-                  ),
-                  child: const Text(
-                    "تحقق",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 22,
-                      color: Colors.white,
+                    child: const Text(
+                      "تحقق",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 22,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
 
-            // Resend code text
-            Positioned(
-              top: 745,
-              left: 0,
-              right: 0,
-              child: Column(
-                children: [
-                  const Text(
-                    "لم يتم إرسال كود التحقق ؟",
-                    style: TextStyle(fontSize: 16, color: Color(0xFF666666)),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 35),
-                  GestureDetector(
-                    onTap: _resendCode,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.refresh,
+                SizedBox(height: screenHeight * 0.05),
+
+                // Resend code text
+                const Text(
+                  "لم يتم إرسال كود التحقق ؟",
+                  style: TextStyle(fontSize: 16, color: Color(0xFF666666)),
+                  textAlign: TextAlign.center,
+                ),
+
+                SizedBox(height: screenHeight * 0.02),
+
+                GestureDetector(
+                  onTap: _resendCode,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.refresh,
+                        color: Color(0xFF1D75B1),
+                        size: 20,
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        "أرسل الكود مرة أخرى",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
                           color: Color(0xFF1D75B1),
-                          size: 20,
                         ),
-                        const SizedBox(height: 8),
-                        const Text(
-                          "أرسل الكود مرة أخرى",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w800,
-                            color: Color(0xFF1D75B1),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+
+                SizedBox(height: screenHeight * 0.03),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

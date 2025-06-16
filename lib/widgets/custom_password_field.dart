@@ -47,18 +47,20 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Container(
-      width: 363,
-      height: 76,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      width: double.infinity,
+      height: screenHeight * 0.08,
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
       decoration: BoxDecoration(
         color: const Color(0xFFF7F7F7),
         borderRadius: BorderRadius.circular(38),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Password visibility toggle button
+          // Password visibility toggle button (على اليسار)
           GestureDetector(
             onTap: () {
               setState(() {
@@ -67,38 +69,48 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
             },
             child: Image.asset(
               'assets/images/linear.png',
-              width: 24,
-              height: 24,
+              width: screenWidth * 0.06,
+              height: screenWidth * 0.06,
             ),
           ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Password input field with right alignment
-              SizedBox(
-                width: 200,
-                child: TextField(
-                  controller: widget.controller,
-                  textAlign: TextAlign.right,
-                  obscureText: !_isPasswordVisible,
-                  decoration: InputDecoration(
-                    hintText: widget.hintText,
-                    border: InputBorder.none,
-                    hintStyle: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
-                      color: Color(0xFF878383),
+          SizedBox(width: screenWidth * 0.025),
+          // Expanded input field section
+          Expanded(
+            child: Row(
+              children: [
+                // Password input field with right alignment
+                Expanded(
+                  child: TextField(
+                    controller: widget.controller,
+                    textAlign: TextAlign.right,
+                    obscureText: !_isPasswordVisible,
+                    decoration: InputDecoration(
+                      hintText: widget.hintText,
+                      border: InputBorder.none,
+                      hintStyle: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: screenWidth * 0.04,
+                        color: const Color(0xFF878383),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              // Vertical divider between icon and input
-              const SizedBox(width: 10),
-              Container(width: 2, height: 17, color: const Color(0x36000000)),
-              const SizedBox(width: 10),
-              // Password icon
-              Image.asset('assets/images/twotone.png', width: 24, height: 24),
-            ],
+                SizedBox(width: screenWidth * 0.025),
+                // Vertical divider between icon and input
+                Container(
+                  width: 2,
+                  height: screenHeight * 0.02,
+                  color: const Color(0x36000000),
+                ),
+                SizedBox(width: screenWidth * 0.025),
+                // Password icon (على اليمين)
+                Image.asset(
+                  'assets/images/twotone.png',
+                  width: screenWidth * 0.06,
+                  height: screenWidth * 0.06,
+                ),
+              ],
+            ),
           ),
         ],
       ),

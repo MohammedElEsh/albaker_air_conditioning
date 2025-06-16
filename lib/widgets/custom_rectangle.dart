@@ -46,9 +46,8 @@ class CustomRectangle extends StatelessWidget {
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.orangeAccent.withOpacity(
-                  0.1,
-                ), // 10% opacity for subtle effect
+                color: Colors.blueAccent.withOpacity(0.2),
+
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(31),
                   bottomRight: Radius.circular(31),

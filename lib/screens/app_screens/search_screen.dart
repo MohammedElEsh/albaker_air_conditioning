@@ -26,53 +26,53 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Stack(
-            children: [
-              // Header title "البحث" (Search)
-              Positioned(
-                top: 50,
-                left: 200,
-                child: SizedBox(
-                  width: 53,
-                  height: 25,
-                  child: const Text(
-                    "البحث",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w800,
-                      color: Colors.black,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
+            child: Column(
+              children: [
+                SizedBox(height: screenHeight * 0.06),
+
+                // Header with title and back button
+                Row(
+                  children: [
+                    // Back button with forward arrow (RTL layout)
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Icon(
+                        Icons.arrow_forward,
+                        color: const Color(0xFF1D75B1),
+                        size: screenWidth * 0.06,
+                      ),
                     ),
-                  ),
+                    const Spacer(),
+                    // Header title "البحث" (Search)
+                    Text(
+                      "البحث",
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.045,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const Spacer(),
+                    // Empty space for symmetry
+                    SizedBox(width: screenWidth * 0.06),
+                  ],
                 ),
-              ),
 
-              // Back button with forward arrow (RTL layout)
-              Positioned(
-                top: 50,
-                right: 20,
-                child: GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: const Icon(
-                    Icons.arrow_forward,
-                    color: Color(0xFF1D75B1),
-                    size: 24,
-                  ),
-                ),
-              ),
+                SizedBox(height: screenHeight * 0.08),
 
-              // Custom styled search input field
-              Positioned(
-                top: 134,
-                left: 40,
-                child: Container(
-                  width: 363,
-                  height: 76,
+                // Custom styled search input field
+                Container(
+                  width: double.infinity,
+                  height: screenHeight * 0.08,
                   decoration: BoxDecoration(
                     color: const Color(0xFFF7F7F7),
                     borderRadius: BorderRadius.circular(38),
@@ -81,46 +81,44 @@ class SearchScreen extends StatelessWidget {
                     textAlign: TextAlign.right,
                     decoration: InputDecoration(
                       hintText: "أدخل كلمة البحث",
-                      hintStyle: const TextStyle(
-                        fontSize: 15,
+                      hintStyle: TextStyle(
+                        fontSize: screenWidth * 0.037,
                         fontWeight: FontWeight.w400,
                         letterSpacing: 0,
-                        color: Color(0xFF878383),
+                        color: const Color(0xFF878383),
                       ),
                       suffixIcon: Padding(
-                        padding: const EdgeInsets.all(27),
+                        padding: EdgeInsets.all(screenWidth * 0.065),
                         child: Image.asset(
                           'assets/images/search-normal_broken.png',
-                          width: 21,
-                          height: 21,
+                          width: screenWidth * 0.05,
+                          height: screenWidth * 0.05,
                           color: const Color(0xFF1D75B1),
                         ),
                       ),
                       border: InputBorder.none,
-                      contentPadding: const EdgeInsets.only(top: 22, right: 33),
+                      contentPadding: EdgeInsets.only(
+                        top: screenHeight * 0.025,
+                        right: screenWidth * 0.08,
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-              // Centered logo illustration
-              Positioned(
-                top: 440,
-                left: 150,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/images/Group 176217.png',
-                        width: 172,
-                        height: 188,
-                      ),
-                    ],
+                SizedBox(height: screenHeight * 0.25),
+
+                // Centered logo illustration
+                Center(
+                  child: Image.asset(
+                    'assets/images/Group 176217.png',
+                    width: screenWidth * 0.43,
+                    height: screenHeight * 0.23,
                   ),
                 ),
-              ),
-            ],
+
+                SizedBox(height: screenHeight * 0.1),
+              ],
+            ),
           ),
         ),
       ),

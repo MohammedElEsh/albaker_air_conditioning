@@ -2,7 +2,7 @@
 /// Provides email input for OTP verification and navigation to verification screen.
 import 'package:flutter/material.dart';
 import '../../widgets/custom_email_field.dart'; // تأكد من إضافة هذا السطر لاستيراد الـ Widget الجديد
-import '../../widgets/custom_rectangle.dart'; // تأكد من استيراد الـ Widget المخصص للصورة
+// import '../../widgets/custom_rectangle.dart'; // تأكد من استيراد الـ Widget المخصص للصورة
 import 'verification_code_screen.dart'; // إضافة استيراد الشاشة الجديدة
 import '../../services/user_service.dart';
 import 'package:al_baker_air_conditioning/utils/alert_utils.dart';
@@ -127,103 +127,99 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen dimensions for responsive layout
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Stack(
-          children: [
-            // الـ Rectangle في الأسفل
-            const Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: CustomRectangle(),
-            ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
+            child: Column(
+              children: [
+                SizedBox(height: screenHeight * 0.05),
 
-            // تعديل موضع الصورة لتكون فوق الـ Rectangle
-            Positioned(
-              top: 96,
-              left: 154,
-              child: Image.asset(
-                'assets/images/sms-notification.png',
-                width: 123,
-                height: 123,
-                color: const Color(0xFFE17A1D),
-              ),
-            ),
+                // SMS notification icon
+                Center(
+                  child: Image.asset(
+                    'assets/images/sms-notification.png',
+                    width: screenWidth * 0.5,
+                    height: screenHeight * 0.25,
+                    color: const Color(0xFF1D75B1),
+                  ),
+                ),
 
-            // النصوص
-            Positioned(
-              top: 321,
-              left: 20,
-              right: 20,
-              child: Column(
-                children: const [
-                  Text(
-                    'هل نسيت كلمة المرور؟',
+                SizedBox(height: screenHeight * 0.03),
+
+                // Title
+                const Text(
+                  'هل نسيت كلمة المرور؟',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xFF1A1A1A),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+
+                SizedBox(height: screenHeight * 0.02),
+
+                // Subtitle
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                  child: const Text(
+                    'قم بإدخال بريدك الإلكتروني لإرسال كود التحقق',
                     style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w800,
-                      color: Color(0xFF1A1A1A),
+                      fontSize: 18,
+                      height: 2,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFF666666),
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 8),
-
-                  SizedBox(
-                    width: 300,
-                    child: Text(
-                      'قم بإدخال بريدك الإلكتروني لإرسال كود التحقق',
-                      style: TextStyle(
-                        fontSize: 18,
-                        height: 2,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF666666),
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // حقل البريد الإلكتروني
-            Positioned(
-              top: 505,
-              left: 35,
-              child: CustomEmailField(controller: _emailController),
-            ),
-
-            // زر الإرسال
-            Positioned(
-              top: 618,
-              left: 35,
-              child: SizedBox(
-                width: 363,
-                height: 76,
-                child: ElevatedButton(
-                  onPressed: _isLoading ? null : _sendOtp,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1D75B1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(38),
-                    ),
-                  ),
-                  child:
-                      _isLoading
-                          ? const CircularProgressIndicator(color: Colors.white)
-                          : const Text(
-                            "إرسال",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 22,
-                              color: Colors.white,
-                            ),
-                          ),
                 ),
-              ),
+
+                SizedBox(height: screenHeight * 0.05),
+
+                // Email input field
+                CustomEmailField(controller: _emailController),
+
+                SizedBox(height: screenHeight * 0.04),
+
+                // Send button
+                SizedBox(
+                  width: double.infinity,
+                  height: screenHeight * 0.08,
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _sendOtp,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1D75B1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(38),
+                      ),
+                    ),
+                    child:
+                        _isLoading
+                            ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                            : const Text(
+                              "إرسال",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 22,
+                                color: Colors.white,
+                              ),
+                            ),
+                  ),
+                ),
+
+                SizedBox(height: screenHeight * 0.05),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

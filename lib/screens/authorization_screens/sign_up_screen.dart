@@ -141,133 +141,140 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Stack(
-          children: [
-            // App logo
-            Positioned(
-              top: screenHeight * 0.13,
-              left: screenWidth * 0.25,
-              child: Image.asset('assets/images/image 2.png'),
-            ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
+            child: Column(
+              children: [
+                SizedBox(height: screenHeight * 0.08),
 
-            // Registration title
-            Positioned(
-              top: 330,
-              left: 110,
-              child: const Text(
-                "تسجيل حساب جديد",
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.w800,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            // Registration subtitle
-            Positioned(
-              top: 370,
-              left: 84,
-              child: const SizedBox(
-                width: 280,
-                child: Text(
-                  "قم بإدخال بريدك الإلكتروني لتسجيل حساب جديد",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 18,
-                    height: 1.67,
-                    color: Color(0xFF878383),
+                // App logo
+                Center(
+                  child: Image.asset(
+                    'assets/images/image 2.png',
+                    width: screenWidth * 0.5,
+                    height: screenHeight * 0.15,
                   ),
                 ),
-              ),
-            ),
 
-            // Email input field
-            Positioned(
-              top: 475,
-              left: 35,
-              child: CustomEmailField(controller: _emailController),
-            ),
+                SizedBox(height: screenHeight * 0.05),
 
-            // Registration button with loading state
-            Positioned(
-              top: 580,
-              left: 35,
-              child: SizedBox(
-                width: 363,
-                height: 76,
-                child: ElevatedButton(
-                  onPressed: _isLoading ? null : _register,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1D75B1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(38),
+                // Registration title
+                const Text(
+                  "تسجيل حساب جديد",
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.black,
+                  ),
+                ),
+
+                SizedBox(height: screenHeight * 0.02),
+
+                // Registration subtitle
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                  child: const Text(
+                    "قم بإدخال بريدك الإلكتروني لتسجيل حساب جديد",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                      height: 1.67,
+                      color: Color(0xFF878383),
                     ),
                   ),
-                  child:
-                      _isLoading
-                          ? const CircularProgressIndicator(color: Colors.white)
-                          : const Text(
-                            "تسجيل",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 22,
-                              color: Colors.white,
-                            ),
-                          ),
                 ),
-              ),
-            ),
 
-            // "Already have an account?" text
-            Positioned(
-              top: 820,
-              left: 150,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => AuthScreen()),
-                  );
-                },
-                child: const Text(
-                  "لديك حساب بالفعل ؟",
-                  style: TextStyle(
-                    fontSize: 18,
-                    height: 1.67,
-                    color: Color(0xFF878383),
-                  ),
-                ),
-              ),
-            ),
+                SizedBox(height: screenHeight * 0.05),
 
-            // Login link with back arrow
-            Positioned(
-              top: 860,
-              left: 145,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => AuthScreen()),
-                  );
-                },
-                child: Row(
-                  children: const [
-                    Icon(Icons.arrow_back, color: Color(0xFF1D75B1), size: 20),
-                    SizedBox(width: 10),
-                    Text(
-                      "تسجيل الدخول",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF1D75B1),
+                // Email input field
+                CustomEmailField(controller: _emailController),
+
+                SizedBox(height: screenHeight * 0.04),
+
+                // Registration button with loading state
+                SizedBox(
+                  width: double.infinity,
+                  height: screenHeight * 0.08,
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _register,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1D75B1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(38),
                       ),
                     ),
-                  ],
+                    child:
+                        _isLoading
+                            ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                            : const Text(
+                              "تسجيل",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 22,
+                                color: Colors.white,
+                              ),
+                            ),
+                  ),
                 ),
-              ),
+
+                SizedBox(height: screenHeight * 0.15),
+
+                // "Already have an account?" text
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => AuthScreen()),
+                    );
+                  },
+                  child: const Text(
+                    "لديك حساب بالفعل ؟",
+                    style: TextStyle(
+                      fontSize: 18,
+                      height: 1.67,
+                      color: Color(0xFF878383),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: screenHeight * 0.02),
+
+                // Login link with back arrow
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => AuthScreen()),
+                    );
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(
+                        Icons.arrow_back,
+                        color: Color(0xFF1D75B1),
+                        size: 20,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        "تسجيل الدخول",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFF1D75B1),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: screenHeight * 0.03),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

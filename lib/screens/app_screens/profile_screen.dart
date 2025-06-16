@@ -217,430 +217,277 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child:
             _isLoading
                 ? const Center(child: CircularProgressIndicator())
-                : Stack(
-                  children: [
-                    // Header with title "الملف الشخصي" (Profile)
-                    Positioned(
-                      top: 50,
-                      left: 160,
-                      child: const Text(
-                        "الملف الشخصي",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.black,
-                        ),
-                      ),
+                : SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.08,
                     ),
+                    child: Column(
+                      children: [
+                        SizedBox(height: screenHeight * 0.04),
 
-                    // Back button with forward arrow (RTL layout)
-                    Positioned(
-                      top: 50,
-                      right: 20,
-                      child: GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: const Icon(
-                          Icons.arrow_forward,
-                          color: Color(0xFF1D75B1),
-                          size: 24,
+                        // Header with title and back button
+                        Row(
+                          children: [
+                            // Back button with forward arrow (RTL layout)
+                            GestureDetector(
+                              onTap: () => Navigator.pop(context),
+                              child: Icon(
+                                Icons.arrow_forward,
+                                color: const Color(0xFF1D75B1),
+                                size: screenWidth * 0.06,
+                              ),
+                            ),
+                            const Spacer(),
+                            // Header title "الملف الشخصي" (Profile)
+                            Text(
+                              "الملف الشخصي",
+                              style: TextStyle(
+                                fontSize: screenWidth * 0.045,
+                                fontWeight: FontWeight.w800,
+                                color: Colors.black,
+                              ),
+                            ),
+                            const Spacer(),
+                            // Empty space for symmetry
+                            SizedBox(width: screenWidth * 0.06),
+                          ],
                         ),
-                      ),
-                    ),
 
-                    // Profile image with user icon
-                    Positioned(
-                      top: 100,
-                      left: 165,
-                      child: Container(
-                        width: 123,
-                        height: 123,
-                        child: Center(
-                          child: Image.asset(
-                            'assets/images/user.png',
-                            width: 100,
-                            height: 100,
-                            color: const Color(0xFF1D75B1),
+                        SizedBox(height: screenHeight * 0.02),
+
+                        // Profile image with user icon
+                        Container(
+                          width: screenWidth * 0.3,
+                          height: screenWidth * 0.3,
+                          child: Center(
+                            child: Image.asset(
+                              'assets/images/user.png',
+                              width: screenWidth * 0.25,
+                              height: screenWidth * 0.25,
+                              color: const Color(0xFF1D75B1),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
 
-                    // Form fields for profile information
-                    Positioned(
-                      top: 250,
-                      left: 33,
-                      right: 33,
-                      child: Column(
-                        children: [
-                          // First Name Field
-                          Container(
-                            width: 363,
-                            height: 76,
-                            margin: const EdgeInsets.only(bottom: 15),
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFF7F7F7),
-                              borderRadius: BorderRadius.circular(38),
-                            ),
-                            child: TextField(
-                              controller: _firstNameController,
-                              enabled: _isEditMode,
-                              textAlign: TextAlign.right,
-                              decoration: const InputDecoration(
-                                hintText: "الاسم الأول",
-                                border: InputBorder.none,
-                                hintStyle: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color(0xFF878383),
-                                ),
+                        SizedBox(height: screenHeight * 0.02),
+
+                        // Form fields for profile information
+                        // First Name Field
+                        Container(
+                          width: double.infinity,
+                          height: screenHeight * 0.08,
+                          margin: EdgeInsets.only(bottom: screenHeight * 0.02),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.05,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF7F7F7),
+                            borderRadius: BorderRadius.circular(38),
+                          ),
+                          child: TextField(
+                            controller: _firstNameController,
+                            enabled: _isEditMode,
+                            textAlign: TextAlign.right,
+                            decoration: InputDecoration(
+                              hintText: "الاسم الأول",
+                              border: InputBorder.none,
+                              hintStyle: TextStyle(
+                                fontSize: screenWidth * 0.04,
+                                fontWeight: FontWeight.w700,
+                                color: const Color(0xFF878383),
                               ),
                             ),
                           ),
+                        ),
 
-                          // Last Name Field
-                          Container(
-                            width: 363,
-                            height: 76,
-                            margin: const EdgeInsets.only(bottom: 15),
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFF7F7F7),
-                              borderRadius: BorderRadius.circular(38),
-                            ),
-                            child: TextField(
-                              controller: _lastNameController,
-                              enabled: _isEditMode,
-                              textAlign: TextAlign.right,
-                              decoration: const InputDecoration(
-                                hintText: "الاسم الأخير",
-                                border: InputBorder.none,
-                                hintStyle: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color(0xFF878383),
-                                ),
+                        // Last Name Field
+                        Container(
+                          width: double.infinity,
+                          height: screenHeight * 0.08,
+                          margin: EdgeInsets.only(bottom: screenHeight * 0.02),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.05,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF7F7F7),
+                            borderRadius: BorderRadius.circular(38),
+                          ),
+                          child: TextField(
+                            controller: _lastNameController,
+                            enabled: _isEditMode,
+                            textAlign: TextAlign.right,
+                            decoration: InputDecoration(
+                              hintText: "الاسم الأخير",
+                              border: InputBorder.none,
+                              hintStyle: TextStyle(
+                                fontSize: screenWidth * 0.04,
+                                fontWeight: FontWeight.w700,
+                                color: const Color(0xFF878383),
                               ),
                             ),
                           ),
+                        ),
 
-                          // Phone Field
-                          Container(
-                            width: 363,
-                            height: 76,
-                            margin: const EdgeInsets.only(bottom: 15),
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFF7F7F7),
-                              borderRadius: BorderRadius.circular(38),
-                            ),
-                            child: TextField(
-                              controller: _phoneController,
-                              enabled: _isEditMode,
-                              textAlign: TextAlign.right,
-                              decoration: const InputDecoration(
-                                hintText: "رقم الجوال",
-                                border: InputBorder.none,
-                                hintStyle: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color(0xFF878383),
-                                ),
+                        // Phone Field
+                        Container(
+                          width: double.infinity,
+                          height: screenHeight * 0.08,
+                          margin: EdgeInsets.only(bottom: screenHeight * 0.02),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.05,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF7F7F7),
+                            borderRadius: BorderRadius.circular(38),
+                          ),
+                          child: TextField(
+                            controller: _phoneController,
+                            enabled: _isEditMode,
+                            textAlign: TextAlign.right,
+                            decoration: InputDecoration(
+                              hintText: "رقم الجوال",
+                              border: InputBorder.none,
+                              hintStyle: TextStyle(
+                                fontSize: screenWidth * 0.04,
+                                fontWeight: FontWeight.w700,
+                                color: const Color(0xFF878383),
                               ),
                             ),
                           ),
+                        ),
 
-                          const SizedBox(height: 30),
+                        SizedBox(height: screenHeight * 0.02),
 
-                          // Edit/Save Button
-                          SizedBox(
-                            width: 363,
-                            height: 76,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if (_isEditMode) {
-                                  _updateProfile();
-                                } else {
-                                  setState(() => _isEditMode = true);
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF1D75B1),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(38),
-                                ),
+                        // Edit/Save Button
+                        SizedBox(
+                          width: double.infinity,
+                          height: screenHeight * 0.08,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_isEditMode) {
+                                _updateProfile();
+                              } else {
+                                setState(() => _isEditMode = true);
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF1D75B1),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(38),
                               ),
-                              child: Text(
-                                _isEditMode
-                                    ? "حفظ التغييرات"
-                                    : "تعديل البيانات",
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 22,
-                                  color: Colors.white,
-                                ),
+                            ),
+                            child: Text(
+                              _isEditMode ? "حفظ التغييرات" : "تعديل البيانات",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: screenWidth * 0.055,
+                                color: Colors.white,
                               ),
                             ),
                           ),
+                        ),
 
-                          const SizedBox(height: 15),
+                        SizedBox(height: screenHeight * 0.02),
 
-                          // Change Password Button
-                          SizedBox(
-                            width: 363,
-                            height: 76,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                setState(() => _showChangePassword = true);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(38),
-                                  side: const BorderSide(
-                                    color: Color(0xFF1D75B1),
-                                    width: 2,
-                                  ),
-                                ),
-                              ),
-                              child: const Text(
-                                "تغيير كلمة المرور",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 22,
+                        // Change Password Button
+                        SizedBox(
+                          width: double.infinity,
+                          height: screenHeight * 0.08,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // TODO: Implement change password functionality
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(38),
+                                side: const BorderSide(
                                   color: Color(0xFF1D75B1),
+                                  width: 2,
                                 ),
                               ),
                             ),
-                          ),
-
-                          const SizedBox(height: 15),
-
-                          // Logout Button
-                          SizedBox(
-                            width: 363,
-                            height: 76,
-                            child: ElevatedButton(
-                              onPressed: _logout,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF1111),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(38),
-                                ),
-                              ),
-                              child: const Text(
-                                "تسجيل الخروج",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 22,
-                                  color: Colors.white,
-                                ),
+                            child: Text(
+                              "تغيير كلمة المرور",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: screenWidth * 0.055,
+                                color: const Color(0xFF1D75B1),
                               ),
                             ),
                           ),
+                        ),
 
-                          const SizedBox(height: 15),
+                        SizedBox(height: screenHeight * 0.02),
 
-                          // Delete Account Button
-                          SizedBox(
-                            width: 363,
-                            height: 76,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                setState(() => _showDeleteAccount = true);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(38),
-                                  side: const BorderSide(
-                                    color: Colors.red,
-                                    width: 2,
-                                  ),
-                                ),
+                        // Logout Button
+                        SizedBox(
+                          width: double.infinity,
+                          height: screenHeight * 0.08,
+                          child: ElevatedButton(
+                            onPressed: _logout,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF111111),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(38),
                               ),
-                              child: const Text(
-                                "حذف الحساب",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 22,
+                            ),
+                            child: Text(
+                              "تسجيل الخروج",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: screenWidth * 0.055,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(height: screenHeight * 0.02),
+
+                        // Delete Account Button
+                        SizedBox(
+                          width: double.infinity,
+                          height: screenHeight * 0.08,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // TODO: Implement delete account functionality
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(38),
+                                side: const BorderSide(
                                   color: Colors.red,
+                                  width: 2,
                                 ),
                               ),
                             ),
+                            child: Text(
+                              "حذف الحساب",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: screenWidth * 0.055,
+                                color: Colors.red,
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
+                        ),
+
+                        SizedBox(height: screenHeight * 0.05),
+                      ],
                     ),
-
-                    // Change Password Dialog
-                    if (_showChangePassword)
-                      Positioned.fill(
-                        child: Container(
-                          color: Colors.black54,
-                          child: Center(
-                            child: Container(
-                              width: 363,
-                              padding: const EdgeInsets.all(20),
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(38),
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Text(
-                                    "تغيير كلمة المرور",
-                                    style: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w800,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 20),
-                                  CustomPasswordField(
-                                    controller: _currentPasswordController,
-                                    hintText: "كلمة المرور الحالية",
-                                  ),
-                                  const SizedBox(height: 15),
-                                  CustomPasswordField(
-                                    controller: _newPasswordController,
-                                    hintText: "كلمة المرور الجديدة",
-                                  ),
-                                  const SizedBox(height: 15),
-                                  CustomPasswordField(
-                                    controller: _confirmPasswordController,
-                                    hintText: "تأكيد كلمة المرور الجديدة",
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      TextButton(
-                                        onPressed: () {
-                                          setState(
-                                            () => _showChangePassword = false,
-                                          );
-                                        },
-                                        child: const Text("إلغاء"),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: _changePassword,
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(
-                                            0xFF1D75B1,
-                                          ),
-                                          foregroundColor: Colors.white,
-                                        ),
-                                        child: const Text("تأكيد"),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-
-                    // Delete Account Dialog
-                    if (_showDeleteAccount)
-                      Positioned.fill(
-                        child: Container(
-                          color: Colors.black54,
-                          child: Center(
-                            child: Container(
-                              width: 363,
-                              padding: const EdgeInsets.all(20),
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(38),
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Text(
-                                    "حذف الحساب",
-                                    style: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w800,
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  const Text(
-                                    "هذا الإجراء لا يمكن التراجع عنه. هل أنت متأكد؟",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 20),
-                                  TextField(
-                                    controller: _deleteEmailController,
-                                    textAlign: TextAlign.right,
-                                    decoration: InputDecoration(
-                                      hintText: "البريد الإلكتروني",
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                            horizontal: 15,
-                                            vertical: 15,
-                                          ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 15),
-                                  CustomPasswordField(
-                                    controller: _deletePasswordController,
-                                    hintText: "كلمة المرور",
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      TextButton(
-                                        onPressed: () {
-                                          setState(
-                                            () => _showDeleteAccount = false,
-                                          );
-                                        },
-                                        child: const Text("إلغاء"),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: _deleteAccount,
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.red,
-                                        ),
-                                        child: const Text(
-                                          "حذف الحساب",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                  ],
+                  ),
                 ),
       ),
     );

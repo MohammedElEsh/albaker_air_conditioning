@@ -125,168 +125,168 @@ class AuthScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          // App logo
-          Positioned(
-            top: screenHeight * 0.13,
-            left: screenWidth * 0.25,
-            child: Image.asset(
-              'assets/images/image 2.png',
-              width: screenWidth * 0.5,
-              height: screenHeight * 0.15,
-            ),
-          ),
-          // Login title
-          Positioned(
-            top: screenHeight * 0.33,
-            left: screenWidth * 0.3,
-            child: const Text(
-              "تسجيل الدخول",
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.w800,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          // Login subtitle
-          Positioned(
-            top: 370,
-            left: 84,
-            child: const SizedBox(
-              width: 280,
-              child: Text(
-                "قم بإدخال بريدك الإلكتروني لتسجيل الدخول",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                  height: 1.67,
-                  color: Color(0xFF878383),
-                ),
-              ),
-            ),
-          ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
+            child: Column(
+              children: [
+                SizedBox(height: screenHeight * 0.03),
 
-          // Email input field
-          Positioned(
-            top: 480,
-            left: 33,
-            child: CustomEmailField(controller: emailController),
-          ),
-
-          // Password input field
-          Positioned(
-            top: 580,
-            left: 33,
-            child: CustomPasswordField(controller: passwordController),
-          ),
-
-          // Forgot password link
-          Positioned(
-            top: 700,
-            left: 133,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ForgotPasswordScreen(),
-                  ),
-                );
-              },
-              child: const Text(
-                "هل نسيت كلمة المرور؟",
-                style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 16,
-                  color: Color(0xFF25170B),
-                ),
-              ),
-            ),
-          ),
-
-          // Login button
-          Positioned(
-            top: 750,
-            left: 35,
-            child: SizedBox(
-              width: 363,
-              height: 76,
-              child: ElevatedButton(
-                onPressed: () => _login(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF1D75B1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(38),
+                // App logo
+                Center(
+                  child: Image.asset(
+                    'assets/images/image 2.png',
+                    width: screenWidth * 0.5,
+                    height: screenHeight * 0.15,
                   ),
                 ),
-                child: const Text(
-                  "الدخول",
+
+                SizedBox(height: screenHeight * 0.05),
+
+                // Login title
+                const Text(
+                  "تسجيل الدخول",
                   style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 22,
-                    color: Colors.white,
+                    fontSize: 25,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.black,
                   ),
                 ),
-              ),
-            ),
-          ),
 
-          // Sign up prompt text
-          Positioned(
-            top: 860,
-            left: 150,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SignUpScreen()),
-                );
-              },
-              child: const Text(
-                "ليس لديك حساب ؟",
-                style: TextStyle(
-                  fontSize: 18,
-                  height: 1.67,
-                  color: Color(0xFF878383),
-                ),
-              ),
-            ),
-          ),
+                SizedBox(height: screenHeight * 0.02),
 
-          // Sign up button with icon
-          Positioned(
-            top: 900,
-            left: 120,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SignUpScreen()),
-                );
-              },
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.arrow_back,
-                    color: Color(0xFF1D75B1),
-                    size: 20,
-                  ),
-                  const SizedBox(width: 10),
-                  const Text(
-                    "تسجيل حساب جديد",
+                // Login subtitle
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                  child: const Text(
+                    "قم بإدخال بريدك الإلكتروني لتسجيل الدخول",
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF1D75B1),
+                      fontSize: 18,
+                      height: 1.67,
+                      color: Color(0xFF878383),
                     ),
                   ),
-                ],
-              ),
+                ),
+
+                SizedBox(height: screenHeight * 0.05),
+
+                // Email input field
+                CustomEmailField(controller: emailController),
+
+                SizedBox(height: screenHeight * 0.02),
+
+                // Password input field
+                CustomPasswordField(controller: passwordController),
+
+                SizedBox(height: screenHeight * 0.05),
+
+                // Forgot password link
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ForgotPasswordScreen(),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    "هل نسيت كلمة المرور؟",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 16,
+                      color: Color(0xFF25170B),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: screenHeight * 0.05),
+
+                // Login button
+                SizedBox(
+                  width: double.infinity,
+                  height: screenHeight * 0.08,
+                  child: ElevatedButton(
+                    onPressed: () => _login(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1D75B1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(38),
+                      ),
+                    ),
+                    child: const Text(
+                      "الدخول",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 22,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: screenHeight * 0.02),
+
+                // Sign up prompt text
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SignUpScreen(),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    "ليس لديك حساب ؟",
+                    style: TextStyle(
+                      fontSize: 18,
+                      height: 1.67,
+                      color: Color(0xFF878383),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: screenHeight * 0.01),
+
+                // Sign up button with icon
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SignUpScreen(),
+                      ),
+                    );
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.arrow_back,
+                        color: Color(0xFF1D75B1),
+                        size: 20,
+                      ),
+                      const SizedBox(width: 10),
+                      const Text(
+                        "تسجيل حساب جديد",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFF1D75B1),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: screenHeight * 0.02),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

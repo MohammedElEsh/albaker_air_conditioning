@@ -79,53 +79,62 @@ class _WorksScreenState extends State<WorksScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: _refreshData,
-        color: Colors.blue,
+        color: const Color(0xFF1D75B1),
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-              const SizedBox(height: 60),
+              SizedBox(height: screenHeight * 0.07),
               // Header
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                 child: Text(
                   "أعمالنا",
-                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 24),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: screenWidth * 0.06,
+                  ),
                 ),
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: screenHeight * 0.025),
 
               // Works list
               _isLoading
-                  ? const SizedBox(
-                    height: 300,
-                    child: Center(
+                  ? SizedBox(
+                    height: screenHeight * 0.4,
+                    child: const Center(
                       child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Color(0xFF1D75B1),
+                        ),
                       ),
                     ),
                   )
                   : _allWorks.isEmpty
                   ? SizedBox(
+                    height: screenHeight * 0.4,
                     child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image.asset(
                             'assets/images/empty_inbox.png',
-                            width: 100,
-                            height: 100,
-                            color: Colors.blue,
+                            width: screenWidth * 0.25,
+                            height: screenWidth * 0.25,
+                            color: const Color(0xFF1D75B1),
                           ),
-                          const SizedBox(height: 15),
+                          SizedBox(height: screenHeight * 0.02),
                           Text(
                             'لا توجد أعمال',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: screenWidth * 0.04,
                               fontWeight: FontWeight.w600,
                               color: Colors.grey[600],
                             ),
@@ -137,28 +146,39 @@ class _WorksScreenState extends State<WorksScreen> {
                   )
                   : ListView.builder(
                     shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: _allWorks.length,
                     itemBuilder: (context, index) {
                       final work = _allWorks[index];
                       return Container(
-                        margin: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 20,
+                        margin: EdgeInsets.symmetric(
+                          vertical: screenHeight * 0.012,
+                          horizontal: screenWidth * 0.05,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.1),
+                              blurRadius: 8,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // Work image
                             Container(
-                              height: 120,
+                              height: screenHeight * 0.15,
                               decoration: const BoxDecoration(
                                 borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(10),
+                                  top: Radius.circular(15),
                                 ),
                               ),
                               child: ClipRRect(
                                 borderRadius: const BorderRadius.vertical(
-                                  top: Radius.circular(10),
+                                  top: Radius.circular(15),
                                 ),
                                 child: CachedNetworkImage(
                                   imageUrl:
@@ -172,7 +192,7 @@ class _WorksScreenState extends State<WorksScreen> {
                                           child: CircularProgressIndicator(
                                             valueColor:
                                                 AlwaysStoppedAnimation<Color>(
-                                                  Colors.blue,
+                                                  Color(0xFF1D75B1),
                                                 ),
                                           ),
                                         ),
@@ -180,10 +200,10 @@ class _WorksScreenState extends State<WorksScreen> {
                                   errorWidget:
                                       (context, url, error) => Container(
                                         color: Colors.grey[300],
-                                        child: const Center(
+                                        child: Center(
                                           child: Icon(
                                             Icons.image_not_supported,
-                                            size: 30,
+                                            size: screenWidth * 0.075,
                                             color: Colors.grey,
                                           ),
                                         ),
@@ -193,13 +213,18 @@ class _WorksScreenState extends State<WorksScreen> {
                             ),
                             // Work description
                             Container(
-                              padding: const EdgeInsets.all(10),
-                              color: Colors.white,
+                              padding: EdgeInsets.all(screenWidth * 0.025),
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.vertical(
+                                  bottom: Radius.circular(15),
+                                ),
+                              ),
                               child: Text(
                                 work['description'] ?? '',
                                 style: TextStyle(
                                   color: Colors.black87,
-                                  fontSize: 14,
+                                  fontSize: screenWidth * 0.035,
                                   fontWeight: FontWeight.w400,
                                 ),
                                 maxLines: 2,
@@ -212,7 +237,7 @@ class _WorksScreenState extends State<WorksScreen> {
                     },
                   ),
 
-              const SizedBox(height: 80),
+              SizedBox(height: screenHeight * 0.1),
             ],
           ),
         ),
@@ -221,8 +246,8 @@ class _WorksScreenState extends State<WorksScreen> {
         onPressed: () {
           // Add functionality for adding a new work
         },
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.add),
+        backgroundColor: const Color(0xFF1D75B1),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

@@ -163,12 +163,15 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Returns:
   /// - A placeholder container if no images are loaded
   /// - A PageView with cached images, gradient overlay, and text if images are available
-  Widget _buildImageSlider() {
+  Widget _buildImageSlider(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     if (_sliderImages.isEmpty) {
       // Placeholder while loading
       return Container(
-        width: 400,
-        height: 250,
+        width: double.infinity,
+        height: screenHeight * 0.3,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(38),
           color: Colors.grey[300],
@@ -188,8 +191,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // Slider widget
     return SizedBox(
-      width: 400,
-      height: 250,
+      width: double.infinity,
+      height: screenHeight * 0.3,
       child: Stack(
         children: [
           // PageView for image swiping
@@ -204,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
             itemBuilder: (context, index) {
               final imageUrl = _sliderImages[index]['image'] ?? '';
               return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 2),
+                margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(38),
                   boxShadow: [
@@ -258,20 +261,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     // Overlay text
                     Positioned(
-                      bottom: 50,
-                      right: 20,
-                      left: 20,
+                      bottom: screenHeight * 0.06,
+                      right: screenWidth * 0.05,
+                      left: screenWidth * 0.05,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const Text(
+                          Text(
                             'كل ما تحتاجه من مكيفات',
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
-                              fontSize: 22,
+                              fontSize: screenWidth * 0.055,
                               height: 1.2,
-                              shadows: [
+                              shadows: const [
                                 Shadow(
                                   blurRadius: 3.0,
                                   color: Colors.black54,
@@ -281,17 +284,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 8),
-                          const SizedBox(
-                            width: 220,
+                          SizedBox(height: screenHeight * 0.01),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.1,
+                            ),
                             child: Text(
                               'أصبح سهلا الآن وبين يديك فقط أطلب ما تحتاجه ونصله إليك',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 14,
+                                fontSize: screenWidth * 0.035,
                                 height: 1.2,
-                                shadows: [
+                                shadows: const [
                                   Shadow(
                                     blurRadius: 3.0,
                                     color: Colors.black54,
@@ -313,7 +318,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           // Page indicator dots
           Positioned(
-            bottom: 20,
+            bottom: screenHeight * 0.025,
             left: 0,
             right: 0,
             child: Row(
@@ -351,6 +356,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: RefreshIndicator(
@@ -359,10 +367,10 @@ class _HomeScreenState extends State<HomeScreen> {
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-              const SizedBox(height: 60),
+              SizedBox(height: screenHeight * 0.07),
               // Header: profile button, search, user greeting
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 33),
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
                 child: Row(
                   children: [
                     // Profile icon button
@@ -375,23 +383,25 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                       child: Container(
-                        width: 41,
-                        height: 41,
+                        width: screenWidth * 0.1,
+                        height: screenWidth * 0.1,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(27),
+                          borderRadius: BorderRadius.circular(
+                            screenWidth * 0.065,
+                          ),
                           color: const Color(0xFF1D75B1),
                         ),
                         child: Center(
                           child: Image.asset(
                             'assets/images/user.png',
-                            width: 21,
-                            height: 21,
+                            width: screenWidth * 0.05,
+                            height: screenWidth * 0.05,
                             color: Colors.white,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    SizedBox(width: screenWidth * 0.025),
                     // Search icon button
                     GestureDetector(
                       onTap:
@@ -402,21 +412,23 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                       child: Container(
-                        width: 41,
-                        height: 41,
+                        width: screenWidth * 0.1,
+                        height: screenWidth * 0.1,
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: const Color(0x451D75B1),
                             width: 1,
                           ),
-                          borderRadius: BorderRadius.circular(27),
+                          borderRadius: BorderRadius.circular(
+                            screenWidth * 0.065,
+                          ),
                           color: Colors.white,
                         ),
                         child: Center(
                           child: Image.asset(
                             'assets/images/search-normal_broken.png',
-                            width: 21,
-                            height: 21,
+                            width: screenWidth * 0.05,
+                            height: screenWidth * 0.05,
                             color: const Color(0xFF1D75B1),
                           ),
                         ),
@@ -426,9 +438,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     // Greeting text
                     Text(
                       "مرحبا، $_userName",
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w800,
-                        fontSize: 18,
+                        fontSize: screenWidth * 0.045,
                         height: 1.0,
                       ),
                     ),
@@ -436,26 +448,28 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: screenHeight * 0.025),
 
               // Slider Section
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 33),
-                child: _buildImageSlider(),
+                padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.08,
+                ),
+                child: _buildImageSlider(context),
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: screenHeight * 0.025),
 
               // Categories Grid or Loading/Empty message
               _isLoading
-                  ? const SizedBox(
-                    height: 400,
-                    child: Center(child: CircularProgressIndicator()),
+                  ? SizedBox(
+                    height: screenHeight * 0.5,
+                    child: const Center(child: CircularProgressIndicator()),
                   )
                   : _categories.length < 9
-                  ? const SizedBox(
-                    height: 400,
-                    child: Center(
+                  ? SizedBox(
+                    height: screenHeight * 0.5,
+                    child: const Center(
                       child: Text(
                         'غير كافٍ لعرض البيانات',
                         style: TextStyle(
@@ -467,17 +481,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   )
                   : Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: EdgeInsets.all(screenWidth * 0.05),
                     child: GridView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 12,
-                            childAspectRatio: 1.0,
-                          ),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: screenWidth * 0.03,
+                        mainAxisSpacing: screenWidth * 0.03,
+                        childAspectRatio: 1.0,
+                      ),
                       itemCount: 6,
                       itemBuilder: (context, index) {
                         if (index >= _categories.length) {
@@ -498,51 +511,63 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           color: color,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child:
-                                    category['image'] != null
-                                        ? CachedNetworkImage(
-                                          imageUrl:
-                                              'https://albakr-ac.com/'
-                                              '${category['image']}',
-                                          height: 120,
-                                          width: 200,
-                                          fit: BoxFit.contain,
-                                          errorWidget:
-                                              (context, url, error) =>
-                                                  const Icon(
-                                                    Icons.image_not_supported,
-                                                    size: 80,
-                                                    color: Colors.white,
-                                                  ),
-                                          placeholder:
-                                              (context, url) => const Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              ),
-                                        )
-                                        : const Icon(
-                                          Icons.category,
-                                          size: 40,
-                                          color: Colors.white,
-                                        ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  category['name'] ?? 'غير معروف',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+                          child: Padding(
+                            padding: EdgeInsets.all(screenWidth * 0.02),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Flexible(
+                                  flex: 3,
+                                  child:
+                                      category['image'] != null
+                                          ? CachedNetworkImage(
+                                            imageUrl:
+                                                'https://albakr-ac.com/'
+                                                '${category['image']}',
+                                            height: screenHeight * 0.08,
+                                            width: screenWidth * 0.2,
+                                            fit: BoxFit.contain,
+                                            errorWidget:
+                                                (context, url, error) => Icon(
+                                                  Icons.image_not_supported,
+                                                  size: screenWidth * 0.12,
+                                                  color: Colors.white,
+                                                ),
+                                            placeholder:
+                                                (context, url) => SizedBox(
+                                                  width: screenWidth * 0.08,
+                                                  height: screenWidth * 0.08,
+                                                  child:
+                                                      const CircularProgressIndicator(
+                                                        strokeWidth: 2,
+                                                        color: Colors.white,
+                                                      ),
+                                                ),
+                                          )
+                                          : Icon(
+                                            Icons.category,
+                                            size: screenWidth * 0.12,
+                                            color: Colors.white,
+                                          ),
+                                ),
+                                SizedBox(height: screenHeight * 0.005),
+                                Flexible(
+                                  flex: 2,
+                                  child: Text(
+                                    category['name'] ?? 'غير معروف',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: screenWidth * 0.035,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         );
                       },
@@ -550,7 +575,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
 
               // Add space at the bottom for the navbar
-              const SizedBox(height: 80),
+              SizedBox(height: screenHeight * 0.15),
             ],
           ),
         ),

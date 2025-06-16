@@ -162,6 +162,9 @@ class _ProjectsScreenState extends State<ProjectsScreen>
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return RefreshIndicator(
       onRefresh: _refreshData,
       color: const Color(0xFF1D75B1),
@@ -169,34 +172,26 @@ class _ProjectsScreenState extends State<ProjectsScreen>
         physics: const AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
-            const SizedBox(height: 60),
+            SizedBox(height: screenHeight * 0.07),
             // Header
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 33),
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
               child: Text(
                 "مشاريعنا",
                 style: TextStyle(
                   fontWeight: FontWeight.w800,
-                  fontSize: 24,
-                  // color: const Color(0xFF1D75B1),
-                  // shadows: [
-                  //   Shadow(
-                  //     blurRadius: 4,
-                  //     color: Colors.black.withOpacity(0.1),
-                  //     offset: const Offset(0, 2),
-                  //   ),
-                  // ],
+                  fontSize: screenWidth * 0.06,
                 ),
               ),
             ),
 
-            const SizedBox(height: 30),
+            SizedBox(height: screenHeight * 0.04),
 
             // Project categories horizontal list
             _isLoadingCategories
-                ? const SizedBox(
-                  height: 80,
-                  child: Center(
+                ? SizedBox(
+                  height: screenHeight * 0.1,
+                  child: const Center(
                     child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(
                         Color(0xFF1D75B1),
@@ -206,12 +201,12 @@ class _ProjectsScreenState extends State<ProjectsScreen>
                 )
                 : _projectCategories.isEmpty
                 ? SizedBox(
-                  height: 80,
+                  height: screenHeight * 0.1,
                   child: Center(
                     child: Text(
                       'لا توجد تصنيفات',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: screenWidth * 0.045,
                         fontWeight: FontWeight.w600,
                         color: Colors.grey[600],
                       ),
@@ -219,11 +214,13 @@ class _ProjectsScreenState extends State<ProjectsScreen>
                   ),
                 )
                 : SizedBox(
-                  height: 80,
+                  height: screenHeight * 0.1,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: _projectCategories.length,
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.05,
+                    ),
                     itemBuilder: (context, index) {
                       final category = _projectCategories[index];
                       final isSelected = _selectedCategoryId == category['id'];
@@ -237,10 +234,10 @@ class _ProjectsScreenState extends State<ProjectsScreen>
                             ),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
-                          margin: const EdgeInsets.only(right: 12),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 15,
-                            vertical: 10,
+                          margin: EdgeInsets.only(right: screenWidth * 0.03),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.04,
+                            vertical: screenHeight * 0.012,
                           ),
                           decoration: BoxDecoration(
                             gradient:
@@ -262,7 +259,7 @@ class _ProjectsScreenState extends State<ProjectsScreen>
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
+                                color: Colors.black.withValues(alpha: 0.1),
                                 blurRadius: 6,
                                 offset: const Offset(0, 3),
                               ),
@@ -303,13 +300,13 @@ class _ProjectsScreenState extends State<ProjectsScreen>
                                       child: CachedNetworkImage(
                                         imageUrl:
                                             'https://albakr-ac.com/${category['image']}',
-                                        width: 40,
-                                        height: 40,
+                                        width: screenWidth * 0.1,
+                                        height: screenWidth * 0.1,
                                         fit: BoxFit.cover,
                                         placeholder:
                                             (context, url) => Container(
-                                              width: 40,
-                                              height: 40,
+                                              width: screenWidth * 0.1,
+                                              height: screenWidth * 0.1,
                                               decoration: BoxDecoration(
                                                 color: Colors.grey[200],
                                                 borderRadius:
@@ -318,16 +315,16 @@ class _ProjectsScreenState extends State<ProjectsScreen>
                                             ),
                                         errorWidget:
                                             (context, url, error) => Container(
-                                              width: 40,
-                                              height: 40,
+                                              width: screenWidth * 0.1,
+                                              height: screenWidth * 0.1,
                                               decoration: BoxDecoration(
                                                 color: Colors.grey[300],
                                                 borderRadius:
                                                     BorderRadius.circular(20),
                                               ),
-                                              child: const Icon(
+                                              child: Icon(
                                                 Icons.image_not_supported,
-                                                size: 20,
+                                                size: screenWidth * 0.05,
                                                 color: Colors.grey,
                                               ),
                                             ),
@@ -336,7 +333,7 @@ class _ProjectsScreenState extends State<ProjectsScreen>
                                   ),
                                 ),
                               if (category['image'] != null)
-                                const SizedBox(width: 10),
+                                SizedBox(width: screenWidth * 0.025),
                               // Category name
                               Text(
                                 category['name'] ?? 'غير معروف',
@@ -346,7 +343,7 @@ class _ProjectsScreenState extends State<ProjectsScreen>
                                           ? Colors.white
                                           : const Color(0xFF1D75B1),
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 16,
+                                  fontSize: screenWidth * 0.04,
                                 ),
                               ),
                             ],
@@ -357,13 +354,13 @@ class _ProjectsScreenState extends State<ProjectsScreen>
                   ),
                 ),
 
-            const SizedBox(height: 25),
+            SizedBox(height: screenHeight * 0.03),
 
             // Projects grid
             _isLoadingProjects
-                ? const SizedBox(
-                  height: 400,
-                  child: Center(
+                ? SizedBox(
+                  height: screenHeight * 0.5,
+                  child: const Center(
                     child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(
                         Color(0xFF1D75B1),
@@ -373,22 +370,22 @@ class _ProjectsScreenState extends State<ProjectsScreen>
                 )
                 : _selectedCategoryProjects.isEmpty
                 ? SizedBox(
-                  height: 400,
+                  height: screenHeight * 0.5,
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
                           'assets/images/empty_inbox.png',
-                          width: 120,
-                          height: 120,
+                          width: screenWidth * 0.3,
+                          height: screenWidth * 0.3,
                           color: const Color(0xFF1D75B1),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: screenHeight * 0.025),
                         Text(
                           'لا توجد مشاريع في هذا التصنيف',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: screenWidth * 0.05,
                             fontWeight: FontWeight.w600,
                             color: Colors.grey[600],
                           ),
@@ -398,7 +395,7 @@ class _ProjectsScreenState extends State<ProjectsScreen>
                   ),
                 )
                 : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -410,10 +407,10 @@ class _ProjectsScreenState extends State<ProjectsScreen>
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
+                              SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
-                                crossAxisSpacing: 18,
-                                mainAxisSpacing: 18,
+                                crossAxisSpacing: screenWidth * 0.045,
+                                mainAxisSpacing: screenWidth * 0.045,
                                 childAspectRatio: 0.7,
                               ),
                           itemCount: _selectedCategoryProjects.length,
@@ -438,7 +435,9 @@ class _ProjectsScreenState extends State<ProjectsScreen>
                                   borderRadius: BorderRadius.circular(20),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black.withOpacity(0.15),
+                                      color: Colors.black.withValues(
+                                        alpha: 0.15,
+                                      ),
                                       blurRadius: 8,
                                       offset: const Offset(0, 4),
                                     ),
@@ -448,150 +447,165 @@ class _ProjectsScreenState extends State<ProjectsScreen>
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     // Project image
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20),
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black.withOpacity(
-                                              0.1,
-                                            ),
-                                            blurRadius: 4,
-                                            offset: const Offset(0, 2),
+                                    Flexible(
+                                      flex: 3,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20),
                                           ),
-                                        ],
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black.withValues(
+                                                alpha: 0.1,
+                                              ),
+                                              blurRadius: 4,
+                                              offset: const Offset(0, 2),
+                                            ),
+                                          ],
                                         ),
-                                        child: CachedNetworkImage(
-                                          imageUrl:
-                                              'https://albakr-ac.com/${project['image']}',
-                                          width: double.infinity,
-                                          height: 150,
-                                          fit: BoxFit.cover,
-                                          placeholder:
-                                              (context, url) => Container(
-                                                color: Colors.grey[200],
-                                                child: const Center(
-                                                  child: CircularProgressIndicator(
-                                                    valueColor:
-                                                        AlwaysStoppedAnimation<
-                                                          Color
-                                                        >(Color(0xFF1D75B1)),
+                                        child: ClipRRect(
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20),
+                                          ),
+                                          child: CachedNetworkImage(
+                                            imageUrl:
+                                                'https://albakr-ac.com/${project['image']}',
+                                            width: double.infinity,
+                                            height: screenHeight * 0.15,
+                                            fit: BoxFit.cover,
+                                            placeholder:
+                                                (context, url) => Container(
+                                                  color: Colors.grey[200],
+                                                  child: const Center(
+                                                    child: CircularProgressIndicator(
+                                                      valueColor:
+                                                          AlwaysStoppedAnimation<
+                                                            Color
+                                                          >(Color(0xFF1D75B1)),
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                          errorWidget:
-                                              (
-                                                context,
-                                                url,
-                                                error,
-                                              ) => Container(
-                                                color: Colors.grey[300],
-                                                height: 150,
-                                                child: const Center(
-                                                  child: Icon(
-                                                    Icons.image_not_supported,
-                                                    size: 50,
-                                                    color: Colors.grey,
+                                            errorWidget:
+                                                (
+                                                  context,
+                                                  url,
+                                                  error,
+                                                ) => Container(
+                                                  color: Colors.grey[300],
+                                                  height: 120,
+                                                  child: const Center(
+                                                    child: Icon(
+                                                      Icons.image_not_supported,
+                                                      size: 40,
+                                                      color: Colors.grey,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
+                                          ),
                                         ),
                                       ),
                                     ),
 
                                     // Project details
-                                    Padding(
-                                      padding: const EdgeInsets.all(14),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            project['title'] ?? 'غير معروف',
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.w900,
-                                              fontSize: 16,
-                                              color: Colors.black87,
+                                    Flexible(
+                                      flex: 2,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              project['title'] ?? 'غير معروف',
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w900,
+                                                fontSize: 14,
+                                                color: Colors.black87,
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          const SizedBox(height: 8),
-                                          Row(
-                                            children: [
-                                              Container(
-                                                padding: const EdgeInsets.all(
-                                                  3,
-                                                ),
-                                                decoration: const BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: Color(0xFF1D75B1),
-                                                ),
-                                                child: const Icon(
-                                                  Icons.location_on,
-                                                  size: 14,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              const SizedBox(width: 6),
-                                              Expanded(
-                                                child: Text(
-                                                  project['location'] ??
-                                                      'غير معروف',
-                                                  style: TextStyle(
-                                                    color: Colors.grey[800],
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.w500,
+                                            const SizedBox(height: 6),
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  padding: const EdgeInsets.all(
+                                                    2,
                                                   ),
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 6),
-                                          Row(
-                                            children: [
-                                              Container(
-                                                padding: const EdgeInsets.all(
-                                                  3,
-                                                ),
-                                                decoration: const BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: Color(0xFF1D75B1),
-                                                ),
-                                                child: const Icon(
-                                                  Icons.ac_unit,
-                                                  size: 14,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              const SizedBox(width: 6),
-                                              Expanded(
-                                                child: Text(
-                                                  project['air_condition_type'] ??
-                                                      'غير معروف',
-                                                  style: TextStyle(
-                                                    color: Colors.grey[800],
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.w500,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: Color(
+                                                          0xFF1D75B1,
+                                                        ),
+                                                      ),
+                                                  child: const Icon(
+                                                    Icons.location_on,
+                                                    size: 12,
+                                                    color: Colors.white,
                                                   ),
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                                const SizedBox(width: 4),
+                                                Expanded(
+                                                  child: Text(
+                                                    project['location'] ??
+                                                        'غير معروف',
+                                                    style: TextStyle(
+                                                      color: Colors.grey[800],
+                                                      fontSize: 11,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  padding: const EdgeInsets.all(
+                                                    2,
+                                                  ),
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: Color(
+                                                          0xFF1D75B1,
+                                                        ),
+                                                      ),
+                                                  child: const Icon(
+                                                    Icons.ac_unit,
+                                                    size: 12,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 4),
+                                                Expanded(
+                                                  child: Text(
+                                                    project['air_condition_type'] ??
+                                                        'غير معروف',
+                                                    style: TextStyle(
+                                                      color: Colors.grey[800],
+                                                      fontSize: 11,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -606,7 +620,7 @@ class _ProjectsScreenState extends State<ProjectsScreen>
                 ),
 
             // Add space at the bottom for the navbar
-            const SizedBox(height: 100),
+            SizedBox(height: screenHeight * 0.15),
           ],
         ),
       ),

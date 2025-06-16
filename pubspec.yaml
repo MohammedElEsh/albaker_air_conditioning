@@ -44,6 +44,9 @@ dependencies:
   url_launcher: ^6.2.4           # Open URLs in browser / apps
   rflutter_alert: ^2.0.7         # Stylish alert dialogs (Arabic messages)
 
+
+  ionicons: ^0.2.2
+  intl: ^0.20.2
 # -----------------------------------------------------------------------------
 # DEV DEPENDENCIES
 # -----------------------------------------------------------------------------
@@ -86,7 +89,7 @@ flutter:
 flutter_icons:
   android: true
   ios: true
-  image_path: assets/icons/app_icon.png
+  image_path: assets/icons/app_icon4.png
   remove_alpha_ios: true
 
 
