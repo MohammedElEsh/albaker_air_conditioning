@@ -1,13 +1,3 @@
-/// The more screen that displays additional app features and information.
-///
-/// Features:
-/// - Social media links with brand colors
-/// - App information with stylized cards
-/// - Quick links to important pages
-/// - Custom pull to refresh animation
-/// - URL launching with error handling
-/// - Light/dark mode support
-/// - Responsive design for various screen sizes
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ionicons/ionicons.dart';
@@ -46,14 +36,14 @@ class AppColors extends ThemeExtension<AppColors> {
   // Light mode colors
   factory AppColors.light() {
     return AppColors(
-      primaryColor: const Color(0xFF1D75B1),
-      secondaryColor: const Color(0xFF37A7E8),
+      primaryColor: const Color(0xFF4DA8DA), // أزرق فاتح
+      secondaryColor: const Color(0xFFB0E0E6), // سماوي فاتح
       accentColor: const Color(0xFF22C55E),
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: Colors.white,
       cardColor: Colors.white,
       textPrimaryColor: const Color(0xFF333333),
       textSecondaryColor: const Color(0xFF757575),
-      dividerColor: const Color(0xFFEEEEEE),
+      dividerColor: const Color(0xFFE0E0E0), // رمادي فاتح
       socialBrandColors: {
         'facebook': const Color(0xFF1877F2),
         'twitter': const Color(0xFF1DA1F2),
@@ -64,7 +54,7 @@ class AppColors extends ThemeExtension<AppColors> {
         'snapchat': const Color(0xFFFFFC00),
         'tiktok': const Color(0xFF000000),
         'whatsapp': const Color(0xFF25D366),
-        'website': const Color(0xFF1D75B1),
+        'website': const Color(0xFF4DA8DA),
       },
     );
   }
@@ -72,11 +62,11 @@ class AppColors extends ThemeExtension<AppColors> {
   // Dark mode colors
   factory AppColors.dark() {
     return AppColors(
-      primaryColor: const Color(0xFF2196F3),
-      secondaryColor: const Color(0xFF64B5F6),
+      primaryColor: const Color(0xFF4DA8DA),
+      secondaryColor: const Color(0xFFB0E0E6),
       accentColor: const Color(0xFF4CAF50),
-      backgroundColor: const Color(0xFF121212),
-      cardColor: const Color(0xFF1E1E1E),
+      backgroundColor: const Color(0xFF1E1E1E),
+      cardColor: const Color(0xFF2C2C2C),
       textPrimaryColor: Colors.white,
       textSecondaryColor: const Color(0xFFBDBDBD),
       dividerColor: const Color(0xFF424242),
@@ -90,7 +80,7 @@ class AppColors extends ThemeExtension<AppColors> {
         'snapchat': const Color(0xFFFFFC00),
         'tiktok': const Color(0xFFFFFFFF),
         'whatsapp': const Color(0xFF25D366),
-        'website': const Color(0xFF2196F3),
+        'website': const Color(0xFF4DA8DA),
       },
     );
   }
@@ -131,13 +121,11 @@ class AppColors extends ThemeExtension<AppColors> {
       accentColor: Color.lerp(accentColor, other.accentColor, t)!,
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t)!,
       cardColor: Color.lerp(cardColor, other.cardColor, t)!,
-      textPrimaryColor:
-          Color.lerp(textPrimaryColor, other.textPrimaryColor, t)!,
+      textPrimaryColor: Color.lerp(textPrimaryColor, other.textPrimaryColor, t)!,
       textSecondaryColor:
-          Color.lerp(textSecondaryColor, other.textSecondaryColor, t)!,
+      Color.lerp(textSecondaryColor, other.textSecondaryColor, t)!,
       dividerColor: Color.lerp(dividerColor, other.dividerColor, t)!,
-      socialBrandColors:
-          socialBrandColors, // Can't lerp a map, so just return this one
+      socialBrandColors: socialBrandColors, // Can't lerp a map, so just return this one
     );
   }
 }
@@ -193,16 +181,15 @@ class SectionHeader extends StatelessWidget {
   final IconData? icon;
 
   const SectionHeader({Key? key, required this.title, this.icon})
-    : super(key: key);
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // Get colors from theme or use default
     final Color primaryColor = Theme.of(context).primaryColor;
     final Color textColor =
-        Theme.of(context).brightness == Brightness.dark
-            ? Colors.white
-            : const Color(0xFF333333);
+    Theme.of(context).brightness == Brightness.dark
+        ? Colors.white
+        : const Color(0xFF333333);
 
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -258,7 +245,6 @@ class _SocialLinkCardState extends State<SocialLinkCard>
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
 
-  // Social brand colors map
   final Map<String, Color> _socialColors = {
     'facebook': const Color(0xFF1877F2),
     'twitter': const Color(0xFF1DA1F2),
@@ -269,7 +255,7 @@ class _SocialLinkCardState extends State<SocialLinkCard>
     'snapchat': const Color(0xFFFFFC00),
     'tiktok': Color.fromARGB(255, 0, 0, 0),
     'whatsapp': const Color(0xFF25D366),
-    'website': const Color(0xFF1D75B1),
+    'website': const Color(0xFF4DA8DA),
   };
 
   @override
@@ -279,7 +265,6 @@ class _SocialLinkCardState extends State<SocialLinkCard>
       duration: const Duration(milliseconds: 150),
       vsync: this,
     );
-
     _scaleAnimation = Tween<double>(
       begin: 1.0,
       end: 0.95,
@@ -298,7 +283,7 @@ class _SocialLinkCardState extends State<SocialLinkCard>
     final brandColor =
         _socialColors[platform] ?? Theme.of(context).primaryColor;
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final cardColor = isDarkMode ? const Color(0xFF1E1E1E) : Colors.white;
+    final cardColor = isDarkMode ? const Color(0xFF2C2C2C) : Colors.white;
 
     return GestureDetector(
       onTap: () => widget.onTap(widget.url),
@@ -311,41 +296,37 @@ class _SocialLinkCardState extends State<SocialLinkCard>
           return Transform.scale(scale: _scaleAnimation.value, child: child);
         },
         child: Card(
-          elevation: 4,
+          elevation: 2,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [brandColor.withOpacity(0.1), cardColor],
-              ),
+              borderRadius: BorderRadius.circular(8),
+              color: cardColor,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: brandColor.withOpacity(0.15),
+                    color: brandColor.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     _getSocialIcon(widget.name.toLowerCase()),
-                    size: 30,
+                    size: 24,
                     color: brandColor,
                     semanticLabel: 'رمز ${widget.name}',
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 8),
                 Text(
                   widget.name,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 14,
+                    fontSize: 12,
                     color: isDarkMode ? Colors.white : const Color(0xFF333333),
                   ),
                   textAlign: TextAlign.center,
@@ -408,15 +389,14 @@ class KeyValueRow extends StatelessWidget {
     final Color primaryColor = Theme.of(context).primaryColor;
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
       decoration: BoxDecoration(
-        color:
-            alternate
-                ? (isDarkMode
-                    ? Colors.black.withOpacity(0.3)
-                    : const Color(0xFFF5F7FA).withOpacity(0.7))
-                : (isDarkMode ? const Color(0xFF1E1E1E) : Colors.white),
-        borderRadius: BorderRadius.circular(8),
+        color: alternate
+            ? (isDarkMode
+            ? const Color(0xFF2C2C2C)
+            : const Color(0xFFF5F7FA))
+            : (isDarkMode ? const Color(0xFF1E1E1E) : Colors.white),
+        borderRadius: BorderRadius.circular(4),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -425,11 +405,8 @@ class KeyValueRow extends StatelessWidget {
             label,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 15,
-              color:
-                  isDarkMode
-                      ? const Color(0xFFBDBDBD)
-                      : const Color(0xFF757575),
+              fontSize: 14,
+              color: isDarkMode ? const Color(0xFFBDBDBD) : const Color(0xFF757575),
             ),
           ),
           const Spacer(),
@@ -437,7 +414,7 @@ class KeyValueRow extends StatelessWidget {
             child: Text(
               value,
               style: TextStyle(
-                fontSize: 15,
+                fontSize: 14,
                 color: isDarkMode ? Colors.white : const Color(0xFF333333),
               ),
               textAlign: TextAlign.end,
@@ -446,10 +423,10 @@ class KeyValueRow extends StatelessWidget {
           if (actionIcon != null && onActionPressed != null) ...[
             const SizedBox(width: 8),
             IconButton(
-              icon: Icon(actionIcon, size: 20, color: primaryColor),
+              icon: Icon(actionIcon, size: 18, color: primaryColor),
               onPressed: onActionPressed,
               tooltip: 'نسخ',
-              splashRadius: 20,
+              splashRadius: 18,
             ),
           ],
         ],
@@ -478,55 +455,28 @@ class QuickActionTile extends StatelessWidget {
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(8),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-          decoration: BoxDecoration(
-            color: isDarkMode ? const Color(0xFF1E1E1E) : Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 5,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: primaryColor.withOpacity(0.15),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  icon,
-                  color: primaryColor,
-                  size: 22,
-                  semanticLabel: title,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Row(
+          children: [
+            Icon(icon, color: primaryColor, size: 20),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: isDarkMode ? Colors.white : const Color(0xFF333333),
                 ),
               ),
-              const SizedBox(width: 15),
-              Expanded(
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: isDarkMode ? Colors.white : const Color(0xFF333333),
-                  ),
-                ),
-              ),
-              Icon(
-                Icons.arrow_forward_ios,
-                color: isDarkMode ? Colors.grey : Colors.grey.shade600,
-                size: 16,
-              ),
-            ],
-          ),
+            ),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: isDarkMode ? Colors.grey : Colors.grey.shade600,
+              size: 16,
+            ),
+          ],
         ),
       ),
     );
@@ -553,8 +503,8 @@ class CustomRefreshIndicator extends StatelessWidget {
       onRefresh: onRefresh,
       backgroundColor: isDarkMode ? const Color(0xFF1E1E1E) : Colors.white,
       color: primaryColor,
-      strokeWidth: 3,
-      displacement: 40,
+      strokeWidth: 2,
+      displacement: 30,
       child: child,
     );
   }
@@ -578,39 +528,35 @@ class ErrorStateWidget extends StatelessWidget {
 
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               Icons.error_outline,
-              size: 60,
-              color: primaryColor.withOpacity(0.7),
+              size: 50,
+              color: primaryColor.withOpacity(0.6),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
             Text(
               message,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 14,
                 color: isDarkMode ? Colors.grey : Colors.grey.shade600,
                 fontWeight: FontWeight.w500,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
-            ElevatedButton.icon(
+            const SizedBox(height: 16),
+            ElevatedButton(
               onPressed: onRetry,
-              icon: const Icon(Icons.refresh),
-              label: const Text('إعادة المحاولة'),
+              child: const Text('إعادة المحاولة'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: primaryColor,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(8),
                 ),
               ),
             ),
@@ -633,21 +579,21 @@ class EmptyStateWidget extends StatelessWidget {
 
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               Icons.link_off,
-              size: 60,
+              size: 50,
               color: (isDarkMode ? Colors.grey : Colors.grey.shade400)
                   .withOpacity(0.5),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
             Text(
               message,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 14,
                 color: isDarkMode ? Colors.grey : Colors.grey.shade600,
                 fontWeight: FontWeight.w500,
               ),
@@ -781,9 +727,7 @@ class _MoreScreenState extends State<MoreScreen>
   @override
   Widget build(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final Color primaryColor = Theme.of(context).primaryColor;
-    final Color backgroundColor =
-        isDarkMode ? const Color(0xFF121212) : const Color(0xFFF5F7FA);
+    final Color backgroundColor = isDarkMode ? const Color(0xFF1E1E1E) : Colors.white;
     final size = MediaQuery.of(context).size;
     final isTablet = size.width > 600;
     double screenWidth = size.width;
@@ -792,16 +736,7 @@ class _MoreScreenState extends State<MoreScreen>
     return LayoutBuilder(
       builder: (context, constraints) {
         return Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                backgroundColor,
-                backgroundColor.withValues(alpha: 0.95),
-              ],
-            ),
-          ),
+          color: backgroundColor,
           child: CustomRefreshIndicator(
             onRefresh: _refreshData,
             child: SingleChildScrollView(
@@ -833,31 +768,19 @@ class _MoreScreenState extends State<MoreScreen>
                               child: Text(
                                 "المزيد",
                                 style: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: screenWidth * 0.07,
-                                  color: primaryColor,
-                                  shadows: [
-                                    Shadow(
-                                      offset: const Offset(1, 1),
-                                      blurRadius: 3.0,
-                                      color: primaryColor.withValues(
-                                        alpha: 0.3,
-                                      ),
-                                    ),
-                                  ],
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: screenWidth * 0.06,
+                                  color: isDarkMode ? Colors.white : const Color(0xFF333333),
                                 ),
                               ),
                             ),
-                            SizedBox(height: screenHeight * 0.007),
+                            SizedBox(height: screenHeight * 0.01),
                             if (_controller.lastUpdated != null)
                               Text(
                                 'آخر تحديث: ${_controller.lastUpdated!.year}-${_controller.lastUpdated!.month.toString().padLeft(2, '0')}-${_controller.lastUpdated!.day.toString().padLeft(2, '0')} – ${_controller.lastUpdated!.hour.toString().padLeft(2, '0')}:${_controller.lastUpdated!.minute.toString().padLeft(2, '0')}',
                                 style: TextStyle(
                                   fontSize: screenWidth * 0.03,
-                                  color:
-                                      isDarkMode
-                                          ? Colors.grey
-                                          : Colors.grey.shade600,
+                                  color: isDarkMode ? Colors.grey : Colors.grey.shade600,
                                 ),
                               ),
                           ],
@@ -907,9 +830,24 @@ class _MoreScreenState extends State<MoreScreen>
                         child: _buildAppInfoSection(screenWidth, screenHeight),
                       ),
 
-                      SizedBox(
-                        height: screenHeight * 0.1,
-                      ), // Bottom padding for navbar
+                      SizedBox(height: screenHeight * 0.08),
+                      Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // لوجيك تسجيل الخروج هنا
+                          },
+                          child: Text('تسجيل الخروج'),
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: Theme.of(context).primaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            minimumSize: Size(double.infinity, 40),
+                          ),
+                        ),
+                      ),
                     ],
                   );
                 },
@@ -923,10 +861,10 @@ class _MoreScreenState extends State<MoreScreen>
 
   /// Builds the social links section with loading/error states
   Widget _buildSocialLinksSection(
-    bool isTablet,
-    double screenWidth,
-    double screenHeight,
-  ) {
+      bool isTablet,
+      double screenWidth,
+      double screenHeight,
+      ) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final Color primaryColor = Theme.of(context).primaryColor;
 
@@ -942,7 +880,7 @@ class _MoreScreenState extends State<MoreScreen>
                 height: screenWidth * 0.1,
                 child: CircularProgressIndicator(
                   color: primaryColor,
-                  strokeWidth: 3,
+                  strokeWidth: 2,
                 ),
               ),
               SizedBox(height: screenHeight * 0.02),
@@ -977,8 +915,8 @@ class _MoreScreenState extends State<MoreScreen>
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: isTablet ? 4 : 3,
-        crossAxisSpacing: screenWidth * 0.04,
-        mainAxisSpacing: screenWidth * 0.04,
+        crossAxisSpacing: screenWidth * 0.03,
+        mainAxisSpacing: screenWidth * 0.03,
       ),
       itemCount: _controller.socialLinks.length,
       itemBuilder: (context, index) {
@@ -998,33 +936,25 @@ class _MoreScreenState extends State<MoreScreen>
         QuickActionTile(
           title: 'من نحن',
           icon: Icons.info_outline,
-          onTap: () {
-            // Navigate to About Us page
-          },
+          onTap: () {},
         ),
         SizedBox(height: screenHeight * 0.01),
         QuickActionTile(
           title: 'سياسة الخصوصية',
           icon: Icons.privacy_tip_outlined,
-          onTap: () {
-            // Navigate to Privacy Policy page
-          },
+          onTap: () {},
         ),
         SizedBox(height: screenHeight * 0.01),
         QuickActionTile(
           title: 'سياسة الاستبدال',
           icon: Icons.swap_horiz,
-          onTap: () {
-            // Navigate to Exchange Policy page
-          },
+          onTap: () {},
         ),
         SizedBox(height: screenHeight * 0.01),
         QuickActionTile(
           title: 'اتصل بنا',
           icon: Icons.support_agent,
-          onTap: () {
-            // Navigate to Contact Us page
-          },
+          onTap: () {},
         ),
       ],
     );
@@ -1036,36 +966,36 @@ class _MoreScreenState extends State<MoreScreen>
     final Color primaryColor = Theme.of(context).primaryColor;
 
     return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      color: isDarkMode ? const Color(0xFF1E1E1E) : Colors.white,
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      color: isDarkMode ? const Color(0xFF2C2C2C) : Colors.white,
       child: Padding(
-        padding: EdgeInsets.all(screenWidth * 0.04),
+        padding: EdgeInsets.all(screenWidth * 0.03),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.all(screenWidth * 0.02),
+              padding: EdgeInsets.all(screenWidth * 0.015),
               child: Row(
                 children: [
                   Icon(
                     Icons.info_outline,
                     color: primaryColor,
-                    size: screenWidth * 0.06,
+                    size: screenWidth * 0.05,
                   ),
-                  SizedBox(width: screenWidth * 0.02),
+                  SizedBox(width: screenWidth * 0.015),
                   Text(
                     'معلومات التطبيق',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: screenWidth * 0.045,
+                      fontSize: screenWidth * 0.04,
                       color: primaryColor,
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: screenHeight * 0.02),
+            SizedBox(height: screenHeight * 0.015),
             ListView.separated(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -1081,7 +1011,7 @@ class _MoreScreenState extends State<MoreScreen>
                   value: entry.value,
                   actionIcon: isEmail ? Icons.copy : null,
                   onActionPressed:
-                      isEmail ? () => _copyToClipboard(entry.value) : null,
+                  isEmail ? () => _copyToClipboard(entry.value) : null,
                   alternate: index.isOdd,
                 );
               },
