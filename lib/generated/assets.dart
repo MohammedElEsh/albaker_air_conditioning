@@ -11,6 +11,8 @@ class Assets {
   static const String appScreensHomeScreen = 'lib/screens/app_screens/home_screen.dart';
   static const String appScreensMainScreen = 'lib/screens/app_screens/main_screen.dart';
   static const String appScreensMoreScreen = 'lib/screens/app_screens/more_screen.dart';
+  static const String appScreensProductDetailsScreen = 'lib/screens/app_screens/product_details_screen.dart';
+  static const String appScreensProductListScreen = 'lib/screens/app_screens/product_list_screen.dart';
   static const String appScreensProfileScreen = 'lib/screens/app_screens/profile_screen.dart';
   static const String appScreensProjectsScreen = 'lib/screens/app_screens/projects_screen.dart';
   static const String appScreensSearchScreen = 'lib/screens/app_screens/search_screen.dart';
@@ -26,6 +28,7 @@ class Assets {
   static const String fontsAlmaraiExtraBold = 'assets/fonts/Almarai-ExtraBold.ttf';
   static const String fontsAlmaraiLight = 'assets/fonts/Almarai-Light.ttf';
   static const String fontsAlmaraiRegular = 'assets/fonts/Almarai-Regular.ttf';
+  static const String generatedAssets = 'lib/generated/assets.dart';
   static const String iconsAppIcon = 'assets/icons/app_icon.png';
   static const String iconsAppIcon2 = 'assets/icons/app_icon2.png';
   static const String iconsAppIcon3 = 'assets/icons/app_icon3.png';

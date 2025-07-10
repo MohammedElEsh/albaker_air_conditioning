@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 // App-specific imports
 import '../../services/cart_service.dart';
 import '../../utils/alert_utils.dart';
+import 'product_details_screen.dart';
 
 /// CartScreen - Manages the shopping cart functionality and UI.
 ///
@@ -165,7 +166,8 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
 
     // Update UI first (local update)
     final double itemPrice = double.parse((item['price'] ?? 0).toString());
-    final double priceDifference = itemPrice; // Price difference is the item price
+    final double priceDifference =
+        itemPrice; // Price difference is the item price
 
     setState(() {
       item['quantity'] = newQuantity;
@@ -184,7 +186,9 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
       if (response.statusCode != 200) {
         // On failure, revert quantity to previous value
         if (mounted) {
-          final double itemPrice = double.parse((item['price'] ?? 0).toString());
+          final double itemPrice = double.parse(
+            (item['price'] ?? 0).toString(),
+          );
           final double priceDifference = -itemPrice; // Reverse previous change
 
           setState(() {
@@ -228,7 +232,9 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
     if (currentQuantity <= 1) {
       setState(() {
         _updatingItems[itemId] = 1; // Set updating state for the item
-        _totalPrice -= double.parse((item['price'] ?? 0).toString()) * currentQuantity; // Update total price
+        _totalPrice -=
+            double.parse((item['price'] ?? 0).toString()) *
+            currentQuantity; // Update total price
       });
 
       try {
@@ -246,7 +252,9 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
           // On failure, revert total price
           if (mounted) {
             setState(() {
-              _totalPrice += double.parse((item['price'] ?? 0).toString()) * currentQuantity;
+              _totalPrice +=
+                  double.parse((item['price'] ?? 0).toString()) *
+                  currentQuantity;
             });
             AlertUtils.showWarningAlert(
               context,
@@ -259,7 +267,8 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
         // On error, revert total price
         if (mounted) {
           setState(() {
-            _totalPrice += double.parse((item['price'] ?? 0).toString()) * currentQuantity;
+            _totalPrice +=
+                double.parse((item['price'] ?? 0).toString()) * currentQuantity;
           });
           AlertUtils.showWarningAlert(
             context,
@@ -283,7 +292,8 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
 
     // Update UI first (local update)
     final double itemPrice = double.parse((item['price'] ?? 0).toString());
-    final double priceDifference = -itemPrice; // Price difference is negative item price
+    final double priceDifference =
+        -itemPrice; // Price difference is negative item price
 
     setState(() {
       item['quantity'] = newQuantity;
@@ -302,7 +312,9 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
       if (response.statusCode != 200) {
         // On failure, revert quantity to previous value
         if (mounted) {
-          final double itemPrice = double.parse((item['price'] ?? 0).toString());
+          final double itemPrice = double.parse(
+            (item['price'] ?? 0).toString(),
+          );
           final double priceDifference = itemPrice; // Reverse previous change
 
           setState(() {
@@ -341,7 +353,8 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
       body: RefreshIndicator(
         onRefresh: _refreshCart,
         child: SizedBox(
-          height: screenHeight, // Ensure SingleChildScrollView has full screen height
+          height:
+              screenHeight, // Ensure SingleChildScrollView has full screen height
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: Column(
@@ -381,9 +394,10 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                     // Handle error state
                     if (snapshot.hasError ||
                         (snapshot.hasData && snapshot.data!['error'] != null)) {
-                      String errorMessage = snapshot.hasError
-                          ? snapshot.error.toString()
-                          : snapshot.data!['error'];
+                      String errorMessage =
+                          snapshot.hasError
+                              ? snapshot.error.toString()
+                              : snapshot.data!['error'];
 
                       return SizedBox(
                         height: screenHeight * 0.5,
@@ -477,182 +491,243 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                             itemCount: cartItems.length,
                             itemBuilder: (context, index) {
                               final item = cartItems[index];
-                              return Container(
-                                margin: EdgeInsets.only(
-                                  bottom: screenHeight * 0.02,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[100],
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.all(screenWidth * 0.04),
-                                  child: Row(
-                                    children: [
-                                      // Product image
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: CachedNetworkImage(
-                                          imageUrl:
-                                          'https://albakr-ac.com${item['image']}',
-                                          width: screenWidth * 0.2,
-                                          height: screenWidth * 0.2,
-                                          fit: BoxFit.cover,
-                                          placeholder: (context, url) => Container(
-                                            color: Colors.grey[200],
-                                            child: const Center(
-                                              child: CircularProgressIndicator(),
+                              return GestureDetector(
+                                onTap: () {
+                                  if (item['product_id'] != null) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => ProductDetailsScreen(
+                                              productId: item['product_id'],
                                             ),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(
+                                    bottom: screenHeight * 0.02,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[100],
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(screenWidth * 0.04),
+                                    child: Row(
+                                      children: [
+                                        // Product image
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            10,
                                           ),
-                                          errorWidget: (context, url, error) =>
-                                              Container(
-                                                color: Colors.grey[300],
-                                                child: Icon(
-                                                  Icons.image_not_supported,
-                                                  size: screenWidth * 0.075,
-                                                  color: Colors.grey,
+                                          child: CachedNetworkImage(
+                                            imageUrl:
+                                                'https://albakr-ac.com${item['image']}',
+                                            width: screenWidth * 0.2,
+                                            height: screenWidth * 0.2,
+                                            fit: BoxFit.cover,
+                                            placeholder:
+                                                (context, url) => Container(
+                                                  color: Colors.grey[200],
+                                                  child: const Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  ),
+                                                ),
+                                            errorWidget:
+                                                (
+                                                  context,
+                                                  url,
+                                                  error,
+                                                ) => Container(
+                                                  color: Colors.grey[300],
+                                                  child: Icon(
+                                                    Icons.image_not_supported,
+                                                    size: screenWidth * 0.075,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                          ),
+                                        ),
+                                        SizedBox(width: screenWidth * 0.04),
+                                        // Product details
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                item['name'] ?? '',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: screenWidth * 0.04,
+                                                ),
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              SizedBox(
+                                                height: screenHeight * 0.005,
+                                              ),
+                                              Text(
+                                                '${item['price']} ريال',
+                                                style: TextStyle(
+                                                  color: const Color(
+                                                    0xFF1D75B1,
+                                                  ),
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: screenWidth * 0.035,
                                                 ),
                                               ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(width: screenWidth * 0.04),
-                                      // Product details
-                                      Expanded(
-                                        child: Column(
+                                        // Quantity controls
+                                        Column(
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.center,
                                           children: [
                                             Text(
-                                              item['name'] ?? '',
+                                              'الكمية',
                                               style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: screenWidth * 0.04,
+                                                fontSize: screenWidth * 0.03,
+                                                fontWeight: FontWeight.w500,
                                               ),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
                                             ),
                                             SizedBox(
-                                              height: screenHeight * 0.005,
+                                              height: screenHeight * 0.01,
                                             ),
-                                            Text(
-                                              '${item['price']} ريال',
-                                              style: TextStyle(
-                                                color: const Color(0xFF1D75B1),
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: screenWidth * 0.035,
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  // Decrease button
+                                                  InkWell(
+                                                    onTap:
+                                                        () => _decreaseQuantity(
+                                                          item,
+                                                        ),
+                                                    child: Container(
+                                                      width:
+                                                          screenWidth * 0.075,
+                                                      height:
+                                                          screenWidth * 0.075,
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                            color: Colors.white,
+                                                            shape:
+                                                                BoxShape.circle,
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                color:
+                                                                    Colors
+                                                                        .black12,
+                                                                blurRadius: 2,
+                                                                offset: Offset(
+                                                                  0,
+                                                                  1,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                      child: Center(
+                                                        child: Icon(
+                                                          Icons.remove,
+                                                          size:
+                                                              screenWidth *
+                                                              0.04,
+                                                          color: Colors.grey,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  // Quantity display
+                                                  Container(
+                                                    width: screenWidth * 0.1,
+                                                    alignment: Alignment.center,
+                                                    child:
+                                                        _updatingItems
+                                                                .containsKey(
+                                                                  item['id'],
+                                                                )
+                                                            ? SizedBox(
+                                                              width:
+                                                                  screenWidth *
+                                                                  0.04,
+                                                              height:
+                                                                  screenWidth *
+                                                                  0.04,
+                                                              child:
+                                                                  const CircularProgressIndicator(
+                                                                    strokeWidth:
+                                                                        2,
+                                                                  ),
+                                                            )
+                                                            : Text(
+                                                              '${item['quantity'] ?? 1}',
+                                                              style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize:
+                                                                    screenWidth *
+                                                                    0.04,
+                                                              ),
+                                                            ),
+                                                  ),
+                                                  // Increase button
+                                                  InkWell(
+                                                    onTap:
+                                                        () => _increaseQuantity(
+                                                          item,
+                                                        ),
+                                                    child: Container(
+                                                      width:
+                                                          screenWidth * 0.075,
+                                                      height:
+                                                          screenWidth * 0.075,
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                            color: Colors.white,
+                                                            shape:
+                                                                BoxShape.circle,
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                color:
+                                                                    Colors
+                                                                        .black12,
+                                                                blurRadius: 2,
+                                                                offset: Offset(
+                                                                  0,
+                                                                  1,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                      child: Center(
+                                                        child: Icon(
+                                                          Icons.add,
+                                                          size:
+                                                              screenWidth *
+                                                              0.04,
+                                                          color: Colors.grey,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ],
                                         ),
-                                      ),
-                                      // Quantity controls
-                                      Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'الكمية',
-                                            style: TextStyle(
-                                              fontSize: screenWidth * 0.03,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                          SizedBox(height: screenHeight * 0.01),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                              BorderRadius.circular(10),
-                                            ),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                // Decrease button
-                                                InkWell(
-                                                  onTap: () =>
-                                                      _decreaseQuantity(item),
-                                                  child: Container(
-                                                    width: screenWidth * 0.075,
-                                                    height: screenWidth * 0.075,
-                                                    decoration: const BoxDecoration(
-                                                      color: Colors.white,
-                                                      shape: BoxShape.circle,
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color: Colors.black12,
-                                                          blurRadius: 2,
-                                                          offset: Offset(0, 1),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    child: Center(
-                                                      child: Icon(
-                                                        Icons.remove,
-                                                        size: screenWidth * 0.04,
-                                                        color: Colors.grey,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                // Quantity display
-                                                Container(
-                                                  width: screenWidth * 0.1,
-                                                  alignment: Alignment.center,
-                                                  child: _updatingItems
-                                                      .containsKey(item['id'])
-                                                      ? SizedBox(
-                                                    width:
-                                                    screenWidth * 0.04,
-                                                    height:
-                                                    screenWidth * 0.04,
-                                                    child:
-                                                    const CircularProgressIndicator(
-                                                      strokeWidth: 2,
-                                                    ),
-                                                  )
-                                                      : Text(
-                                                    '${item['quantity'] ?? 1}',
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                      FontWeight.bold,
-                                                      fontSize:
-                                                      screenWidth * 0.04,
-                                                    ),
-                                                  ),
-                                                ),
-                                                // Increase button
-                                                InkWell(
-                                                  onTap: () =>
-                                                      _increaseQuantity(item),
-                                                  child: Container(
-                                                    width: screenWidth * 0.075,
-                                                    height: screenWidth * 0.075,
-                                                    decoration: const BoxDecoration(
-                                                      color: Colors.white,
-                                                      shape: BoxShape.circle,
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color: Colors.black12,
-                                                          blurRadius: 2,
-                                                          offset: Offset(0, 1),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    child: Center(
-                                                      child: Icon(
-                                                        Icons.add,
-                                                        size: screenWidth * 0.04,
-                                                        color: Colors.grey,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );
@@ -725,7 +800,9 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                             ),
                           ),
 
-                          SizedBox(height: screenHeight * 0.12), // Bottom padding
+                          SizedBox(
+                            height: screenHeight * 0.12,
+                          ), // Bottom padding
                         ],
                       ),
                     );

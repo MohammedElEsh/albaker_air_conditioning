@@ -112,18 +112,19 @@ class ProductService {
   ///
   /// Parameters:
   /// - categoryId: ID of the category to fetch products for
+  /// - page: Optional page number for pagination (default is 1)
   ///
   /// Returns:
   /// - Response: API response containing products data
   ///
   /// Throws:
   /// - Exception: If the API call fails
-  Future<Response> getProductsByCategory(int categoryId) async {
+  Future<Response> getProductsByCategory(int categoryId, {int page = 1}) async {
     try {
       final token = await getToken();
       final response = await _dio.get(
         '$baseUrl/product/category',
-        queryParameters: {'category_id': categoryId},
+        queryParameters: {'category_id': categoryId, 'page': page},
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',

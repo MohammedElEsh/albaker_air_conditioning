@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:al_baker_air_conditioning/utils/alert_utils.dart';
 
-
 // App-specific imports
 import 'search_screen.dart';
+import 'product_details_screen.dart';
 import 'profile_screen.dart';
+import 'product_list_screen.dart'; // Import the new ProductListScreen
 import '../../services/user_service.dart';
 import '../../services/home_service.dart';
 import '../../services/cart_service.dart'; // Added for CartService
+import '../../services/products_service.dart'; // Import ProductService
 
 // Product model to parse best-seller API response
 class Product {
@@ -67,7 +69,12 @@ class _HomeScreenState extends State<HomeScreen> {
   final HomeService _homeService = HomeService();
 
   /// Service for cart operations
-  final CartService _cartService = CartService(); // Added for cart functionality
+  final CartService _cartService =
+      CartService(); // Added for cart functionality
+
+  /// Service for product operations
+  final ProductService _productService =
+      ProductService(); // Add this line to your state class
 
   /// State variables
   String _userName = ''; // Stores the user name
@@ -77,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isLoading = true; // Loading flag
   int _currentSliderPage = 0; // Tracks current slider index
   final PageController _sliderController =
-  PageController(); // Page controller for slider
+      PageController(); // Page controller for slider
 
   @override
   void initState() {
@@ -170,13 +177,13 @@ class _HomeScreenState extends State<HomeScreen> {
           _isLoading = false;
         });
       }
-        } catch (e) {
-          setState(() {
-            _isLoading = false;
-          });
-          // Handle error
-        }
-      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      // Handle error
+    }
+  }
 
   /// Loads best seller products from the home API.
   ///
@@ -193,9 +200,10 @@ class _HomeScreenState extends State<HomeScreen> {
       final response = await _homeService.getBestSellerProducts();
       if (response.statusCode == 200) {
         setState(() {
-          _bestSellers = (response.data['data']['data'] as List)
-              .map((json) => Product.fromJson(json))
-              .toList();
+          _bestSellers =
+              (response.data['data']['data'] as List)
+                  .map((json) => Product.fromJson(json))
+                  .toList();
         });
       }
     } catch (e) {
@@ -314,21 +322,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     CachedNetworkImage(
                       imageUrl: 'https://albakr-ac.com/${imageUrl}',
                       fit: BoxFit.cover,
-                      errorWidget: (context, url, error) => Container(
-                        color: const Color(0xFF1D75B1).withOpacity(0.2),
-                        child: const Center(
-                          child: Icon(
-                            Icons.image_not_supported,
-                            size: 50,
-                            color: Colors.white,
+                      errorWidget:
+                          (context, url, error) => Container(
+                            color: const Color(0xFF1D75B1).withOpacity(0.2),
+                            child: const Center(
+                              child: Icon(
+                                Icons.image_not_supported,
+                                size: 50,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      placeholder: (context, url) => const Center(
-                        child: CircularProgressIndicator(
-                          color: Color(0xFF1D75B1),
-                        ),
-                      ),
+                      placeholder:
+                          (context, url) => const Center(
+                            child: CircularProgressIndicator(
+                              color: Color(0xFF1D75B1),
+                            ),
+                          ),
                     ),
 
                     // Gradient overlay
@@ -411,15 +421,16 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
                 _sliderImages.length,
-                    (index) => Container(
+                (index) => Container(
                   width: 8,
                   height: 8,
                   margin: const EdgeInsets.symmetric(horizontal: 4),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: _currentSliderPage == index
-                        ? const Color(0xFF1D75B1)
-                        : Colors.white.withOpacity(0.5),
+                    color:
+                        _currentSliderPage == index
+                            ? const Color(0xFF1D75B1)
+                            : Colors.white.withOpacity(0.5),
                   ),
                 ),
               ),
@@ -476,121 +487,148 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: _bestSellers.length,
               itemBuilder: (context, index) {
                 final product = _bestSellers[index];
-                return Container(
-                  width: screenWidth * 0.5,
-                  margin: EdgeInsets.only(
-                    left: screenWidth * 0.02,
-                    right: index == _bestSellers.length - 1 ? screenWidth * 0.02 : 0,
-                  ),
-                  child: Card(
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) =>
+                                ProductDetailsScreen(productId: product.id),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: screenWidth * 0.5,
+                    margin: EdgeInsets.only(
+                      left: screenWidth * 0.02,
+                      right:
+                          index == _bestSellers.length - 1
+                              ? screenWidth * 0.02
+                              : 0,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: ClipRRect(
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(12),
-                            ),
-                            child: CachedNetworkImage(
-                              imageUrl: 'https://albakr-ac.com/${product.mainImage}',
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => const Center(
-                                child: CircularProgressIndicator(
-                                  color: Color(0xFF1D75B1),
-                                ),
+                    child: Card(
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(12),
                               ),
-                              errorWidget: (context, url, error) => Container(
-                                color: Colors.grey[300],
-                                child: const Icon(
-                                  Icons.image_not_supported,
-                                  size: 40,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Padding(
-                            padding: EdgeInsets.all(screenWidth * 0.02),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  product.name,
-                                  style: TextStyle(
-                                    fontSize: screenWidth * 0.035,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black87,
-                                  ),
-                                  textAlign: TextAlign.right,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Text(
-                                  product.description.replaceAll('\r\n', ', '),
-                                  style: TextStyle(
-                                    fontSize: screenWidth * 0.028,
-                                    color: Colors.grey[600],
-                                  ),
-                                  textAlign: TextAlign.right,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconButton(
-                                      icon: Icon(
-                                        Icons.add_shopping_cart,
-                                        size: screenWidth * 0.06,
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    'https://albakr-ac.com/${product.mainImage}',
+                                fit: BoxFit.cover,
+                                placeholder:
+                                    (context, url) => const Center(
+                                      child: CircularProgressIndicator(
                                         color: Color(0xFF1D75B1),
                                       ),
-                                      onPressed: () => _addToCart(product.id),
                                     ),
-                                    if (product.brandImage != null)
-                                      CachedNetworkImage(
-                                        imageUrl: 'https://albakr-ac.com/${product.brandImage}',
-                                        width: screenWidth * 0.08,
-                                        height: screenWidth * 0.08,
-                                        fit: BoxFit.contain,
-                                        placeholder: (context, url) => SizedBox(
-                                          width: screenWidth * 0.08,
-                                          height: screenWidth * 0.08,
-                                          child: const CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                            color: Color(0xFF1D75B1),
-                                          ),
-                                        ),
-                                        errorWidget: (context, url, error) => Icon(
-                                          Icons.image_not_supported,
-                                          size: screenWidth * 0.08,
-                                          color: Colors.grey,
-                                        ),
+                                errorWidget:
+                                    (context, url, error) => Container(
+                                      color: Colors.grey[300],
+                                      child: const Icon(
+                                        Icons.image_not_supported,
+                                        size: 40,
+                                        color: Colors.grey,
                                       ),
-                                    Text(
-                                      '${product.price} ريال',
-                                      style: TextStyle(
-                                        fontSize: screenWidth * 0.032,
-                                        color: Colors.green[600],
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      textAlign: TextAlign.right,
                                     ),
-                                  ],
-                                ),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                          Expanded(
+                            flex: 3,
+                            child: Padding(
+                              padding: EdgeInsets.all(screenWidth * 0.02),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    product.name,
+                                    style: TextStyle(
+                                      fontSize: screenWidth * 0.035,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black87,
+                                    ),
+                                    textAlign: TextAlign.right,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    product.description.replaceAll(
+                                      '\r\n',
+                                      ', ',
+                                    ),
+                                    style: TextStyle(
+                                      fontSize: screenWidth * 0.028,
+                                      color: Colors.grey[600],
+                                    ),
+                                    textAlign: TextAlign.right,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.add_shopping_cart,
+                                          size: screenWidth * 0.06,
+                                          color: Color(0xFF1D75B1),
+                                        ),
+                                        onPressed: () => _addToCart(product.id),
+                                      ),
+                                      if (product.brandImage != null)
+                                        CachedNetworkImage(
+                                          imageUrl:
+                                              'https://albakr-ac.com/${product.brandImage}',
+                                          width: screenWidth * 0.08,
+                                          height: screenWidth * 0.08,
+                                          fit: BoxFit.contain,
+                                          placeholder:
+                                              (context, url) => SizedBox(
+                                                width: screenWidth * 0.08,
+                                                height: screenWidth * 0.08,
+                                                child:
+                                                    const CircularProgressIndicator(
+                                                      strokeWidth: 2,
+                                                      color: Color(0xFF1D75B1),
+                                                    ),
+                                              ),
+                                          errorWidget:
+                                              (context, url, error) => Icon(
+                                                Icons.image_not_supported,
+                                                size: screenWidth * 0.08,
+                                                color: Colors.grey,
+                                              ),
+                                        ),
+                                      Text(
+                                        '${product.price} ريال',
+                                        style: TextStyle(
+                                          fontSize: screenWidth * 0.032,
+                                          color: Colors.green[600],
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -633,12 +671,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     // Profile icon button
                     GestureDetector(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ProfileScreen(),
-                        ),
-                      ),
+                      onTap:
+                          () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ProfileScreen(),
+                            ),
+                          ),
                       child: Container(
                         width: screenWidth * 0.1,
                         height: screenWidth * 0.1,
@@ -661,12 +700,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(width: screenWidth * 0.025),
                     // Search icon button
                     GestureDetector(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SearchScreen(),
-                        ),
-                      ),
+                      onTap:
+                          () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SearchScreen(),
+                            ),
+                          ),
                       child: Container(
                         width: screenWidth * 0.1,
                         height: screenWidth * 0.1,
@@ -719,109 +759,163 @@ class _HomeScreenState extends State<HomeScreen> {
               // Categories Grid or Loading/Empty message
               _isLoading
                   ? SizedBox(
-                height: screenHeight * 0.3,
-                child: const Center(child: CircularProgressIndicator()),
-              )
+                    height: screenHeight * 0.3,
+                    child: const Center(child: CircularProgressIndicator()),
+                  )
                   : _categories.length < 6
                   ? SizedBox(
-                height: screenHeight * 0.3,
-                child: const Center(
-                  child: Text(
-                    'غير كافٍ لعرض البيانات',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-              )
-                  : Padding(
-                padding: EdgeInsets.all(screenWidth * 0.05),
-                child: GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: screenWidth * 0.03,
-                    mainAxisSpacing: screenWidth * 0.03,
-                    childAspectRatio: 1.0,
-                  ),
-                  itemCount: 6,
-                  itemBuilder: (context, index) {
-                    if (index >= _categories.length) {
-                      return const SizedBox.shrink();
-                      // Gracefully handle index out of bounds
-                    }
-
-                    final category = _categories[index];
-                    final colorString = category['color'] as String? ?? '#1D75B1';
-                    final color = Color(
-                      int.parse(colorString.replaceFirst('#', '0xFF')),
-                    );
-
-                    return Card(
-                      elevation: 3,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      color: color,
-                      child: Padding(
-                        padding: EdgeInsets.all(screenWidth * 0.02),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Flexible(
-                              flex: 3,
-                              child: category['image'] != null
-                                  ? CachedNetworkImage(
-                                imageUrl: 'https://albakr-ac.com/${category['image']}',
-                                height: screenHeight * 0.08,
-                                width: screenWidth * 0.2,
-                                fit: BoxFit.contain,
-                                errorWidget: (context, url, error) => Icon(
-                                  Icons.image_not_supported,
-                                  size: screenWidth * 0.12,
-                                  color: Colors.white,
-                                ),
-                                placeholder: (context, url) => SizedBox(
-                                  width: screenWidth * 0.08,
-                                  height: screenWidth * 0.08,
-                                  child: const CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              )
-                                  : Icon(
-                                Icons.category,
-                                size: screenWidth * 0.12,
-                                color: Colors.white,
-                              ),
-                            ),
-                            SizedBox(height: screenHeight * 0.005),
-                            Flexible(
-                              flex: 2,
-                              child: Text(
-                                category['name'] ?? 'غير معروف',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: screenWidth * 0.035,
-                                ),
-                                textAlign: TextAlign.center,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
+                    height: screenHeight * 0.3,
+                    child: const Center(
+                      child: Text(
+                        'غير كافٍ لعرض البيانات',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey,
                         ),
                       ),
-                    );
-                  },
-                ),
-              ),
+                    ),
+                  )
+                  : Padding(
+                    padding: EdgeInsets.all(screenWidth * 0.05),
+                    child: GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: screenWidth * 0.03,
+                        mainAxisSpacing: screenWidth * 0.03,
+                        childAspectRatio: 1.0,
+                      ),
+                      itemCount: 6,
+                      itemBuilder: (context, index) {
+                        if (index >= _categories.length) {
+                          return const SizedBox.shrink();
+                          // Gracefully handle index out of bounds
+                        }
+
+                        final category = _categories[index];
+                        final colorString =
+                            category['color'] as String? ?? '#1D75B1';
+                        final color = Color(
+                          int.parse(colorString.replaceFirst('#', '0xFF')),
+                        );
+
+                        return GestureDetector(
+                          onTap: () async {
+                            final categoryId = category['id'];
+                            try {
+                              final response = await _productService
+                                  .getProductsByCategory(categoryId);
+                              if (response.statusCode == 200) {
+                                // Navigate to ProductListScreen and pass products and category name
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) => ProductListScreen(
+                                          products:
+                                              response.data['data']['data'] ??
+                                              [],
+                                          categoryName: category['name'] ?? '',
+                                          currentPage:
+                                              response
+                                                  .data['data']['current_page'] ??
+                                              1,
+                                          lastPage:
+                                              response
+                                                  .data['data']['last_page'] ??
+                                              1,
+                                          links:
+                                              response.data['data']['links'] ??
+                                              [],
+                                          categoryId: category['id'],
+                                        ),
+                                  ),
+                                );
+                              } else {
+                                AlertUtils.showErrorAlert(
+                                  context,
+                                  'خطأ',
+                                  'تعذر تحميل المنتجات',
+                                );
+                              }
+                            } catch (e) {
+                              AlertUtils.showErrorAlert(
+                                context,
+                                'خطأ',
+                                'حدث خطأ أثناء تحميل المنتجات',
+                              );
+                            }
+                          },
+                          child: Card(
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            color: color,
+                            child: Padding(
+                              padding: EdgeInsets.all(screenWidth * 0.02),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Flexible(
+                                    flex: 3,
+                                    child:
+                                        category['image'] != null
+                                            ? CachedNetworkImage(
+                                              imageUrl:
+                                                  'https://albakr-ac.com/${category['image']}',
+                                              height: screenHeight * 0.08,
+                                              width: screenWidth * 0.2,
+                                              fit: BoxFit.contain,
+                                              errorWidget:
+                                                  (context, url, error) => Icon(
+                                                    Icons.image_not_supported,
+                                                    size: screenWidth * 0.12,
+                                                    color: Colors.white,
+                                                  ),
+                                              placeholder:
+                                                  (context, url) => SizedBox(
+                                                    width: screenWidth * 0.08,
+                                                    height: screenWidth * 0.08,
+                                                    child:
+                                                        const CircularProgressIndicator(
+                                                          strokeWidth: 2,
+                                                          color: Colors.white,
+                                                        ),
+                                                  ),
+                                            )
+                                            : Icon(
+                                              Icons.category,
+                                              size: screenWidth * 0.12,
+                                              color: Colors.white,
+                                            ),
+                                  ),
+                                  SizedBox(height: screenHeight * 0.005),
+                                  Flexible(
+                                    flex: 2,
+                                    child: Text(
+                                      category['name'] ?? 'غير معروف',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: screenWidth * 0.035,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
 
               SizedBox(height: screenHeight * 0.025),
 
