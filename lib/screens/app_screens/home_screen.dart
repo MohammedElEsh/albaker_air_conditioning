@@ -1,28 +1,47 @@
-/// The home screen of the application that serves as the main dashboard.
-///
-/// Features:
-/// - User profile information display
-/// - Image slider with promotional content
-/// - Category grid for product navigation
-/// - Search functionality
-/// - Profile access
-/// - Arabic language support
-///
-/// The screen includes:
-/// - Welcome message with user's name
-/// - Image slider with overlay text
-/// - Category grid with icons and labels
-/// - Search and profile buttons
-/// - Loading states and error handling
-// Flutter imports
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:al_baker_air_conditioning/utils/alert_utils.dart';
+
 
 // App-specific imports
 import 'search_screen.dart';
 import 'profile_screen.dart';
 import '../../services/user_service.dart';
 import '../../services/home_service.dart';
+import '../../services/cart_service.dart'; // Added for CartService
+
+// Product model to parse best-seller API response
+class Product {
+  final int id;
+  final String name;
+  final String price;
+  final String description;
+  final String mainImage;
+  final String brandName;
+  final String? brandImage;
+
+  Product({
+    required this.id,
+    required this.name,
+    required this.price,
+    required this.description,
+    required this.mainImage,
+    required this.brandName,
+    this.brandImage,
+  });
+
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+      id: json['id'] ?? 0,
+      name: json['name'] ?? 'غير معروف',
+      price: json['price'] ?? '0.00',
+      description: json['description'] ?? '',
+      mainImage: json['main_image'] ?? '',
+      brandName: json['brand']?['name'] ?? 'غير معروف',
+      brandImage: json['brand']?['image'],
+    );
+  }
+}
 
 /// Home screen widget that serves as the main dashboard of the application.
 ///
@@ -31,6 +50,7 @@ import '../../services/home_service.dart';
 /// - Dynamic content loading
 /// - Image slider with caching
 /// - Category navigation
+/// - Best seller products display
 /// - Search and profile access
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -46,14 +66,18 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Service for home screen data
   final HomeService _homeService = HomeService();
 
+  /// Service for cart operations
+  final CartService _cartService = CartService(); // Added for cart functionality
+
   /// State variables
   String _userName = ''; // Stores the user name
   List<dynamic> _categories = []; // Stores category data
   List<dynamic> _sliderImages = []; // Stores slider image data
+  List<Product> _bestSellers = []; // Stores best-seller products
   bool _isLoading = true; // Loading flag
   int _currentSliderPage = 0; // Tracks current slider index
   final PageController _sliderController =
-      PageController(); // Page controller for slider
+  PageController(); // Page controller for slider
 
   @override
   void initState() {
@@ -61,6 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadUserName(); // Load user data
     _loadCategories(); // Load category data
     _loadSliderImages(); // Load image slider data
+    _loadBestSellers(); // Load best seller products
   }
 
   @override
@@ -98,7 +123,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   /// Loads slider images from the home API.
-  ///
   /// Requires a valid authentication token.
   /// Updates the slider images state with the API response data.
   Future<void> _loadSliderImages() async {
@@ -145,21 +169,85 @@ class _HomeScreenState extends State<HomeScreen> {
           _categories = response.data['data']['categories'] ?? [];
           _isLoading = false;
         });
-      } else {
+      }
+        } catch (e) {
+          setState(() {
+            _isLoading = false;
+          });
+          // Handle error
+        }
+      }
+
+  /// Loads best seller products from the home API.
+  ///
+  /// Requires a valid authentication token.
+  /// Updates the best sellers state and loading flag.
+  /// Handles loading states and error cases.
+  Future<void> _loadBestSellers() async {
+    try {
+      final token = await _userService.getToken();
+      if (token == null || token.isEmpty) {
+        return; // Cannot load data without token
+      }
+
+      final response = await _homeService.getBestSellerProducts();
+      if (response.statusCode == 200) {
         setState(() {
-          _isLoading = false;
+          _bestSellers = (response.data['data']['data'] as List)
+              .map((json) => Product.fromJson(json))
+              .toList();
         });
       }
     } catch (e) {
       setState(() {
-        _isLoading = false;
+        _bestSellers = [];
       });
       // Handle error
     }
   }
 
+  /// Adds a product to the cart.
+  Future<void> _addToCart(int productId) async {
+    try {
+      final token = await _cartService.getToken();
+      if (token == null || token.isEmpty) {
+        AlertUtils.showErrorAlert(
+          context,
+          'خطأ في التسجيل',
+          'يرجى تسجيل الدخول لإضافة المنتج إلى العربة',
+        );
+        return;
+      }
+
+      final response = await _cartService.addProductToCart(
+        productId: productId,
+        quantity: 1,
+        addId: 0,
+      );
+
+      if (response.statusCode == 200) {
+        AlertUtils.showSuccessAlert(
+          context,
+          'تمت الإضافة',
+          'تمت إضافة المنتج إلى العربة بنجاح',
+        );
+      } else {
+        AlertUtils.showErrorAlert(
+          context,
+          'خطأ في الإضافة',
+          'فشل إضافة المنتج إلى العربة، يرجى المحاولة مرة أخرى',
+        );
+      }
+    } catch (e) {
+      AlertUtils.showErrorAlert(
+        context,
+        'خطأ غير متوقع',
+        'حدث خطأ أثناء محاولة إضافة المنتج: ${e.toString()}',
+      );
+    }
+  }
+
   /// Builds the image slider widget with overlay text.
-  ///
   /// Returns:
   /// - A placeholder container if no images are loaded
   /// - A PageView with cached images, gradient overlay, and text if images are available
@@ -226,23 +314,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     CachedNetworkImage(
                       imageUrl: 'https://albakr-ac.com/${imageUrl}',
                       fit: BoxFit.cover,
-                      errorWidget:
-                          (context, url, error) => Container(
-                            color: const Color(0xFF1D75B1).withOpacity(0.2),
-                            child: const Center(
-                              child: Icon(
-                                Icons.image_not_supported,
-                                size: 50,
-                                color: Colors.white,
-                              ),
-                            ),
+                      errorWidget: (context, url, error) => Container(
+                        color: const Color(0xFF1D75B1).withOpacity(0.2),
+                        child: const Center(
+                          child: Icon(
+                            Icons.image_not_supported,
+                            size: 50,
+                            color: Colors.white,
                           ),
-                      placeholder:
-                          (context, url) => const Center(
-                            child: CircularProgressIndicator(
-                              color: Color(0xFF1D75B1),
-                            ),
-                          ),
+                        ),
+                      ),
+                      placeholder: (context, url) => const Center(
+                        child: CircularProgressIndicator(
+                          color: Color(0xFF1D75B1),
+                        ),
+                      ),
                     ),
 
                     // Gradient overlay
@@ -325,16 +411,15 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
                 _sliderImages.length,
-                (index) => Container(
+                    (index) => Container(
                   width: 8,
                   height: 8,
                   margin: const EdgeInsets.symmetric(horizontal: 4),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color:
-                        _currentSliderPage == index
-                            ? const Color(0xFF1D75B1)
-                            : Colors.white.withOpacity(0.5),
+                    color: _currentSliderPage == index
+                        ? const Color(0xFF1D75B1)
+                        : Colors.white.withOpacity(0.5),
                   ),
                 ),
               ),
@@ -345,12 +430,185 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  /// Builds the best sellers section widget.
+  ///
+  /// Returns:
+  /// - A loading indicator if data is being loaded
+  /// - A message if no best sellers are available
+  /// - A horizontal scrollable list of best seller products
+  Widget _buildBestSellersSection() {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    if (_bestSellers.isEmpty) {
+      return const SizedBox.shrink(); // Don't show section if no products
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: screenWidth * 0.05,
+            vertical: screenHeight * 0.01,
+          ),
+          child: Text(
+            'المنتجات الأكثر مبيعًا',
+            style: TextStyle(
+              fontSize: screenWidth * 0.045,
+              fontWeight: FontWeight.w700,
+              color: Colors.black87,
+            ),
+            textAlign: TextAlign.right,
+          ),
+        ),
+        Directionality(
+          textDirection: TextDirection.rtl,
+          child: SizedBox(
+            height: screenHeight * 0.35,
+            child: ListView.builder(
+              reverse: true,
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.only(
+                right: screenWidth * 0.03,
+                left: screenWidth * 0.03,
+              ),
+              itemCount: _bestSellers.length,
+              itemBuilder: (context, index) {
+                final product = _bestSellers[index];
+                return Container(
+                  width: screenWidth * 0.5,
+                  margin: EdgeInsets.only(
+                    left: screenWidth * 0.02,
+                    right: index == _bestSellers.length - 1 ? screenWidth * 0.02 : 0,
+                  ),
+                  child: Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(12),
+                            ),
+                            child: CachedNetworkImage(
+                              imageUrl: 'https://albakr-ac.com/${product.mainImage}',
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator(
+                                  color: Color(0xFF1D75B1),
+                                ),
+                              ),
+                              errorWidget: (context, url, error) => Container(
+                                color: Colors.grey[300],
+                                child: const Icon(
+                                  Icons.image_not_supported,
+                                  size: 40,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Padding(
+                            padding: EdgeInsets.all(screenWidth * 0.02),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  product.name,
+                                  style: TextStyle(
+                                    fontSize: screenWidth * 0.035,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black87,
+                                  ),
+                                  textAlign: TextAlign.right,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  product.description.replaceAll('\r\n', ', '),
+                                  style: TextStyle(
+                                    fontSize: screenWidth * 0.028,
+                                    color: Colors.grey[600],
+                                  ),
+                                  textAlign: TextAlign.right,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.add_shopping_cart,
+                                        size: screenWidth * 0.06,
+                                        color: Color(0xFF1D75B1),
+                                      ),
+                                      onPressed: () => _addToCart(product.id),
+                                    ),
+                                    if (product.brandImage != null)
+                                      CachedNetworkImage(
+                                        imageUrl: 'https://albakr-ac.com/${product.brandImage}',
+                                        width: screenWidth * 0.08,
+                                        height: screenWidth * 0.08,
+                                        fit: BoxFit.contain,
+                                        placeholder: (context, url) => SizedBox(
+                                          width: screenWidth * 0.08,
+                                          height: screenWidth * 0.08,
+                                          child: const CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            color: Color(0xFF1D75B1),
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) => Icon(
+                                          Icons.image_not_supported,
+                                          size: screenWidth * 0.08,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    Text(
+                                      '${product.price} ريال',
+                                      style: TextStyle(
+                                        fontSize: screenWidth * 0.032,
+                                        color: Colors.green[600],
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      textAlign: TextAlign.right,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   /// Pull to refresh data
   Future<void> _refreshData() async {
     await Future.wait([
       _loadUserName(),
       _loadSliderImages(),
       _loadCategories(),
+      _loadBestSellers(),
     ]);
   }
 
@@ -375,13 +633,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     // Profile icon button
                     GestureDetector(
-                      onTap:
-                          () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ProfileScreen(),
-                            ),
-                          ),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProfileScreen(),
+                        ),
+                      ),
                       child: Container(
                         width: screenWidth * 0.1,
                         height: screenWidth * 0.1,
@@ -404,13 +661,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(width: screenWidth * 0.025),
                     // Search icon button
                     GestureDetector(
-                      onTap:
-                          () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SearchScreen(),
-                            ),
-                          ),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SearchScreen(),
+                        ),
+                      ),
                       child: Container(
                         width: screenWidth * 0.1,
                         height: screenWidth * 0.1,
@@ -463,116 +719,114 @@ class _HomeScreenState extends State<HomeScreen> {
               // Categories Grid or Loading/Empty message
               _isLoading
                   ? SizedBox(
-                    height: screenHeight * 0.5,
-                    child: const Center(child: CircularProgressIndicator()),
-                  )
-                  : _categories.length < 9
+                height: screenHeight * 0.3,
+                child: const Center(child: CircularProgressIndicator()),
+              )
+                  : _categories.length < 6
                   ? SizedBox(
-                    height: screenHeight * 0.5,
-                    child: const Center(
-                      child: Text(
-                        'غير كافٍ لعرض البيانات',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                  )
-                  : Padding(
-                    padding: EdgeInsets.all(screenWidth * 0.05),
-                    child: GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: screenWidth * 0.03,
-                        mainAxisSpacing: screenWidth * 0.03,
-                        childAspectRatio: 1.0,
-                      ),
-                      itemCount: 6,
-                      itemBuilder: (context, index) {
-                        if (index >= _categories.length) {
-                          return const SizedBox.shrink();
-                          // Gracefully handle index out of bounds
-                        }
-
-                        final category = _categories[index];
-                        final colorString =
-                            category['color'] as String? ?? '#1D75B1';
-                        final color = Color(
-                          int.parse(colorString.replaceFirst('#', '0xFF')),
-                        );
-
-                        return Card(
-                          elevation: 3,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          color: color,
-                          child: Padding(
-                            padding: EdgeInsets.all(screenWidth * 0.02),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Flexible(
-                                  flex: 3,
-                                  child:
-                                      category['image'] != null
-                                          ? CachedNetworkImage(
-                                            imageUrl:
-                                                'https://albakr-ac.com/'
-                                                '${category['image']}',
-                                            height: screenHeight * 0.08,
-                                            width: screenWidth * 0.2,
-                                            fit: BoxFit.contain,
-                                            errorWidget:
-                                                (context, url, error) => Icon(
-                                                  Icons.image_not_supported,
-                                                  size: screenWidth * 0.12,
-                                                  color: Colors.white,
-                                                ),
-                                            placeholder:
-                                                (context, url) => SizedBox(
-                                                  width: screenWidth * 0.08,
-                                                  height: screenWidth * 0.08,
-                                                  child:
-                                                      const CircularProgressIndicator(
-                                                        strokeWidth: 2,
-                                                        color: Colors.white,
-                                                      ),
-                                                ),
-                                          )
-                                          : Icon(
-                                            Icons.category,
-                                            size: screenWidth * 0.12,
-                                            color: Colors.white,
-                                          ),
-                                ),
-                                SizedBox(height: screenHeight * 0.005),
-                                Flexible(
-                                  flex: 2,
-                                  child: Text(
-                                    category['name'] ?? 'غير معروف',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: screenWidth * 0.035,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
+                height: screenHeight * 0.3,
+                child: const Center(
+                  child: Text(
+                    'غير كافٍ لعرض البيانات',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey,
                     ),
                   ),
+                ),
+              )
+                  : Padding(
+                padding: EdgeInsets.all(screenWidth * 0.05),
+                child: GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: screenWidth * 0.03,
+                    mainAxisSpacing: screenWidth * 0.03,
+                    childAspectRatio: 1.0,
+                  ),
+                  itemCount: 6,
+                  itemBuilder: (context, index) {
+                    if (index >= _categories.length) {
+                      return const SizedBox.shrink();
+                      // Gracefully handle index out of bounds
+                    }
+
+                    final category = _categories[index];
+                    final colorString = category['color'] as String? ?? '#1D75B1';
+                    final color = Color(
+                      int.parse(colorString.replaceFirst('#', '0xFF')),
+                    );
+
+                    return Card(
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      color: color,
+                      child: Padding(
+                        padding: EdgeInsets.all(screenWidth * 0.02),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              flex: 3,
+                              child: category['image'] != null
+                                  ? CachedNetworkImage(
+                                imageUrl: 'https://albakr-ac.com/${category['image']}',
+                                height: screenHeight * 0.08,
+                                width: screenWidth * 0.2,
+                                fit: BoxFit.contain,
+                                errorWidget: (context, url, error) => Icon(
+                                  Icons.image_not_supported,
+                                  size: screenWidth * 0.12,
+                                  color: Colors.white,
+                                ),
+                                placeholder: (context, url) => SizedBox(
+                                  width: screenWidth * 0.08,
+                                  height: screenWidth * 0.08,
+                                  child: const CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )
+                                  : Icon(
+                                Icons.category,
+                                size: screenWidth * 0.12,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(height: screenHeight * 0.005),
+                            Flexible(
+                              flex: 2,
+                              child: Text(
+                                category['name'] ?? 'غير معروف',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: screenWidth * 0.035,
+                                ),
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              SizedBox(height: screenHeight * 0.025),
+
+              // Best Sellers Section
+              _buildBestSellersSection(),
 
               // Add space at the bottom for the navbar
               SizedBox(height: screenHeight * 0.15),
