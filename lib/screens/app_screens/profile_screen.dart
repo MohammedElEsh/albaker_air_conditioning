@@ -259,7 +259,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         GestureDetector(
                           onTap: () => Navigator.pop(context),
                           child: Icon(
-                            Icons.arrow_forward,
+                            Icons.arrow_back,
                             color: const Color(0xFF1D75B1),
                             size: screenWidth * 0.06,
                           ),

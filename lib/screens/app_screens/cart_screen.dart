@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import '../../services/cart_service.dart';
 import '../../utils/alert_utils.dart';
 import 'product_details_screen.dart';
+import 'checkout_screen.dart';
 
 /// CartScreen - Manages the shopping cart functionality and UI.
 ///
@@ -442,10 +443,9 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset(
-                                'assets/images/empty_inbox.png',
-                                width: screenWidth * 0.3,
-                                height: screenWidth * 0.3,
-                                color: const Color(0xFF1D75B1),
+                                'assets/images/empty_cart.png',
+                                width: screenWidth * 0.5,
+                                height: screenWidth * 0.5,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Icon(
                                     Icons.shopping_cart_outlined,
@@ -778,7 +778,15 @@ class _CartScreenState extends State<CartScreen> with WidgetsBindingObserver {
                             width: double.infinity,
                             child: ElevatedButton(
                               onPressed: () {
-                                // Navigate to checkout
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) => CheckoutScreen(
+                                          totalPrice: _totalPrice,
+                                        ),
+                                  ),
+                                );
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF1D75B1),
