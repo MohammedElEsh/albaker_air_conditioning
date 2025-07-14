@@ -1,8 +1,6 @@
-/// The main entry point for the Albaker Air Conditioning application.
-/// This file sets up the core application configuration and theme.
-import 'package:al_baker_air_conditioning/screens/authorization_screens/sign_up_screen.dart';
+// / The main entry point for the Albaker Air Conditioning application.
+// / This file sets up the core application configuration and theme.
 import 'package:flutter/material.dart';
-// import 'screens/app_screens/main_screen.dart'; // Main screen with navbar and all screens
 import 'screens/splash_screen.dart'; //
 
 /// Entry point of the application that initializes and runs the Flutter app
@@ -45,7 +43,6 @@ class MyApp extends StatelessWidget {
         ),
       ),
 
-      // home: const MainScreen(), // Start with main screen directly for testing
       home: const SplashScreen(), // SplashScreen
     );
   }

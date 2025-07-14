@@ -13,30 +13,82 @@
 
 ## 📱 Overview
 
-Al Baker Air Conditioning is a mobile application designed to streamline the process of purchasing, maintaining, and servicing air conditioning units. The app serves as a comprehensive platform connecting customers with Al Baker's air conditioning services, offering a seamless experience for both customers and technicians.
+Al Baker Air Conditioning is a modern, feature-rich mobile application designed to streamline the process of purchasing, maintaining, and servicing air conditioning units. The app serves as a comprehensive platform connecting customers with Al Baker's air conditioning services, offering a seamless experience for both customers and service providers.
 
 ## ✨ Key Features
 
 ### Customer Features
-- **Product Browsing & Purchase**
-  - Browse complete AC catalog
-  - View detailed product specifications
-  - Add items to cart
-  - Secure checkout process
-  - PyMob payment integration
+- **Product Management**
+  - Browse complete AC catalog with detailed specifications
+  - Dynamic product search and filtering
+  - Favorite items list for quick access
+  - Smart product recommendations
+  - Real-time stock availability
+
+- **Shopping Experience**
+  - Intuitive shopping cart management
+  - Multi-item checkout process
+  - Secure PyMob payment integration
+  - Order history and tracking
+  - Wishlist functionality
 
 - **Service Management**
   - Schedule maintenance appointments
-  - Track service requests
-  - View service history
-  - Get price quotes
+  - Real-time service request tracking
+  - Comprehensive service history
+  - Instant price quotes
+  - Emergency service requests
 
 - **User Experience**
   - Personalized user profiles
-  - Favorite products list
-  - Order tracking
-  - Push notifications
+  - Push notifications for updates
   - Arabic language support
+  - Dark mode support
+  - Responsive design for all screen sizes
+
+## 🎯 App Sections
+
+1. **Home Screen (`home_screen.dart`)**
+   - Featured products slider
+   - Category navigation
+   - Best sellers section
+   - Quick search functionality
+   - User greeting and profile access
+
+2. **Products Section**
+   - Grid and list view options
+   - Advanced filtering and sorting
+   - Detailed product information
+   - Image galleries
+   - Technical specifications
+
+3. **Cart Management (`cart_screen.dart`)**
+   - Real-time price updates
+   - Quantity adjustment
+   - Save for later option
+   - Quick checkout access
+   - Cart synchronization
+
+4. **Projects Section (`projects_screen.dart`)**
+   - Completed project showcase
+   - Project details and photos
+   - Location information
+   - Technical specifications
+   - Client testimonials
+
+5. **Works Section (`works_screen.dart`)**
+   - Service portfolio
+   - Before/after galleries
+   - Service categorization
+   - Customer reviews
+   - Work process details
+
+6. **Profile Section**
+   - Personal information management
+   - Order history
+   - Service requests
+   - Saved addresses
+   - Payment methods
 
 ## 🛠️ Technologies & Tools
 
@@ -46,92 +98,80 @@ Al Baker Air Conditioning is a mobile application designed to streamline the pro
 - **Android NDK** (v27.0.12077973)
 
 ### Frontend
-- **Lottie** (^3.3.1) - For smooth animations
+- **Lottie** (^3.3.1) - Smooth animations and transitions
 - **RFlutter Alert** (^2.0.7) - Custom alert dialogs
 - **Cupertino Icons** (^1.0.8) - iOS-style icons
+- **Ionicons** - Modern icon set
 
 ### Networking & Data
-- **Dio** (^5.8.0+1) - HTTP client
-- **Shared Preferences** (^2.0.15) - Local storage
-- **Cached Network Image** (^3.3.0) - Image caching
-- **URL Launcher** (^6.2.4) - External URL handling
+- **Dio** (^5.8.0+1) - HTTP client for API communication
+- **Shared Preferences** (^2.0.15) - Local data storage
+- **Cached Network Image** (^3.3.0) - Efficient image caching
+- **URL Launcher** (^6.2.4) - External link handling
 
-## 🏗️ Architecture
+## 📐 Architecture
 
-The project follows a service-based architecture, organized into modular services for better maintainability and scalability.
+The application follows a service-based architecture with clear separation of concerns:
 
-### Services
+### Services Layer (`services/`)
 - **Authentication Service** - User authentication and authorization
-- **Cart Service** - Shopping cart management
-- **Orders Service** - Order processing and tracking
-- **Products Service** - Product catalog management
-- **User Service** - User profile management
-- **Works Service** - Service requests handling
-- **Payment Service** - PyMob payment integration
+- **Cart Service** - Shopping cart operations
+- **Orders Service** - Order management
+- **Products Service** - Product catalog operations
+- **Projects Service** - Project showcase management
+- **Works Service** - Service portfolio handling
 - **Home Service** - Home screen data management
+- **User Service** - Profile management
+- **Payment Service** - Payment processing
 - **Favorite Service** - Wishlist management
-- **Ask Price Service** - Price quote requests
 
-## 📂 Project Structure
+### UI Layer
+- **Screens** - Main interface components
+- **Widgets** - Reusable UI elements
+- **Utils** - Helper functions and utilities
 
-```
-al_baker_air_conditioning/
-├── assets/
-│   ├── animations/            # Lottie animation files
-│   ├── fonts/                 # Custom fonts (e.g., Almarai)
-│   ├── icons/                 # App icons
-│   └── images/                # Static images used in UI
-│
-├── lib/
-│   ├── generated/             # Auto-generated localization or config files
-│   ├── screens/               # All app screens
-│   │   ├── app_screens/           # Main app screens (home, product, cart, etc.)
-│   │   ├── authorization_screens/ # Login, register, OTP verification
-│   │   └── splash_screen.dart     # Initial splash screen
-│   │
-│   ├── services/              # Logic layer (API, data handling)
-│   │   ├── ask_price_service.dart
-│   │   ├── cart_service.dart
-│   │   ├── favorite_service.dart
-│   │   ├── home_service.dart
-│   │   ├── orders_service.dart
-│   │   ├── payment_service.dart
-│   │   ├── products_service.dart
-│   │   ├── projects_service.dart
-│   │   ├── user_service.dart
-│   │   └── works_service.dart
-│   │
-│   ├── utils/                 # Utility and helper functions
-│   │   └── alert_utils.dart
-│   │
-│   ├── widgets/               # Reusable UI components
-│   │   ├── custom_email_field.dart
-│   │   ├── custom_navbar.dart
-│   │   ├── custom_password_field.dart
-│   │   └── custom_rectangle.dart
-│   │
-│   └── main.dart              # Application entry point
-│
-└── pubspec.yaml               # Flutter configuration and dependencies
-```
+### Data Layer
+- RESTful API integration
+- Local storage management
+- Caching mechanisms
+- State management
 
 ## 🎨 UI/UX Features
 
-- **Custom Theme** - Consistent branding with primary color #1D75B1
-- **Almarai Font** - Arabic-friendly typography throughout the app
-- **Responsive Design** - Adapts to different screen sizes
-- **Image Caching** - Smooth loading experience with cached images
-- **Custom Animations** - Enhanced user experience with Lottie animations
-- **Intuitive Navigation** - Custom navigation bar for easy access to all features
+- **Branded Theme**
+  - Primary color: #1D75B1
+  - Custom Almarai font family
+  - Consistent visual hierarchy
+  - Smooth animations
+
+- **Responsive Design**
+  - Adaptive layouts
+  - Dynamic sizing
+  - Orientation support
+  - Tablet optimization
+
+- **User Interface**
+  - Custom navigation bar
+  - Animated transitions
+  - Loading states
+  - Error handling
+  - Empty state displays
 
 ## 🔒 Security Features
 
-- **Token-based Authentication** - Secure API access with JWT tokens
-- **Secure Storage** - Protected user credentials with SharedPreferences
-- **Password Validation** - Ensures strong password creation
-- **Secure Checkout** - Protected payment processing
+- **Authentication**
+  - Token-based security (JWT)
+  - Secure password storage
+  - OTP verification
+  - Session management
 
-## 🛠️ Setup & Installation
+- **Data Protection**
+  - Encrypted storage
+  - Secure API communication
+  - Payment data protection
+  - Privacy controls
+
+## 🚀 Setup & Installation
 
 1. Clone the repository:
    ```bash
@@ -139,41 +179,55 @@ al_baker_air_conditioning/
    cd al_baker_air_conditioning
    ```
 
-2. Get dependencies:
+2. Install dependencies:
    ```bash
    flutter pub get
    ```
 
-3. Run the app:
+3. Configure environment:
+   - Set up API endpoint in `services/`
+   - Configure payment integration
+   - Set up push notifications
+
+4. Run the app:
    ```bash
    flutter run
    ```
 
-4. Configure the backend base URL in `services/user_service.dart` and others as needed.
-
-## 🔧 Configuration
+## ⚙️ Configuration
 
 The app connects to the Al Baker API at `https://albakr-ac.com/api`. To modify the API endpoint:
 
-1. Update the `baseUrl` variable in each service file under `lib/services/`
+1. Update the `baseUrl` in service files under `lib/services/`
 2. Rebuild the app with `flutter run`
 
-## 👥 Roles
+## 👥 User Roles
 
-- **User:** Browse products, ask for price, order, manage cart and favorites.
+- **Customer**
+  - Browse and purchase products
+  - Schedule services
+  - Track orders
+  - Manage profile
 
 ## 📱 Platform Support
 
-- **Android:** API 21+ (Android 5.0 Lollipop and above)
-- **iOS:** iOS 11.0 and above
-- **Web:** Modern browsers (Chrome, Firefox, Safari)
+- **Android**: API 21+ (Android 5.0+)
+- **iOS**: iOS 11.0+
+- **Web**: Modern browsers
 
-## 📬 Contact
+## 🌐 API Integration
 
-For inquiries, support, or collaboration:
+- REST API endpoints
+- JWT authentication
+- JSON data format
+- Error handling
+- Rate limiting
 
-- 📧 Email: [elbakr@example.com](mailto:elbakr@example.com)
-- 🌐 Website: [https://elbakerair.com](https://elbakerair.com)
+## 📞 Support & Contact
+
+For support or inquiries:
+- 📧 Email: [info@albakr-ac.com](mailto:info@albakr-ac.com)
+- 🌐 Website: [https://albakr-ac.com](https://albakr-ac.com)
 
 ## 📄 License
 
