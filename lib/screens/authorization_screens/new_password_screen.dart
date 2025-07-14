@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import '../../widgets/custom_rectangle.dart';
 import '../../widgets/custom_password_field.dart';
 import '../app_screens/main_screen.dart';
 import '../../services/user_service.dart';
@@ -18,36 +17,23 @@ class NewPasswordScreen extends StatefulWidget {
 
 class _NewPasswordScreenState extends State<NewPasswordScreen> {
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-  TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   final UserService _userService = UserService();
   bool _isLoading = false;
 
   void _resetPassword() async {
     if (_passwordController.text.isEmpty) {
-      AlertUtils.showWarningAlert(
-          context,
-          "تنبيه",
-          AlertUtils.requiredFields
-      );
+      AlertUtils.showWarningAlert(context, "تنبيه", AlertUtils.requiredFields);
       return;
     }
 
     if (_passwordController.text.length < 8) {
-      AlertUtils.showWarningAlert(
-          context,
-          "تنبيه",
-          AlertUtils.weakPassword
-      );
+      AlertUtils.showWarningAlert(context, "تنبيه", AlertUtils.weakPassword);
       return;
     }
 
     if (_passwordController.text != _confirmPasswordController.text) {
-      AlertUtils.showWarningAlert(
-          context,
-          "تنبيه",
-          AlertUtils.passwordMismatch
-      );
+      AlertUtils.showWarningAlert(context, "تنبيه", AlertUtils.passwordMismatch);
       return;
     }
 
@@ -64,92 +50,61 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
       setState(() => _isLoading = false);
 
       if (response.statusCode == 200) {
-        // حفظ التوكن للمستخدم بعد تغيير كلمة المرور بنجاح
         if (response.data != null && response.data['data'] != null && response.data['data']['token'] != null) {
           var token = response.data['data']['token'];
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString('token', token);
 
-          AlertUtils.showSuccessAlert(
-              context,
-              "نجاح",
-              AlertUtils.passwordChangeSuccess
-          );
+          AlertUtils.showSuccessAlert(context, "نجاح", AlertUtils.passwordChangeSuccess);
 
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const MainScreen()),
           );
         } else {
-          // إذا لم يتم إرجاع التوكن، نحاول تسجيل الدخول أولاً
+          setState(() => _isLoading = true); // Set loading for fallback login
           try {
             var loginResponse = await _userService.login(
               widget.email,
               _passwordController.text,
             );
 
+            setState(() => _isLoading = false);
+
             if (loginResponse.statusCode == 200 &&
                 loginResponse.data != null &&
                 loginResponse.data['data'] != null &&
                 loginResponse.data['data']['token'] != null) {
-
               var token = loginResponse.data['data']['token'];
               final prefs = await SharedPreferences.getInstance();
               await prefs.setString('token', token);
 
-              AlertUtils.showSuccessAlert(
-                  context,
-                  "نجاح",
-                  AlertUtils.passwordChangeSuccess
-              );
+              AlertUtils.showSuccessAlert(context, "نجاح", AlertUtils.passwordChangeSuccess);
 
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => const MainScreen()),
               );
             } else {
-              AlertUtils.showErrorAlert(
-                  context,
-                  "تنبيه",
-                  AlertUtils.sessionExpired
-              );
+              AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.generalError);
             }
           } catch (loginError) {
-            AlertUtils.showErrorAlert(
-                context,
-                "تنبيه",
-                AlertUtils.sessionExpired
-            );
+            setState(() => _isLoading = false);
+            AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.generalError);
           }
         }
       } else {
-        AlertUtils.showErrorAlert(
-            context,
-            "تنبيه",
-            AlertUtils.passwordResetFailed
-        );
+        AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.passwordResetFailed);
       }
     } catch (e) {
       setState(() => _isLoading = false);
 
       if (e.toString().contains('network')) {
-        AlertUtils.showErrorAlert(
-            context,
-            "تنبيه",
-            AlertUtils.networkError
-        );
+        AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.networkError);
       } else if (e.toString().contains('timeout')) {
-        AlertUtils.showErrorAlert(
-            context,
-            "تنبيه",
-            AlertUtils.noInternet
-        );
+        AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.noInternet);
       } else {
-        AlertUtils.showErrorAlert(
-            context,
-            "تنبيه",
-            AlertUtils.passwordResetFailed
-        );
+        AlertUtils.showErrorAlert(context, "تنبيه", AlertUtils.passwordResetFailed);
       }
     }
   }
@@ -163,121 +118,107 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen dimensions for responsive layout
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Stack(
-          children: [
-            // Rectangle at the top
-            // const Positioned(
-            //   top: 0,
-            //   left: 0,
-            //   right: 0,
-            //   child: CustomRectangle(),
-            // ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
+            child: Column(
+              children: [
+                SizedBox(height: screenHeight * 0.05),
 
-            // Eye unlock image
-            Positioned(
-              top: 50,
-              left: 130,
-              child: Image.asset(
-                'assets/images/eye_unlock_twotone.png',
-                width: 200,
-                height: 200,
-                color: const Color(0xFF1D75B1),
-              ),
-            ),
-
-            // Title text
-            Positioned(
-              top: 321,
-              left: 0,
-              right: 0,
-              child: Column(
-                children: [
-                  const SizedBox(
-                    width: 220,
-                    height: 40,
-                    child: Text(
-                      "كلمة المرور الجديدة",
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFF2D2525),
-                        height: 1.0, // line-height: 100%
-                        letterSpacing: 0, // letter-spacing: 0%
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+                // Eye unlock icon
+                Center(
+                  child: Image.asset(
+                    'assets/images/eye_unlock_twotone.png',
+                    width: screenWidth * 0.5,
+                    height: screenHeight * 0.25,
+                    color: const Color(0xFF1D75B1),
                   ),
+                ),
 
-                  const SizedBox(
-                    width: 350,
-                    height: 60,
-                    child: Text(
-                      "قم بتعيين كلمة المرور الجديدة الخاصة بحسابك",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF2D2525),
-                        height: 1.4, // line-height: 25px
-                        letterSpacing: 0, // letter-spacing: 0%
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+                SizedBox(height: screenHeight * 0.03),
+
+                // Title
+                const Text(
+                  "كلمة المرور الجديدة",
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xFF2D2525),
                   ),
-                ],
-              ),
-            ),
+                  textAlign: TextAlign.center,
+                ),
 
-            // Password Fields
-            Positioned(
-              top: 460,
-              left: 33,
-              child: CustomPasswordField(
-                controller: _passwordController,
-                hintText: "كلمة المرور الجديدة",
-              ),
-            ),
+                SizedBox(height: screenHeight * 0.02),
 
-            Positioned(
-              top: 550,
-              left: 33,
-              child: CustomPasswordField(
-                controller: _confirmPasswordController,
-                hintText: "تأكيد كلمة المرور الجديدة",
-              ),
-            ),
-
-            // Confirm Button
-            Positioned(
-              top: 700,
-              left: 35,
-              child: SizedBox(
-                width: 363,
-                height: 76,
-                child: ElevatedButton(
-                  onPressed: _isLoading ? null : _resetPassword,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1D75B1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(38),
-                    ),
-                  ),
-                  child: _isLoading
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text(
-                    "تأكيد",
+                // Subtitle
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                  child: const Text(
+                    "قم بتعيين كلمة المرور الجديدة الخاصة بحسابك",
                     style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 22,
-                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFF2D2525),
+                      height: 1.4,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+
+                SizedBox(height: screenHeight * 0.05),
+
+                // New Password Field
+                CustomPasswordField(
+                  controller: _passwordController,
+                  hintText: "كلمة المرور الجديدة",
+                ),
+
+                SizedBox(height: screenHeight * 0.02),
+
+                // Confirm Password Field
+                CustomPasswordField(
+                  controller: _confirmPasswordController,
+                  hintText: "تأكيد كلمة المرور الجديدة",
+                ),
+
+                SizedBox(height: screenHeight * 0.05),
+
+                // Confirm Button
+                SizedBox(
+                  width: double.infinity,
+                  height: screenHeight * 0.08,
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _resetPassword,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1D75B1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(38),
+                      ),
+                    ),
+                    child: _isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text(
+                      "تأكيد",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 22,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
-              ),
+
+                SizedBox(height: screenHeight * 0.05),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
